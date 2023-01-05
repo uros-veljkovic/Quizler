@@ -7,6 +7,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -49,7 +52,9 @@ fun AnswerButton(
     )
 
     Button(
-        modifier = modifier,
+        modifier = modifier
+            .heightIn(60.dp, 100.dp)
+            .fillMaxHeight(),
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(
             contentColor = contentColorFor(animatedButtonColor.value),
@@ -66,7 +71,7 @@ fun AnswerButton(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            AnswerCharComponent(size = 40.dp, char = answer.type.char)
+            AnswerCharComponent(char = answer.type.char)
             Spacer(modifier = Modifier.size(spaceM))
             Text(
                 modifier = Modifier
@@ -74,7 +79,7 @@ fun AnswerButton(
                     .wrapContentHeight()
                     .weight(1f)
                     .align(Alignment.CenterVertically),
-                color = contentColorFor(backgroundColor = color),
+                color = contentColorFor(backgroundColor = animatedButtonColor.value),
                 text = answer.text,
                 maxLines = 3
             )

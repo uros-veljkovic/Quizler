@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -52,7 +55,9 @@ fun ScoreStands(
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
 
     Row(
-        modifier = modifier.background(Color.Transparent).fillMaxWidth(),
+        modifier = modifier
+            .background(Color.Transparent)
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Bottom
     ) {
@@ -60,6 +65,8 @@ fun ScoreStands(
             Stand(
                 screenWidth / 3,
                 maxHeight - 15.dp,
+                MaterialTheme.shapes.medium.topStart,
+                CornerSize(0.dp),
                 R.drawable.ic_silver_medal,
                 Color(0xffebe4db),
                 it
@@ -69,6 +76,8 @@ fun ScoreStands(
             Stand(
                 screenWidth / 3,
                 maxHeight,
+                MaterialTheme.shapes.medium.topStart,
+                MaterialTheme.shapes.medium.topStart,
                 R.drawable.ic_gold_medal,
                 Color(0xffffe27a),
                 it
@@ -78,6 +87,8 @@ fun ScoreStands(
             Stand(
                 screenWidth / 3,
                 maxHeight - 25.dp,
+                CornerSize(0.dp),
+                MaterialTheme.shapes.medium.topStart,
                 R.drawable.ic_bronze_medal,
                 Color(0xffc77c02),
                 it
@@ -87,14 +98,23 @@ fun ScoreStands(
 }
 
 @Composable
-private fun Stand(width: Dp, height: Dp, medal: Int, color: Color, score: Score) {
+private fun Stand(
+    width: Dp,
+    height: Dp,
+    leftCornerRadious: CornerSize,
+    rightCorenrRadious: CornerSize,
+    medal: Int,
+    color: Color,
+    score: Score
+) {
 
     Column(modifier = Modifier.width(width)) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(spaceS)
-                .align(Alignment.CenterHorizontally)
+                .align(Alignment.CenterHorizontally),
+            colors = CardDefaults.cardColors(contentColor = contentColorFor(backgroundColor = color), containerColor = color)
         ) {
             Text(
                 text = score.username,
@@ -108,21 +128,27 @@ private fun Stand(width: Dp, height: Dp, medal: Int, color: Color, score: Score)
             )
         }
         Spacer(modifier = Modifier.size(spaceM))
-        Box(
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(height)
-                .background(color),
-            contentAlignment = Alignment.TopCenter
+                .height(height),
+            shape = RoundedCornerShape(
+                topStart = leftCornerRadious,
+                topEnd = rightCorenrRadious,
+                bottomStart = CornerSize(0.dp),
+                bottomEnd = CornerSize(0.dp)
+            ),
+            colors = CardDefaults.cardColors(containerColor = color)
         ) {
             Column(
+                modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
                     modifier = Modifier
                         .width(width - spaceM)
-                        .padding(spaceL),
+                        .padding(bottom = spaceL),
                     painter = painterResource(id = medal),
                     contentDescription = null
                 )

@@ -1,6 +1,8 @@
 package com.example.quizler.ui.components.quiz
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -15,14 +17,16 @@ import com.example.quizler.ui.theme.QuizlerTheme
 
 @Composable
 fun AnswerCharComponent(
-    size: Dp,
+    modifier: Modifier = Modifier,
     char: Char,
 ) {
     Card(
+        modifier = modifier,
         shape = MaterialTheme.shapes.small
     ) {
         Box(
-            modifier = Modifier.size(size), contentAlignment = Alignment.Center
+            modifier = Modifier
+                .aspectRatio(1f), contentAlignment = Alignment.Center
         ) {
             Text(
                 text = char.toString(),
@@ -36,6 +40,6 @@ fun AnswerCharComponent(
 @Composable
 fun PreviewAnswerCharComponent() {
     QuizlerTheme {
-        AnswerCharComponent(size = 40.dp, char = 'A')
+        AnswerCharComponent(char = 'A')
     }
 }

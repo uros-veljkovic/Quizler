@@ -1,0 +1,116 @@
+package com.example.quizler.di
+
+import androidx.work.BackoffPolicy
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import com.example.quizler.data.local.entity.AnswerEntity
+import com.example.quizler.data.local.entity.CategoryModeEntity
+import com.example.quizler.data.local.entity.DifficultyModeEntity
+import com.example.quizler.data.local.entity.LengthModeEntity
+import com.example.quizler.data.local.entity.QuestionEntity
+import com.example.quizler.data.local.entity.QuestionWithAnswersEntity
+import com.example.quizler.data.local.entity.ScoreEntity
+import com.example.quizler.data.remote.dto.CategoryModesDto
+import com.example.quizler.data.remote.dto.DifficultyModesDto
+import com.example.quizler.data.remote.dto.LengthModesDto
+import com.example.quizler.data.remote.dto.QuestionDto
+import com.example.quizler.data.remote.dto.ScoreDto
+import com.example.quizler.data.remote.dto.mapper.AnswerDtoMapper
+import com.example.quizler.data.remote.dto.mapper.CategoryModeDtoMapper
+import com.example.quizler.data.remote.dto.mapper.DifficultyModeDtoMapper
+import com.example.quizler.data.remote.dto.mapper.LengthModeDtoMapper
+import com.example.quizler.data.remote.dto.mapper.QuestionDtoMapper
+import com.example.quizler.data.remote.dto.mapper.QuestionWithAnswersDtoMapper
+import com.example.quizler.data.remote.dto.mapper.ScoreDtoMapper
+import com.example.quizler.domain.QSendDataToServerWorker
+import com.example.quizler.domain.SendDataToServerWorker
+import com.example.quizler.domain.data.local.INetworkRepository
+import com.example.quizler.util.INetworkActionHandler
+import com.example.quizler.util.NetworkActionHandler
+import com.example.quizler.util.mapper.DataMapper
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import java.time.Duration
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+class DomainModule {
+
+    /**
+     * ===========================================================
+     * ========================= Mapper ==========================
+     * ===========================================================
+     **/
+
+    @Provides
+    @Singleton
+    fun provideAnswerMapper(): DataMapper<QuestionDto, List<AnswerEntity>> {
+        return AnswerDtoMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideQuestionMapper(): DataMapper<QuestionDto, QuestionEntity> {
+        return QuestionDtoMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideQuestionWithAnswerMapper(
+        questionMapper: DataMapper<QuestionDto, QuestionEntity>,
+        answerMapper: DataMapper<QuestionDto, List<AnswerEntity>>
+    ): DataMapper<QuestionDto, QuestionWithAnswersEntity> {
+        return QuestionWithAnswersDtoMapper(questionMapper, answerMapper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoryModeMapper(): DataMapper<CategoryModesDto, List<CategoryModeEntity>> {
+        return CategoryModeDtoMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLengthModeMapper(): DataMapper<LengthModesDto, List<LengthModeEntity>> {
+        return LengthModeDtoMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDifficultyModeMapper(): DataMapper<DifficultyModesDto, List<DifficultyModeEntity>> {
+        return DifficultyModeDtoMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideScoreMapper(): DataMapper<Pair<ScoreDto, Int>, ScoreEntity> {
+        return ScoreDtoMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkActionHandler(
+        networkRepository: INetworkRepository
+    ): INetworkActionHandler {
+        return NetworkActionHandler(networkRepository)
+    }
+
+    @QSendDataToServerWorker
+    @Provides
+    @Singleton
+    fun provideSendStoredDataToServerWorker(): OneTimeWorkRequest {
+
+        val constraints =
+            Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+
+        return OneTimeWorkRequestBuilder<SendDataToServerWorker>().setBackoffCriteria(
+            BackoffPolicy.LINEAR,
+            Duration.ofMinutes(1)
+        ).setConstraints(constraints).build()
+    }
+}

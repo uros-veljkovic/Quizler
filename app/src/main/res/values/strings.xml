@@ -1,3 +1,109 @@
 <resources>
-    <string name="app_name">Quizler</string>
+    <string name="app_name">Kvizler</string>
+
+
+    <!-- Error -->
+    <string name="error_username_register">Korisnicko ime mora sadrzati bar 5 karaktera</string>
+    <string name="error_username_exist">Korisnicko ime vec postoji.</string>
+    <string name="error_email_invalid">Nevalidan email</string>
+    <string name="error_email_exist">Korisnik sa ovom adresom vec postoji.</string>
+    <string name="error_password">Lozinka mora sadrzati bar 8 karaktera, od kojih 1 veliko slovo, 1 malo slovo, 1 broj i 1 spec. karakter</string>
+    <string name="error_server_down">Greska na serveru. Molimo pokusajte kasnije</string>
+    <string name="error_unexpected">Doslo je do nepoznate greske.</string>
+    <string name="error_unknow">Neocekivana greska.</string>
+
+    <!-- Error Log -->
+    <string name="error_log_string">%1$s with name %2$s does not exist</string>
+
+    <!-- Register-->
+    <string name="username">Korisnicko ime</string>
+    <string name="email">email</string>
+    <string name="password">lozinka</string>
+    <string name="register">Registruj se</string>
+    <string name="go_to_login">Idi na prijavu</string>
+    <string name="or">ili</string>
+
+    <!-- Login -->
+    <string name="login">Prijava</string>
+    <string name="go_to_register">Idi na registraciju</string>
+    <string name="error_login">Pogresno uneti kredencijali</string>
+    <string name="error_username_login">Invalid username</string>
+
+    <!-- Bottom Navigation-->
+    <string name="home">Pocetna</string>
+    <string name="scoreboard">Tabela</string>
+    <string name="new_question">Novo pitanje</string>
+    <string name="statistics">Statistika</string>
+    <string name="profile">Profil</string>
+    <string name="quiz">Kviz</string>
+
+    <string name="tab_length">Duzina</string>
+    <string name="tab_category">Kategorija</string>
+    <string name="tab_difficulty">Tezina</string>
+
+    <!-- Mode -->
+    <string name="mode_title_zen">Zen</string>
+    <string name="mode_title_exam">Test</string>
+    <string name="mode_title_marathon">Maraton</string>
+    <string name="mode_description_zen">Iskuliraj, popij pivo.</string>
+    <string name="mode_description_exam">...sad smo vec ozbiljniji, a?</string>
+    <string name="mode_description_marathon">...okej, ti mora da si streber...</string>
+    <string name="mode_title_easy">Lako</string>
+    <string name="mode_title_medium">Srednje</string>
+    <string name="mode_title_hard">Tesko</string>
+    <string name="mode_description_easy">Bukvalno ne znas nista...</string>
+    <string name="mode_description_medium">Zagrevanje mozgica</string>
+    <string name="mode_description_hard">...okej, ti mora da si streber...</string>
+    <string name="mode_title_sport">Sport</string>
+    <string name="mode_title_general_knowledge">Opsta Informisanost</string>
+    <string name="mode_title_music">Muzika</string>
+    <string name="mode_title_movie">Film</string>
+    <string name="mode_title_history">Istorija</string>
+    <string name="mode_title_geography">Geografija</string>
+    <string name="mode_title_literature">Knjizevnost</string>
+
+    <!-- New question -->
+    <string name="question">Pitanje</string>
+    <string name="correct_answer_is">Tacan odgovor je:</string>
+    <string name="answer_a">A)</string>
+    <string name="answer_b">B)</string>
+    <string name="answer_c">C)</string>
+    <string name="answer_d">D)</string>
+    <string name="save">Sacuvaj</string>
+    <string name="reset_fields">Resetuj polja</string>
+
+    <string name="lorem">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+    </string>
+    <string name="question_marks">\???</string>
+    <string name="modes_length_description">Ako si u guzvi, ili pak imas dosta vremena, odigraj jednu od modova po duzini. Respektivno, oni imaju <b>20</b>, <b>40</b>, odnosno <b>100</b> pitanja.</string>
+    <string name="modes_difficulty_description">Lak, srednji ili tezak mod. Na tebi je koliko si hrabra/hrabar !</string>
+    <string name="mode_category_description">Mislis da dobro poznajes Majkla Dzeksona, ili pak bolje znas gde trenutno igra Mbappe? Oprobaj se u jednom od modova kategorije.</string>
+    <string name="dialog_exit_quiz_title">Napusti kviz</string>
+    <string name="dialog_exit_quiz_description">Da li sigurno zelis da napustis kviz ?</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="go_to_home_screen">Idi na glavni ekran</string>
+    <string name="wow">Vau! Odlican rezultat!</string>
+    <string name="not_bad">Nije lose!</string>
+    <string name="better_next_time">Bice bolje iduci put!</string>
+    <string name="result">"Dao/la si tacan odgovo na %1$d od %2$d pitanja. "</string>
+    <string name="no_internet_connection">Nema internet konekcije</string>
+    <string name="no_internet_connection_description">Molimo Vas da se povezete na internet radi osvezavanja podataka.</string>
+    <string name="try_again">Pokusaj ponovo</string>
+    <string name="exit_app_title">Napusti aplikaciju</string>
+    <string name="exit_app_description">Da li ste sigurni da zelite da napustite aplikaciju ?</string>
+    <string name="save_username">Zapamti korisnicko ime</string>
+    <string name="username_caption">* Minimum 5 karaktera, od toga bar 2 broja</string>
+    <string name="no_score_info_screen_title">Nema rezultata</string>
+    <string name="no_score_info_screen_description">Nema rezultata za datu kategoriju.\nMolimo, izaberite drugu kategoriju ili osvezite stranicu</string>
+    <string name="no_content_info_screen_title">Greska</string>
+    <string name="no_content_info_screen_description">Greska prilikom ucitavanja podataka. Molimo proverite internet konekciju i pokusajte ponovo.</string>
+    <string name="loading">Ucitavanje…</string>
+    <string name="error_unknow_description">Dogodila se greska na serveru. Molimo pokusajte kasnije.</string>
+    <string name="error_unexpected_description">Dogodila se greska na serveru. Molimo pokusajte kasnije.</string>
+    <string name="report_question">Prijavi nevalidno pitanje</string>
+
+
 </resources>

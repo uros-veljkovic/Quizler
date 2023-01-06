@@ -89,11 +89,11 @@ fun QuestionTextComponent(
                     style = MaterialTheme.typography.labelLarge,
                 )
             }, trailingIcon = {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_coin),
-                    contentDescription = null
-                )
-            }, selected = true, onClick = {}
+            Image(
+                painter = painterResource(id = R.drawable.ic_coin),
+                contentDescription = null
+            )
+        }, selected = true, onClick = {}
         )
 
         TimerComponent(

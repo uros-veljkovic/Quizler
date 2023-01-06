@@ -20,7 +20,6 @@ import com.example.quizler.ui.screen.quiz.ResultInfo
 import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.spaceXL
 
-
 @Composable
 fun ResultInfoDialog(
     resultInfoData: ResultInfo,

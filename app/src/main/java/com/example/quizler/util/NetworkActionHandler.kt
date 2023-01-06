@@ -10,15 +10,17 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.net.ConnectException
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 class ServerUnavailableException : Exception("Unsuccessful response")
 class ConnectivityException : Exception("No connection")
 
 class NetworkActionHandler @Inject constructor(
+    private val coroutineContext: CoroutineContext,
     private val networkRepository: INetworkRepository
 ) : INetworkActionHandler {
     override suspend fun <T> executeNetworkAction(load: suspend () -> Response<T>): RepositoryResponse<T> {
-        return withContext(Dispatchers.IO) {
+        return withContext(coroutineContext) {
             try {
                 if (networkRepository.getHasInternetConnection().not()) {
                     return@withContext RepositoryResponse.Failure(ConnectivityException())

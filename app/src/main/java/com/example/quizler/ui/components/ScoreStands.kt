@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.content.contentValuesOf
 import com.example.quizler.R
 import com.example.quizler.ui.model.Score
 import com.example.quizler.ui.theme.QuizlerTheme
@@ -111,7 +113,7 @@ private fun Stand(
                 .fillMaxWidth()
                 .padding(spaceS)
                 .align(Alignment.CenterHorizontally),
-            colors = CardDefaults.cardColors(contentColor = contentColorFor(backgroundColor = color), containerColor = color)
+            colors = CardDefaults.cardColors(containerColor = color, contentColor = Color.Black)
         ) {
             Text(
                 text = score.username,
@@ -121,7 +123,7 @@ private fun Stand(
                     .padding(spaceS),
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
         Spacer(modifier = Modifier.size(spaceM))
@@ -135,7 +137,7 @@ private fun Stand(
                 bottomStart = CornerSize(0.dp),
                 bottomEnd = CornerSize(0.dp)
             ),
-            colors = CardDefaults.cardColors(containerColor = color)
+            colors = CardDefaults.cardColors(containerColor = color, contentColor = Color.Black)
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -149,7 +151,13 @@ private fun Stand(
                     painter = painterResource(id = medal),
                     contentDescription = null
                 )
-                Card(colors = CardDefaults.cardColors(containerColor = color.manipulateColor(.9f))) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = color.manipulateColor(.9f), contentColor = contentColorFor(
+                            backgroundColor = color.manipulateColor(.9f)
+                        )
+                    )
+                ) {
                     Column(
                         modifier = Modifier.padding(spaceM),
                         verticalArrangement = Arrangement.Center,
@@ -159,7 +167,6 @@ private fun Stand(
                             modifier = Modifier.wrapContentSize(),
                             text = score.score.toString(),
                             style = MaterialTheme.typography.headlineMedium,
-                            color = contentColorFor(color)
                         )
                         Image(
                             modifier = Modifier.size(32.dp),
@@ -183,17 +190,32 @@ private fun Stand(
 @Composable
 fun PreviewScoreStands() {
     QuizlerTheme {
-        ScoreStands(
-            maxHeight = 300.dp,
-            first = Score(
-                id = "",
-                username = "zhuabba_123",
-                score = 22,
-                ranking = 1,
-                mode = ""
-            ),
-            second = null,
-            third = null
-        )
+        Surface {
+
+            ScoreStands(
+                maxHeight = 300.dp,
+                first = Score(
+                    id = "",
+                    username = "zhuabba_123",
+                    score = 22,
+                    ranking = 1,
+                    mode = ""
+                ),
+                second = Score(
+                    id = "",
+                    username = "zhuabba_123",
+                    score = 22,
+                    ranking = 1,
+                    mode = ""
+                ),
+                third = Score(
+                    id = "",
+                    username = "zhuabba_123",
+                    score = 22,
+                    ranking = 1,
+                    mode = ""
+                )
+            )
+        }
     }
 }

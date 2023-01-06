@@ -11,6 +11,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep class com.example.quizler.data.local.entity.** {*;}
+-keep class com.example.quizler.data.remote.dto.** {*;}
+-keep class com.example.quizler.data.remote.service.quizmode.QuizService
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.

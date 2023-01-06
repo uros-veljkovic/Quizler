@@ -27,6 +27,8 @@ import com.example.quizler.data.remote.dto.mapper.ScoreDtoMapper
 import com.example.quizler.domain.QSendDataToServerWorker
 import com.example.quizler.domain.SendDataToServerWorker
 import com.example.quizler.domain.data.local.INetworkRepository
+import com.example.quizler.domain.date.DateManager
+import com.example.quizler.domain.date.IDateManager
 import com.example.quizler.util.INetworkActionHandler
 import com.example.quizler.util.NetworkActionHandler
 import com.example.quizler.util.mapper.DataMapper
@@ -34,6 +36,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import java.time.Duration
 import javax.inject.Singleton
 
@@ -97,7 +100,7 @@ class DomainModule {
     fun provideNetworkActionHandler(
         networkRepository: INetworkRepository
     ): INetworkActionHandler {
-        return NetworkActionHandler(networkRepository)
+        return NetworkActionHandler(Dispatchers.IO, networkRepository)
     }
 
     @QSendDataToServerWorker
@@ -112,5 +115,11 @@ class DomainModule {
             BackoffPolicy.LINEAR,
             Duration.ofMinutes(1)
         ).setConstraints(constraints).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDateManager(): IDateManager {
+        return DateManager()
     }
 }

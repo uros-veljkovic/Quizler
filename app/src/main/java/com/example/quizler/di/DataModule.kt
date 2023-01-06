@@ -10,6 +10,7 @@ import com.example.quizler.data.local.entity.AnswerRecordEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.mapper.AnswerRecordEntityMapper
 import com.example.quizler.data.local.entity.mapper.ResultRecordEntityMapper
+import com.example.quizler.data.preferences.AppDataStorePreferences
 import com.example.quizler.data.preferences.DataStoreUserPreferences
 import com.example.quizler.data.remote.FakeQuizRemoteRepository
 import com.example.quizler.data.remote.QFakeRemoteRepo
@@ -21,6 +22,8 @@ import com.example.quizler.data.remote.service.quizmode.QuizService
 import com.example.quizler.domain.data.local.INetworkRepository
 import com.example.quizler.domain.data.local.IQuizLocalRepository
 import com.example.quizler.domain.data.remote.IQuizRemoteRepository
+import com.example.quizler.domain.preferences.IAppPreferences
+import com.example.quizler.domain.preferences.IDataSyncCoordinator
 import com.example.quizler.domain.preferences.IUserPreferences
 import com.example.quizler.util.INetworkActionHandler
 import com.example.quizler.util.mapper.DataMapper
@@ -46,11 +49,24 @@ class DataModule {
      **/
 
     private val Context.userDatastore by preferencesDataStore(name = "user_preferences")
+    private val Context.appDataStore by preferencesDataStore(name = "app_preferences")
 
     @Singleton
     @Provides
     fun provideUserPreferences(@ApplicationContext context: Context): IUserPreferences {
         return DataStoreUserPreferences(context.userDatastore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppPreferences(@ApplicationContext context: Context): IAppPreferences {
+        return AppDataStorePreferences(context.appDataStore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideIDataManger(@ApplicationContext context: Context): IDataSyncCoordinator {
+        return provideAppPreferences(context)
     }
 
     /**

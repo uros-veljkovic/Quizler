@@ -18,7 +18,6 @@ interface IQuizLocalRepository {
     fun readAnswerRecords(): Flow<List<AnswerRecordEntity>>
     fun readResultRecords(): Flow<List<ResultRecordEntity>>
     fun readScores(): Flow<List<ScoreEntity>>
-
     fun readReportedQuestions(): Flow<List<ReportedQuestionEntity>>
 
     suspend fun insertLengthModes(data: List<LengthModeEntity>)

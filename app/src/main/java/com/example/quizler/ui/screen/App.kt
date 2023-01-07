@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.quizler.BuildConfig
 import com.example.quizler.R
 import com.example.quizler.ui.components.BottomNavigation
 import com.example.quizler.ui.components.ExitDialog
@@ -77,7 +78,7 @@ fun App(
             Image(
                 modifier = Modifier.fillMaxSize(),
                 painter = painterResource(id = R.drawable.default_background_pattern),
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.FillBounds,
                 alpha = 0.2f,
                 contentDescription = null
             )

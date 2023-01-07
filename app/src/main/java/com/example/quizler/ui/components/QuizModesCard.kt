@@ -41,7 +41,11 @@ fun QuizModes(
                     dividerWidth = 2.dp, text = cardDescription
                 )
                 Spacer(modifier = Modifier.padding(bottom = spaceM))
-                LazyRow(modifier = Modifier.fillMaxWidth(), state = rememberLazyListState()) {
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    state = rememberLazyListState(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     items(items = state, key = { it.id }) { mode ->
                         QuizModeCard(mode = mode, onModeSelected = onModeSelected)
                         Spacer(modifier = Modifier.size(spaceS))

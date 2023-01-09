@@ -24,7 +24,7 @@ fun ScoreList(
     list: List<Score>
 ) {
     if (list.isNotEmpty()) {
-        LazyColumn(modifier = modifier) {
+        LazyColumn(modifier = modifier.disableSplitMotionEvents()) {
             items(count = 1) {
                 ScoreStands(
                     maxHeight = 300.dp,

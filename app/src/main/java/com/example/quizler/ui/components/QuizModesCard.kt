@@ -42,7 +42,9 @@ fun QuizModes(
                 )
                 Spacer(modifier = Modifier.padding(bottom = spaceM))
                 LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .disableSplitMotionEvents(),
                     state = rememberLazyListState(),
                     horizontalArrangement = Arrangement.Center
                 ) {

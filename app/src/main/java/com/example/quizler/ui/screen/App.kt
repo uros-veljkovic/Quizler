@@ -26,7 +26,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.quizler.BuildConfig
 import com.example.quizler.R
 import com.example.quizler.ui.components.BottomNavigation
 import com.example.quizler.ui.components.ExitDialog
@@ -36,6 +35,7 @@ import com.example.quizler.ui.screen.quiz.QuizScreen
 import com.example.quizler.ui.screen.score.ScoreScreen
 import com.example.quizler.ui.screen.score.ScoreViewModel
 import com.example.quizler.ui.screen.splash.SplashScreen
+import com.example.quizler.ui.utils.disableSplitMotionEvents
 import com.example.quizler.ui.utils.navigate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,6 +65,7 @@ fun App(
     }
 
     Scaffold(
+        modifier = Modifier.disableSplitMotionEvents(),
         bottomBar = {
             AnimatedVisibility(state.bottomNavigationConfig.isBottomNavVisible) {
                 BottomNavigation(

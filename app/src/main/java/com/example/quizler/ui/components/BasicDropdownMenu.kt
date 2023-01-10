@@ -55,7 +55,7 @@ fun BasicDropdownMenu(
             contentAlignment = Alignment.TopEnd
         ) {
             DropdownMenu(
-                modifier = Modifier.fillMaxSize().disableSplitMotionEvents(),
+                modifier = Modifier.fillMaxSize(),
                 expanded = isExpanded,
                 onDismissRequest = { onExpandDropdown(false) }
             ) {

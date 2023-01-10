@@ -3,7 +3,6 @@ package com.example.quizler.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,8 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,11 +30,8 @@ import com.example.quizler.ui.components.quiz.QuestionTextComponent
 import com.example.quizler.ui.screen.home.plus
 import com.example.quizler.ui.screen.quiz.QuestionBundle
 import com.example.quizler.ui.screen.quiz.QuizScreenState
-import com.example.quizler.ui.screen.quiz.map
 import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.spaceS
-import kotlinx.coroutines.NonDisposableHandle.parent
-import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun QuestionScreenContent(
@@ -61,7 +55,6 @@ fun QuestionScreenContent(
         )
         LazyColumn(
             modifier = Modifier
-                .disableSplitMotionEvents()
                 .layoutId("answers"),
             verticalArrangement = Arrangement.spacedBy(spaceS)
         ) {
@@ -135,26 +128,3 @@ fun PreviewQuestionScreenContent() {
         )
     }
 }
-
-fun Modifier.disableSplitMotionEvents() =
-    pointerInput(Unit) {
-        coroutineScope {
-            var currentId: Long = -1L
-            awaitPointerEventScope {
-                while (true) {
-                    awaitPointerEvent(PointerEventPass.Initial).changes.forEach { pointerInfo ->
-                        when {
-                            pointerInfo.pressed && currentId == -1L -> currentId =
-                                pointerInfo.id.value
-
-                            pointerInfo.pressed.not() && currentId == pointerInfo.id.value -> currentId =
-                                -1
-
-                            pointerInfo.id.value != currentId && currentId != -1L -> pointerInfo.consume()
-                            else -> Unit
-                        }
-                    }
-                }
-            }
-        }
-    }

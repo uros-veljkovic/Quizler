@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.content.contentValuesOf
 import com.example.quizler.R
 import com.example.quizler.ui.model.Score
 import com.example.quizler.ui.theme.QuizlerTheme
@@ -153,7 +152,8 @@ private fun Stand(
                 )
                 Card(
                     colors = CardDefaults.cardColors(
-                        containerColor = color.manipulateColor(.9f), contentColor = contentColorFor(
+                        containerColor = color.manipulateColor(.9f),
+                        contentColor = contentColorFor(
                             backgroundColor = color.manipulateColor(.9f)
                         )
                     )

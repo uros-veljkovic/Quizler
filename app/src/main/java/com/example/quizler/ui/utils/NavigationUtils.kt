@@ -13,8 +13,13 @@ fun NavController.navigate(origin: Screen, destination: Screen) {
             }
         }
         is Screen.Quiz -> {
-            navigate(destination.route)
+            navigate(destination.route) {
+                popUpTo(origin.route) {
+                    inclusive = true
+                }
+            }
         }
+
         Screen.Scoreboard -> {
             navigate(destination.route) {
                 popUpTo(origin.route) {
@@ -22,6 +27,7 @@ fun NavController.navigate(origin: Screen, destination: Screen) {
                 }
             }
         }
+
         else -> throw UnsupportedNavigationRoutingException(origin, destination)
     }
 }

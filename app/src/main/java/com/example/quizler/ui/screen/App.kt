@@ -118,7 +118,6 @@ fun App(
                 ExitDialog(
                     onConfirm = viewModel::closeApp,
                     onDecline = viewModel::handleExitDialogDecline
-
                 )
             }
         }

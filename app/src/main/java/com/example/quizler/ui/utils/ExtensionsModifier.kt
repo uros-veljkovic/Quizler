@@ -13,11 +13,13 @@ fun Modifier.disableSplitMotionEvents() =
                 while (true) {
                     awaitPointerEvent(PointerEventPass.Initial).changes.forEach { pointerInfo ->
                         when {
-                            pointerInfo.pressed && currentId == -1L -> currentId =
-                                pointerInfo.id.value
+                            pointerInfo.pressed && currentId == -1L ->
+                                currentId =
+                                    pointerInfo.id.value
 
-                            pointerInfo.pressed.not() && currentId == pointerInfo.id.value -> currentId =
-                                -1
+                            pointerInfo.pressed.not() && currentId == pointerInfo.id.value ->
+                                currentId =
+                                    -1
 
                             pointerInfo.id.value != currentId && currentId != -1L -> pointerInfo.consume()
                             else -> Unit

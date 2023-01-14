@@ -1,6 +1,7 @@
 package com.example.quizler.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +25,7 @@ fun ScoreList(
     list: List<Score>
 ) {
     if (list.isNotEmpty()) {
-        LazyColumn(modifier = modifier) {
+        LazyColumn(modifier = modifier, verticalArrangement = Arrangement.spacedBy(spaceBetweenItems)) {
             items(count = 1) {
                 ScoreStands(
                     maxHeight = 300.dp,
@@ -32,12 +33,11 @@ fun ScoreList(
                     second = list.getOrNull(1),
                     third = list.getOrNull(2)
                 )
-                Spacer(modifier = Modifier.size(spaceBetweenItems))
             }
             items(items = list.drop(3), key = { it.id }) {
                 ScoreCard(score = it)
-                if (list.indexOf(it) != list.lastIndex) {
-                    Spacer(modifier = Modifier.size(spaceBetweenItems))
+                if (list.indexOf(it) == list.lastIndex) {
+                    Spacer(modifier = Modifier.size(56.dp + spaceBetweenItems))
                 }
             }
         }

@@ -47,16 +47,16 @@ fun HomeScreen(
         )
         Spacer(modifier = Modifier.size(spaceM))
         QuizModes(
-            cardDescription = stringResource(id = R.string.modes_length_description),
-            cardTitle = stringResource(id = R.string.tab_length),
-            state = state.length,
+            cardDescription = stringResource(id = R.string.modes_difficulty_description),
+            cardTitle = stringResource(id = R.string.tab_difficulty),
+            state = state.difficulties,
             onModeSelected = { navController.navigate(Screen.Home, Screen.Quiz(it.id)) }
         )
         Spacer(modifier = Modifier.size(spaceM))
         QuizModes(
-            cardDescription = stringResource(id = R.string.modes_difficulty_description),
-            cardTitle = stringResource(id = R.string.tab_difficulty),
-            state = state.difficulties,
+            cardDescription = stringResource(id = R.string.modes_length_description),
+            cardTitle = stringResource(id = R.string.tab_length),
+            state = state.length,
             onModeSelected = { navController.navigate(Screen.Home, Screen.Quiz(it.id)) }
         )
     }

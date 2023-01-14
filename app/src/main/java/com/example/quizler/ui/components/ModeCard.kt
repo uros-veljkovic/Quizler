@@ -22,6 +22,7 @@ import com.example.quizler.R
 import com.example.quizler.domain.model.QuizMode
 import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.spaceM
+import com.example.quizler.ui.theme.spaceS
 import com.example.quizler.ui.theme.spaceXS
 
 @Composable
@@ -36,17 +37,17 @@ fun QuizModeCard(
         onClick = { onModeSelected(mode) }
     ) {
         Column(
-            modifier = Modifier.padding(spaceM), horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.padding(spaceS), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                modifier = Modifier.size(80.dp),
+                modifier = Modifier.size(60.dp),
                 painter = painterResource(id = mode.icon),
                 contentDescription = "Image"
             )
             Spacer(modifier = Modifier.size(spaceXS))
             Text(
                 text = stringResource(id = mode.title),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleSmall,
                 textAlign = TextAlign.Center,
                 softWrap = true
             )

@@ -5,6 +5,8 @@ import com.example.quizler.data.remote.dto.CategoryModesDto
 import com.example.quizler.data.remote.dto.DifficultyModesDto
 import com.example.quizler.data.remote.dto.LengthModesDto
 import com.example.quizler.data.remote.dto.QuestionDto
+import com.example.quizler.data.remote.dto.ReportQuestionDto
+import com.example.quizler.data.remote.dto.ReportTypeDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.data.remote.dto.ScoreDto
 import com.example.quizler.domain.data.RepositoryResponse
@@ -52,6 +54,10 @@ class FakeQuizRemoteRepository : IQuizRemoteRepository {
         return RepositoryResponse.Success(emptyList())
     }
 
+    override suspend fun getReportTypes(): RepositoryResponse<List<ReportTypeDto>> {
+        TODO("Add file with report types as JSON")
+    }
+
     override suspend fun getScores(): RepositoryResponse<List<ScoreDto>> {
         val json = withContext(Dispatchers.IO) {
             FileReader("score_fakes.json").readText()
@@ -70,6 +76,10 @@ class FakeQuizRemoteRepository : IQuizRemoteRepository {
     }
 
     override suspend fun report(questionId: String): RepositoryResponse<Unit> {
+        return RepositoryResponse.Success(Unit)
+    }
+
+    override suspend fun report(dto: ReportQuestionDto): RepositoryResponse<Unit> {
         return RepositoryResponse.Success(Unit)
     }
 }

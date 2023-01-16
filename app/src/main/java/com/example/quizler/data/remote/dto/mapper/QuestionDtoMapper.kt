@@ -14,7 +14,8 @@ class QuestionDtoMapper : DataMapper<QuestionDto, QuestionEntity> {
                 input.countAnsweredWrong
             ),
             text = input.text,
-            categoryId = input.categoryId
+            categoryId = input.categoryId,
+            isApproved = input.isApproved
         )
     }
 }

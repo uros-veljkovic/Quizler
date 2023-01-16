@@ -5,6 +5,7 @@ import com.example.quizler.data.local.entity.CategoryModeEntity
 import com.example.quizler.data.local.entity.DifficultyModeEntity
 import com.example.quizler.data.local.entity.LengthModeEntity
 import com.example.quizler.data.local.entity.QuestionWithAnswersEntity
+import com.example.quizler.data.local.entity.ReportTypeEntity
 import com.example.quizler.data.local.entity.ReportedQuestionEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.ScoreEntity
@@ -19,6 +20,7 @@ interface IQuizLocalRepository {
     fun readResultRecords(): Flow<List<ResultRecordEntity>>
     fun readScores(): Flow<List<ScoreEntity>>
     fun readReportedQuestions(): Flow<List<ReportedQuestionEntity>>
+    fun readReportTypes(): Flow<List<ReportTypeEntity>>
 
     suspend fun insertLengthModes(data: List<LengthModeEntity>)
     suspend fun insertDifficultyModes(data: List<DifficultyModeEntity>)
@@ -28,6 +30,7 @@ interface IQuizLocalRepository {
     suspend fun insertResultRecord(data: ResultRecordEntity)
     suspend fun insertScores(data: List<ScoreEntity>)
     suspend fun insertReportedQuestion(data: ReportedQuestionEntity)
+    suspend fun insertReportTypes(data: List<ReportTypeEntity>)
 
     suspend fun deleteAllAnswerRecords()
     suspend fun deleteAllResultRecords()

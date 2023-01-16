@@ -10,7 +10,8 @@ class HandleStartupDataUseCase @Inject constructor(
     private val getModesDifficultyUseCase: GetModesDifficultyUseCase,
     private val getModesCategoryUseCase: GetModesCategoryUseCase,
     private val getModesLengthUseCase: GetModesLengthUseCase,
-    private val getScoresUseCase: GetScoresUseCase
+    private val getScoresUseCase: GetScoresUseCase,
+    private val getReportTypesUseCase: GetReportTypesUseCase,
 ) {
 
     private var progress = State.Success(0.0f)
@@ -26,6 +27,9 @@ class HandleStartupDataUseCase @Inject constructor(
         val result4 = getModesCategoryUseCase.fetchAndCacheData()
         emitProgressIfSuccess(result4)
         val result5 = getScoresUseCase.fetchAndCacheData()
+        emitProgressIfSuccess(result5)
+        val result6 = getReportTypesUseCase.fetchAndCacheData()
+        emitProgressIfSuccess(result6)
     }
 
     private fun resetProgress() {

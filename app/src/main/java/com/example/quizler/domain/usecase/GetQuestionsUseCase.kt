@@ -12,6 +12,7 @@ import com.example.quizler.util.INetworkActionHandler
 import com.example.quizler.util.State
 import com.example.quizler.util.mapper.DataMapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.util.Date
@@ -27,7 +28,12 @@ class GetQuestionsUseCase @Inject constructor(
     private val uiMapper: DataMapper<QuestionWithAnswersEntity, QuestionBundle>
 ) {
 
-    operator fun invoke(): Flow<List<QuestionBundle>> = localRepository.readQuestionsWithAnswers().map { uiMapper.map(it) }
+    // TODO: Filter questions by isApproved
+    operator fun invoke(isApproved: Boolean = true): Flow<List<QuestionBundle>> =
+        localRepository.readQuestionsWithAnswers()
+            .map { list ->
+                list.filter { it.question.isApproved == isApproved }.map { uiMapper.map(it) }
+            }
 
     suspend fun fetchAndCacheData(): State<List<QuestionWithAnswersEntity>> {
         val hasPast30Days = dateManager.hasPast(30, dataSyncCoordinator.getDataSyncTime().first())
@@ -35,7 +41,7 @@ class GetQuestionsUseCase @Inject constructor(
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readQuestionsWithAnswers() },
             shouldFetch = { it.isEmpty() || hasPast30Days },
-            fetch = { remoteRepository.getQuestions(false) },
+            fetch = { remoteRepository.getQuestions() },
             cache = {
                 refreshTimeDataSynced()
                 localRepository.insertQuestionsWithAnswers(dtoMapper.map(it))

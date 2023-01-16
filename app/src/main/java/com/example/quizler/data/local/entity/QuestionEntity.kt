@@ -10,4 +10,5 @@ data class QuestionEntity(
     val text: String,
     val difficulty: Difficulty,
     val categoryId: String,
+    val isApproved: Boolean
 )

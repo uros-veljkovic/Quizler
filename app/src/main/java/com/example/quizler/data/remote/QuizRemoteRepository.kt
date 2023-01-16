@@ -1,6 +1,8 @@
 package com.example.quizler.data.remote
 
 import com.example.quizler.data.remote.dto.AnswerRecordDto
+import com.example.quizler.data.remote.dto.ReportQuestionDto
+import com.example.quizler.data.remote.dto.ReportTypeDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.data.remote.dto.ScoreDto
 import com.example.quizler.data.remote.service.quizmode.QuizService
@@ -18,21 +20,29 @@ class QuizRemoteRepository(
     private val networkActionHandler: INetworkActionHandler
 ) : IQuizRemoteRepository {
 
-    override suspend fun getCategoryModes() = networkActionHandler.executeNetworkAction {
-        service.getCategoryModes()
-    }
-
-    override suspend fun getLengthModes() = networkActionHandler.executeNetworkAction {
-        service.getLengthModes()
-    }
-
-    override suspend fun getDifficultyModes() = networkActionHandler.executeNetworkAction {
-        service.getDifficultyModes()
-    }
-
-    override suspend fun getQuestions(approvedQuestions: Boolean) =
+    override suspend fun getCategoryModes() =
         networkActionHandler.executeNetworkAction {
-            service.getQuestions(approvedQuestions)
+            service.getCategoryModes()
+        }
+
+    override suspend fun getLengthModes() =
+        networkActionHandler.executeNetworkAction {
+            service.getLengthModes()
+        }
+
+    override suspend fun getDifficultyModes() =
+        networkActionHandler.executeNetworkAction {
+            service.getDifficultyModes()
+        }
+
+    override suspend fun getQuestions() =
+        networkActionHandler.executeNetworkAction {
+            service.getQuestions()
+        }
+
+    override suspend fun getReportTypes(): RepositoryResponse<List<ReportTypeDto>> =
+        networkActionHandler.executeNetworkAction {
+            service.getReportTypes()
         }
 
     override suspend fun getScores(): RepositoryResponse<List<ScoreDto>> =
@@ -50,7 +60,13 @@ class QuizRemoteRepository(
             service.record(resultRecordDto)
         }
 
-    override suspend fun report(questionId: String) = networkActionHandler.executeNetworkAction {
-        service.report(questionId)
-    }
+    override suspend fun report(questionId: String) =
+        networkActionHandler.executeNetworkAction {
+            service.report(questionId)
+        }
+
+    override suspend fun report(dto: ReportQuestionDto): RepositoryResponse<Unit> =
+        networkActionHandler.executeNetworkAction {
+            service.reportQuestion(dto)
+        }
 }

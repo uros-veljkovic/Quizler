@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.example.quizler.R
 import com.example.quizler.domain.model.QuizMode
 import com.example.quizler.ui.theme.QuizlerTheme
-import com.example.quizler.ui.theme.spaceM
 import com.example.quizler.ui.theme.spaceS
 import com.example.quizler.ui.theme.spaceXS
 

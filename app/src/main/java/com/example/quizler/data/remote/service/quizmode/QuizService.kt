@@ -5,6 +5,8 @@ import com.example.quizler.data.remote.dto.CategoryModesDto
 import com.example.quizler.data.remote.dto.DifficultyModesDto
 import com.example.quizler.data.remote.dto.LengthModesDto
 import com.example.quizler.data.remote.dto.QuestionDto
+import com.example.quizler.data.remote.dto.ReportQuestionDto
+import com.example.quizler.data.remote.dto.ReportTypeDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.data.remote.dto.ScoreDto
 import retrofit2.Response
@@ -25,9 +27,7 @@ interface QuizService {
     suspend fun getDifficultyModes(): Response<DifficultyModesDto>
 
     @GET("questions")
-    suspend fun getQuestions(
-        @Query("is_approved") approvedQuestions: Boolean,
-    ): Response<List<QuestionDto>>
+    suspend fun getQuestions(): Response<List<QuestionDto>>
 
     @GET("scores")
     suspend fun getScores(): Response<List<ScoreDto>>
@@ -40,4 +40,10 @@ interface QuizService {
 
     @POST("questions/report")
     suspend fun report(@Query("id") questionId: String): Response<Unit>
+
+    @GET("report-types")
+    suspend fun getReportTypes(): Response<List<ReportTypeDto>>
+
+    @POST("invalid-question")
+    suspend fun reportQuestion(@Body dto: ReportQuestionDto): Response<Unit>
 }

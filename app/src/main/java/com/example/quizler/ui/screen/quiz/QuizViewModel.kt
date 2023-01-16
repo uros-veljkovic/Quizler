@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.quizler.data.remote.dto.AnswerRecordDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.domain.model.AnswerType
+import com.example.quizler.domain.model.ReportedQuestion
 import com.example.quizler.domain.usecase.GetUsernameUseCase
 import com.example.quizler.domain.usecase.ReportQuestionUseCase
-import com.example.quizler.domain.usecase.ReportedQuestion
 import com.example.quizler.domain.usecase.SaveAnswerRecordUseCase
 import com.example.quizler.domain.usecase.SaveResultRecordUseCase
 import com.example.quizler.domain.usecase.SaveUsernameUseCase

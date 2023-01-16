@@ -50,7 +50,7 @@ class FakeQuizRemoteRepository : IQuizRemoteRepository {
         )
     }
 
-    override suspend fun getQuestions(approvedQuestions: Boolean): RepositoryResponse<List<QuestionDto>> {
+    override suspend fun getQuestions(): RepositoryResponse<List<QuestionDto>> {
         return RepositoryResponse.Success(emptyList())
     }
 

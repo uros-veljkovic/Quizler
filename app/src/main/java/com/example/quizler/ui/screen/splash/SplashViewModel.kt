@@ -50,18 +50,13 @@ class SplashViewModel @Inject constructor(
         handleStartupDataUseCase().collect { result ->
             when (result) {
                 is State.Error -> handleError(result)
-                is State.Success -> handleSuccess(result)
-                else -> {
-                    // do nothing
-                }
+                else -> handleProgress(result.data ?: 0f, result is State.Success)
             }
         }
     }
 
-    private suspend fun handleSuccess(progress: State.Success<Float>) = withContext(Dispatchers.Main) {
-        progress.data?.let {
-            _state.update { it.copyWithProgress(progress.data) }
-        }
+    private suspend fun handleProgress(progress: Float, isAllFetchedAndCached: Boolean) = withContext(Dispatchers.Main) {
+        _state.update { it.copy(progress = progress, isGoToHomeScreen = isAllFetchedAndCached) }
     }
 
     private fun handleError(progress: State.Error<Float>) {

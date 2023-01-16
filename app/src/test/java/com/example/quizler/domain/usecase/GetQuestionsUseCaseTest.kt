@@ -67,15 +67,15 @@ internal class GetQuestionsUseCaseTest {
         coEvery { dateManager.hasPast(any(), any()) } returns true
 
         every { localRepository.readQuestionsWithAnswers() } returns flowOf(mockk())
-        coEvery { remoteRepository.getQuestions(any()) } returns RepositoryResponse.Success(mockk())
+        coEvery { remoteRepository.getQuestions() } returns RepositoryResponse.Success(mockk())
         coEvery { dataSyncCoordinator.setDataSyncTime(any()) } just Runs
         every { dtoMapper.map(any<List<QuestionDto>>()) } returns emptyList()
         coEvery { localRepository.insertQuestionsWithAnswers(any()) } just Runs
 
-        sut.fetchAndCacheData()
+        sut.fetchAndCache()
 
         verify(exactly = 2) { localRepository.readQuestionsWithAnswers() }
-        coVerify(exactly = 1) { remoteRepository.getQuestions(any()) }
+        coVerify(exactly = 1) { remoteRepository.getQuestions() }
         coVerify(exactly = 1) { dataSyncCoordinator.setDataSyncTime(any()) }
         coVerify(exactly = 1) { localRepository.insertQuestionsWithAnswers(any()) }
     }
@@ -89,10 +89,10 @@ internal class GetQuestionsUseCaseTest {
 
         every { localRepository.readQuestionsWithAnswers() } returns flowOf(mockk())
 
-        sut.fetchAndCacheData()
+        sut.fetchAndCache()
 
         verify(exactly = 1) { localRepository.readQuestionsWithAnswers() }
-        coVerify(exactly = 0) { remoteRepository.getQuestions(any()) }
+        coVerify(exactly = 0) { remoteRepository.getQuestions() }
         coVerify(exactly = 0) { dataSyncCoordinator.setDataSyncTime(any()) }
         coVerify(exactly = 0) { localRepository.insertQuestionsWithAnswers(any()) }
     }

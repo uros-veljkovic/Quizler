@@ -12,7 +12,6 @@ import com.example.quizler.util.INetworkActionHandler
 import com.example.quizler.util.State
 import com.example.quizler.util.mapper.DataMapper
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.util.Date
@@ -26,7 +25,7 @@ class GetQuestionsUseCase @Inject constructor(
     private val dateManager: IDateManager,
     private val dtoMapper: DataMapper<QuestionDto, QuestionWithAnswersEntity>,
     private val uiMapper: DataMapper<QuestionWithAnswersEntity, QuestionBundle>
-) {
+) : IFetchAndCacheUseCase {
 
     // TODO: Filter questions by isApproved
     operator fun invoke(isApproved: Boolean = true): Flow<List<QuestionBundle>> =
@@ -35,7 +34,7 @@ class GetQuestionsUseCase @Inject constructor(
                 list.filter { it.question.isApproved == isApproved }.map { uiMapper.map(it) }
             }
 
-    suspend fun fetchAndCacheData(): State<List<QuestionWithAnswersEntity>> {
+    override suspend fun fetchAndCache(): State<Unit> {
         val hasPast30Days = dateManager.hasPast(30, dataSyncCoordinator.getDataSyncTime().first())
 
         return networkActionHandler.fetchAndCache(

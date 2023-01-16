@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import timber.log.Timber
 import java.net.ConnectException
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -29,7 +30,7 @@ class NetworkActionHandler @Inject constructor(
                     if (response.isSuccessful) {
                         RepositoryResponse.Success(response.body()!!)
                     } else {
-                        RepositoryResponse.Failure(Throwable(response.message()))
+                        RepositoryResponse.Failure(Throwable(response.errorBody()?.string()))
                     }
                 }
             } catch (e: ConnectException) {
@@ -45,7 +46,7 @@ class NetworkActionHandler @Inject constructor(
         query: () -> Flow<Entity>,
         fetch: suspend () -> RepositoryResponse<Dto>,
         cache: suspend (Dto) -> Unit
-    ): State<Entity> {
+    ): State<Unit> {
         return withContext(Dispatchers.IO) {
             try {
                 val data = query().first()
@@ -56,23 +57,28 @@ class NetworkActionHandler @Inject constructor(
                         return@withContext State.Error(ConnectivityException())
                     }
                     when (val fetchResult = fetch()) {
-                        is RepositoryResponse.Failure -> State.Error(ServerUnavailableException())
+                        is RepositoryResponse.Failure -> {
+                            Timber.e(fetchResult.throwable)
+                            State.Error(ServerUnavailableException())
+                        }
+
                         is RepositoryResponse.Success -> {
                             cache(fetchResult.data)
-                            val cachedData = query().first()
-                            State.Success(cachedData)
+                            State.Success(Unit)
                         }
                     }
                 } else {
-                    State.Success(data)
+                    State.Success(Unit)
                 }
             } catch (e: ConnectException) {
+                Timber.e(e)
                 State.Error(
                     throwable = ServerUnavailableException(),
                     messageTitleResId = R.string.no_internet_connection,
                     messageDescriptionResId = R.string.no_internet_connection_description
                 )
             } catch (e: Exception) {
+                Timber.e(e)
                 State.Error(
                     throwable = e,
                     messageTitleResId = R.string.error_unexpected,
@@ -90,5 +96,5 @@ interface INetworkActionHandler {
         query: () -> Flow<Entity>,
         fetch: suspend () -> RepositoryResponse<Dto>,
         cache: suspend (Dto) -> Unit
-    ): State<Entity>
+    ): State<Unit>
 }

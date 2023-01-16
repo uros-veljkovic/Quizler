@@ -16,11 +16,11 @@ class GetModesCategoryUseCase @Inject constructor(
     @QRealRemoteRepo private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
     private val mapper: DataMapper<CategoryModesDto, List<CategoryModeEntity>>
-) {
+) : IFetchAndCacheUseCase {
 
     operator fun invoke(): Flow<List<CategoryModeEntity>> = localRepository.readCategoriesModes()
 
-    suspend fun fetchAndCacheData(): State<List<CategoryModeEntity>> {
+    override suspend fun fetchAndCache(): State<Unit> {
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readCategoriesModes() },
             shouldFetch = { it.isEmpty() },

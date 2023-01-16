@@ -19,8 +19,8 @@ import com.example.quizler.domain.mapper.ScoresUiMapper
 import com.example.quizler.domain.model.Answer
 import com.example.quizler.domain.model.Question
 import com.example.quizler.domain.model.QuizMode
+import com.example.quizler.domain.model.ReportedQuestion
 import com.example.quizler.domain.usecase.GetQuestionsUseCase
-import com.example.quizler.domain.usecase.ReportedQuestion
 import com.example.quizler.ui.model.DropdownItem
 import com.example.quizler.ui.model.Score
 import com.example.quizler.ui.screen.home.mapper.QuizModeMapper

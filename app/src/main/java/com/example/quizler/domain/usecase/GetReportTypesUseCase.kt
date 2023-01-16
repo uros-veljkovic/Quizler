@@ -16,16 +16,25 @@ class GetReportTypesUseCase @Inject constructor(
     @QRealRemoteRepo private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
     private val mapper: DataMapper<ReportTypeDto, ReportTypeEntity>,
-) {
+) : IFetchAndCacheUseCase {
 
     operator fun invoke(): Flow<List<ReportTypeEntity>> = localRepository.readReportTypes()
 
-    suspend fun fetchAndCacheData(): State<List<ReportTypeEntity>> {
+    override suspend fun fetchAndCache(): State<Unit> {
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readReportTypes() },
             shouldFetch = { it.isEmpty() },
             fetch = { remoteRepository.getReportTypes() },
             cache = { localRepository.insertReportTypes(mapper.map(it)) }
+        )
+    }
+}
+
+class ReportTypeDtoMapper : DataMapper<ReportTypeDto, ReportTypeEntity> {
+    override fun map(input: ReportTypeDto): ReportTypeEntity {
+        return ReportTypeEntity(
+            id = input.id,
+            type = input.type
         )
     }
 }

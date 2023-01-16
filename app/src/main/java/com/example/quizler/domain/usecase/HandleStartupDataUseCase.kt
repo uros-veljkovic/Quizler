@@ -3,53 +3,46 @@ package com.example.quizler.domain.usecase
 import com.example.quizler.util.State
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
+import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
 class HandleStartupDataUseCase @Inject constructor(
-    private val getQuestionsUseCase: GetQuestionsUseCase,
-    private val getModesDifficultyUseCase: GetModesDifficultyUseCase,
-    private val getModesCategoryUseCase: GetModesCategoryUseCase,
-    private val getModesLengthUseCase: GetModesLengthUseCase,
-    private val getScoresUseCase: GetScoresUseCase,
-    private val getReportTypesUseCase: GetReportTypesUseCase,
+    private val useCases: List<IFetchAndCacheUseCase>,
 ) {
 
-    private var progress = State.Success(0.0f)
+    private val progress: AtomicReference<Float> = AtomicReference(NO_PROGRESS)
+    private val singleProgressIncrement: Float = 1f / useCases.count()
 
     operator fun invoke() = flow {
         resetProgress()
-        val result1 = getQuestionsUseCase.fetchAndCacheData()
-        emitProgressIfSuccess(result1)
-        val result2 = getModesDifficultyUseCase.fetchAndCacheData()
-        emitProgressIfSuccess(result2)
-        val result3 = getModesLengthUseCase.fetchAndCacheData()
-        emitProgressIfSuccess(result3)
-        val result4 = getModesCategoryUseCase.fetchAndCacheData()
-        emitProgressIfSuccess(result4)
-        val result5 = getScoresUseCase.fetchAndCacheData()
-        emitProgressIfSuccess(result5)
-        val result6 = getReportTypesUseCase.fetchAndCacheData()
-        emitProgressIfSuccess(result6)
+
+        useCases.forEach {
+            val result = it.fetchAndCache()
+            emitProgressIfSuccess(result)
+        }
     }
 
     private fun resetProgress() {
-        progress = State.Success(0.0f)
+        progress.set(NO_PROGRESS)
     }
 
-    private suspend fun FlowCollector<State<Float>>.emitProgressIfSuccess(result1: State<*>) {
-        if (result1 is State.Success) {
-            progress = State.Success(progress.data?.plus(SINGLE_PROGRESS_INCREMENT) ?: NO_PROGRESS)
-            emit(progress)
+    private suspend fun FlowCollector<State<Float>>.emitProgressIfSuccess(result: State<*>) {
+        if (result is State.Success) {
+            progress.set(progress.get() + (singleProgressIncrement))
+            if (progress.get() < 1f) {
+                emit(State.Loading(progress.get()))
+            } else {
+                emit(State.Success(progress.get()))
+            }
         } else {
             resetProgress()
             emit(
-                State.Error(result1.error)
+                State.Error(result.error)
             )
         }
     }
 
     companion object {
         const val NO_PROGRESS = 0.0f
-        const val SINGLE_PROGRESS_INCREMENT = 0.25f
     }
 }

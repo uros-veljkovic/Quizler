@@ -16,11 +16,11 @@ class GetModesLengthUseCase @Inject constructor(
     @QRealRemoteRepo private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
     private val mapper: DataMapper<LengthModesDto, List<LengthModeEntity>>,
-) {
+) : IFetchAndCacheUseCase {
 
     operator fun invoke(): Flow<List<LengthModeEntity>> = localRepository.readLengthModes()
 
-    suspend fun fetchAndCacheData(): State<List<LengthModeEntity>> {
+    override suspend fun fetchAndCache(): State<Unit> {
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readLengthModes() },
             shouldFetch = { it.isEmpty() },

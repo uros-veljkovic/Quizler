@@ -5,6 +5,7 @@ import com.example.quizler.data.remote.QRealRemoteRepo
 import com.example.quizler.domain.data.RepositoryResponse
 import com.example.quizler.domain.data.local.IQuizLocalRepository
 import com.example.quizler.domain.data.remote.IQuizRemoteRepository
+import com.example.quizler.domain.model.ReportedQuestion
 import com.example.quizler.util.mapper.DataMapper
 import javax.inject.Inject
 
@@ -22,7 +23,3 @@ class ReportQuestionUseCase @Inject constructor(
         }
     }
 }
-
-data class ReportedQuestion(
-    val id: String
-)

@@ -19,16 +19,18 @@ class GetScoresUseCase @Inject constructor(
     private val localRepository: IQuizLocalRepository,
     private val mapper: DataMapper<Pair<ScoreDto, Int>, ScoreEntity>,
     private val uiMapper: DataMapper<ScoreEntity, Score>
-) {
+) : IFetchAndCacheUseCase {
 
     operator fun invoke(): Flow<List<Score>> = localRepository.readScores().map { uiMapper.map(it) }
 
-    suspend fun fetchAndCacheData(): State<List<ScoreEntity>> = networkActionHandler.fetchAndCache(
-        shouldFetch = { true },
-        query = { localRepository.readScores() },
-        fetch = { remoteRepository.getScores() },
-        cache = { localRepository.insertScores(mapper.map(getScoreDtosWithRankings(it))) }
-    )
+    override suspend fun fetchAndCache(): State<Unit> {
+        return networkActionHandler.fetchAndCache(
+            shouldFetch = { true },
+            query = { localRepository.readScores() },
+            fetch = { remoteRepository.getScores() },
+            cache = { localRepository.insertScores(mapper.map(getScoreDtosWithRankings(it))) }
+        )
+    }
 
     private fun getScoreDtosWithRankings(dtos: List<ScoreDto>): List<Pair<ScoreDto, Int>> {
         return dtos.groupBy { it.mode }.values.flatMap { list ->

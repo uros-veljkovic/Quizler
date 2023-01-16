@@ -78,7 +78,7 @@ class ScoreViewModel @Inject constructor(
     fun refreshScoreboard() {
         viewModelScope.launch {
             _state.update { it.copyWithLoading(true) }
-            val result = getScoresUseCase.fetchAndCacheData()
+            val result = getScoresUseCase.fetchAndCache()
             if (result is State.Error) {
                 _state.update { it.copyWithError() }
                 delay(DELAY_BEFORE_ERROR_DISAPPEAR)

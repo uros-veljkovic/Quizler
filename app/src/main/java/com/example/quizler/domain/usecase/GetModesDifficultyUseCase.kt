@@ -16,11 +16,11 @@ class GetModesDifficultyUseCase @Inject constructor(
     @QRealRemoteRepo private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
     private val mapper: DataMapper<DifficultyModesDto, List<DifficultyModeEntity>>
-) {
+) : IFetchAndCacheUseCase {
 
     operator fun invoke(): Flow<List<DifficultyModeEntity>> = localRepository.readDifficultyModes()
 
-    suspend fun fetchAndCacheData(): State<List<DifficultyModeEntity>> {
+    override suspend fun fetchAndCache(): State<Unit> {
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readDifficultyModes() },
             shouldFetch = { it.isEmpty() },

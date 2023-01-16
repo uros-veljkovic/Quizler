@@ -3,6 +3,7 @@ package com.example.quizler.di
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
+import com.example.quizler.BuildConfig
 import com.example.quizler.data.local.NetworkRepository
 import com.example.quizler.data.local.QuizLocalRepository
 import com.example.quizler.data.local.db.dao.QuizModeDatabase
@@ -118,11 +119,12 @@ class DataModule {
      * ===========================================================
      **/
 
-    // TODO Change base url
     @Singleton
     @Provides
     fun provideRetrofit(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder().baseUrl("https://quizler-server-instance.herokuapp.com/")
+        val baseUrl = if (BuildConfig.DEBUG) "http://192.168.1.113:2000" else BuildConfig.SERVER_URL
+
+        return Retrofit.Builder().baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create()).client(client).build()
     }
 

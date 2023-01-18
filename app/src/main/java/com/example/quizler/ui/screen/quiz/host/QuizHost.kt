@@ -1,7 +1,9 @@
 package com.example.quizler.ui.screen.quiz.host
 
 import com.example.quizler.domain.model.AnswerType
+import com.example.quizler.domain.model.InvalidQuestionReport
 import com.example.quizler.domain.usecase.GetReportTypesUseCase
+import com.example.quizler.domain.usecase.SendInvalidQuestionReportUseCase
 import com.example.quizler.ui.model.IChoosableOptionItem
 import com.example.quizler.ui.screen.quiz.IQuizResultStateGenerator
 import com.example.quizler.ui.screen.quiz.QuestionBundle
@@ -29,7 +31,8 @@ class QuizHost @Inject constructor(
     private val coroutineScope: CoroutineScope,
     private val resultGenerator: IQuizResultStateGenerator,
     private val questionFilterManager: IQuizQuestionManager,
-    private val getResultTypesUseCase: GetReportTypesUseCase
+    private val getResultTypesUseCase: GetReportTypesUseCase,
+    private val sendInvalidQuestionReportUseCase: SendInvalidQuestionReportUseCase
 ) : IQuizHost {
 
     private var modeId: String = ""
@@ -153,7 +156,24 @@ class QuizHost @Inject constructor(
     }
 
     override fun confirmReportQuestion() {
-        state.update { it.copy(isReportQuestionButtonVisible = true, isReportQuestionDialogVisible = false) }
+        state.value.reportTypes.forEach { reportType ->
+            if (reportType.getIsChosen()) {
+                coroutineScope.launch(Dispatchers.IO) {
+                    sendInvalidQuestionReportUseCase(
+                        InvalidQuestionReport(
+                            state.value.question?.question?.id ?: "",
+                            reportType.getItemId()
+                        )
+                    )
+                }
+            }
+        }
+        state.update {
+            it.copy(
+                isReportQuestionDialogVisible = false,
+                reportTypes = it.reportTypes.map { reportType -> reportType.copy(isSelected = false) }
+            )
+        }
     }
 
     override fun onReportItemChosen(optionItem: IChoosableOptionItem) {

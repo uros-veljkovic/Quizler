@@ -58,7 +58,7 @@ class SendStoredDataToServerUseCase @Inject constructor(
         val entities = localRepository.readReportedQuestions().first()
         if (entities.isNotEmpty()) {
             entities.forEach {
-                if (remoteRepository.report(it.id) is RepositoryResponse.Failure) {
+                if (remoteRepository.report(it.questionId) is RepositoryResponse.Failure) {
                     return State.Error()
                 }
             }

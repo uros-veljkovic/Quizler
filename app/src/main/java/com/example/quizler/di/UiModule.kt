@@ -7,7 +7,7 @@ import com.example.quizler.data.local.entity.BaseQuizModeEntity
 import com.example.quizler.data.local.entity.QuestionEntity
 import com.example.quizler.data.local.entity.QuestionWithAnswersEntity
 import com.example.quizler.data.local.entity.ReportTypeEntity
-import com.example.quizler.data.local.entity.ReportedQuestionEntity
+import com.example.quizler.data.local.entity.InvalidQuestionReportEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.ScoreEntity
 import com.example.quizler.data.remote.dto.AnswerRecordDto
@@ -20,9 +20,10 @@ import com.example.quizler.domain.mapper.ScoresUiMapper
 import com.example.quizler.domain.model.Answer
 import com.example.quizler.domain.model.Question
 import com.example.quizler.domain.model.QuizMode
-import com.example.quizler.domain.model.ReportedQuestion
+import com.example.quizler.domain.model.InvalidQuestionReport
 import com.example.quizler.domain.usecase.GetQuestionsUseCase
 import com.example.quizler.domain.usecase.GetReportTypesUseCase
+import com.example.quizler.domain.usecase.SendInvalidQuestionReportUseCase
 import com.example.quizler.ui.model.DropdownItem
 import com.example.quizler.ui.model.ReportType
 import com.example.quizler.ui.model.Score
@@ -127,7 +128,7 @@ class UiModuleSingleton {
 
     @Singleton
     @Provides
-    fun provideReportedQuestionMapper(): DataMapper<ReportedQuestion, ReportedQuestionEntity> {
+    fun provideReportedQuestionMapper(): DataMapper<InvalidQuestionReport, InvalidQuestionReportEntity> {
         return ReportedQuestionMapper()
     }
 }
@@ -150,13 +151,15 @@ class UiModuleViewModel {
         @QCoroutineScopeIo coroutineScope: CoroutineScope,
         quizResultStateGenerator: IQuizResultStateGenerator,
         questionFilterManager: IQuizQuestionManager,
-        getReportTypesUseCase: GetReportTypesUseCase
+        getReportTypesUseCase: GetReportTypesUseCase,
+        sendInvalidQuestionReportUseCase: SendInvalidQuestionReportUseCase
     ): IQuizHost {
         return QuizHost(
             coroutineScope,
             quizResultStateGenerator,
             questionFilterManager,
-            getReportTypesUseCase
+            getReportTypesUseCase,
+            sendInvalidQuestionReportUseCase
         )
     }
 

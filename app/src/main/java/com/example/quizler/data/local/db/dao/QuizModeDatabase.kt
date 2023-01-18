@@ -9,7 +9,7 @@ import com.example.quizler.data.local.entity.DifficultyModeEntity
 import com.example.quizler.data.local.entity.LengthModeEntity
 import com.example.quizler.data.local.entity.QuestionEntity
 import com.example.quizler.data.local.entity.ReportTypeEntity
-import com.example.quizler.data.local.entity.ReportedQuestionEntity
+import com.example.quizler.data.local.entity.InvalidQuestionReportEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.ScoreEntity
 
@@ -23,7 +23,7 @@ import com.example.quizler.data.local.entity.ScoreEntity
         AnswerRecordEntity::class,
         ResultRecordEntity::class,
         ScoreEntity::class,
-        ReportedQuestionEntity::class,
+        InvalidQuestionReportEntity::class,
         ReportTypeEntity::class
     ],
     version = 1,

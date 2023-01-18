@@ -8,7 +8,7 @@ import com.example.quizler.data.local.entity.DifficultyModeEntity
 import com.example.quizler.data.local.entity.LengthModeEntity
 import com.example.quizler.data.local.entity.QuestionWithAnswersEntity
 import com.example.quizler.data.local.entity.ReportTypeEntity
-import com.example.quizler.data.local.entity.ReportedQuestionEntity
+import com.example.quizler.data.local.entity.InvalidQuestionReportEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.ScoreEntity
 import com.example.quizler.domain.data.local.IQuizLocalRepository
@@ -46,7 +46,7 @@ class QuizLocalRepository(
         return db.daoScores().readAll()
     }
 
-    override fun readReportedQuestions(): Flow<List<ReportedQuestionEntity>> {
+    override fun readReportedQuestions(): Flow<List<InvalidQuestionReportEntity>> {
         return db.daoReportedQuestion().readAll()
     }
 
@@ -85,7 +85,7 @@ class QuizLocalRepository(
         db.daoScores().insert(data)
     }
 
-    override suspend fun insertReportedQuestion(data: ReportedQuestionEntity) {
+    override suspend fun insertReportedQuestion(data: InvalidQuestionReportEntity) {
         db.daoReportedQuestion().insert(data)
     }
 

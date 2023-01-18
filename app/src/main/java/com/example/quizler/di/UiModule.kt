@@ -22,6 +22,7 @@ import com.example.quizler.domain.model.Question
 import com.example.quizler.domain.model.QuizMode
 import com.example.quizler.domain.model.ReportedQuestion
 import com.example.quizler.domain.usecase.GetQuestionsUseCase
+import com.example.quizler.domain.usecase.GetReportTypesUseCase
 import com.example.quizler.ui.model.DropdownItem
 import com.example.quizler.ui.model.ReportType
 import com.example.quizler.ui.model.Score
@@ -149,11 +150,13 @@ class UiModuleViewModel {
         @QCoroutineScopeIo coroutineScope: CoroutineScope,
         quizResultStateGenerator: IQuizResultStateGenerator,
         questionFilterManager: IQuizQuestionManager,
+        getReportTypesUseCase: GetReportTypesUseCase
     ): IQuizHost {
         return QuizHost(
             coroutineScope,
             quizResultStateGenerator,
             questionFilterManager,
+            getReportTypesUseCase
         )
     }
 

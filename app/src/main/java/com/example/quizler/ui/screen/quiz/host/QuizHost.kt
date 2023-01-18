@@ -1,6 +1,7 @@
 package com.example.quizler.ui.screen.quiz.host
 
 import com.example.quizler.domain.model.AnswerType
+import com.example.quizler.domain.usecase.GetReportTypesUseCase
 import com.example.quizler.ui.model.IChoosableOptionItem
 import com.example.quizler.ui.screen.quiz.IQuizResultStateGenerator
 import com.example.quizler.ui.screen.quiz.QuestionBundle
@@ -14,6 +15,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -27,6 +29,7 @@ class QuizHost @Inject constructor(
     private val coroutineScope: CoroutineScope,
     private val resultGenerator: IQuizResultStateGenerator,
     private val questionFilterManager: IQuizQuestionManager,
+    private val getResultTypesUseCase: GetReportTypesUseCase
 ) : IQuizHost {
 
     private var modeId: String = ""
@@ -39,6 +42,7 @@ class QuizHost @Inject constructor(
     override fun startQuiz(modeId: String) {
         this.modeId = modeId
         coroutineScope.launch(Dispatchers.IO) {
+            state.update { it.copy(reportTypes = getResultTypesUseCase.invoke().first()) }
             populateQuestions(modeId)
             setNewQuestion()
             initTimer()
@@ -153,16 +157,18 @@ class QuizHost @Inject constructor(
     }
 
     override fun onReportItemChosen(optionItem: IChoosableOptionItem) {
-        val item = state.value.reportTypes.find { it.getItemId() == optionItem.getItemId() }
-        val index = state.value.reportTypes.indexOfFirst { it.getItemId() == optionItem.getItemId() }
+        Timber.d("Types: " + state.value.reportTypes.toString())
+        val updatedReportTypes = state.value.reportTypes.map {
+            if (it.getItemId() == optionItem.getItemId())
+                it.copy(isSelected = it.getIsChosen().not())
+            else
+                it
+        }
+
+        Timber.d("Types: $updatedReportTypes")
 
         state.update {
-            it.copy(
-                reportTypes = state.value.reportTypes.toMutableList().apply {
-                    remove(item)
-                    add(index, optionItem)
-                }
-            )
+            it.copy(reportTypes = updatedReportTypes)
         }
     }
 

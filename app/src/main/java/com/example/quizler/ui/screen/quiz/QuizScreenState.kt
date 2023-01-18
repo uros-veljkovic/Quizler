@@ -8,7 +8,7 @@ import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.domain.model.Difficulty
 import com.example.quizler.domain.model.Question
 import com.example.quizler.ui.components.quiz.QuestionNumberSpan
-import com.example.quizler.ui.model.IChoosableOptionItem
+import com.example.quizler.ui.model.ReportType
 
 data class QuizScreenState(
     val question: QuestionBundle? = null,
@@ -23,7 +23,7 @@ data class QuizScreenState(
     val username: String = "",
     val shouldSaveUsername: Boolean = false,
     val shouldExitQuiz: Boolean = false,
-    val reportTypes: List<IChoosableOptionItem> = emptyList()
+    val reportTypes: List<ReportType> = emptyList()
 ) {
 
     fun copyWithNewQuestion(questionBundle: QuestionBundle): QuizScreenState {

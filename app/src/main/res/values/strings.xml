@@ -106,13 +106,14 @@
     <string name="report_question">Prijavi nevalidno pitanje</string>
     <string name="report_question_title">Prijava nevalidnog pitanja</string>
     <string name="report_question_description">Obelezite razloge zasto mislite da je pitanje nevalidno.</string>
-    <string name="cancel">Otkaži</string>
+    <string name="cancel">Otkaži</string>@
     <string name="confirm">Potvrdi</string>
     <string name="unknown">Nepoznato</string>
 
     <string name="report_type_non_understandable">Nerazumljivo pitanje</string>
     <string name="report_type_no_correct_answer">Tačan odgovor nije ponuđen</string>
     <string name="report_type_typos">Slovne greške</string>
+    <string name="report_type_wrong_correct_answer">Netačan odgovor obeležen kao tačan</string>
 
 
 </resources>

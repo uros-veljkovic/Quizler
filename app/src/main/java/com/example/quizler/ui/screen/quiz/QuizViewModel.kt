@@ -5,9 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.quizler.data.remote.dto.AnswerRecordDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.domain.usecase.GetReportTypesUseCase
 import com.example.quizler.domain.usecase.GetUsernameUseCase
-import com.example.quizler.domain.usecase.ReportQuestionUseCase
 import com.example.quizler.domain.usecase.SaveAnswerRecordUseCase
 import com.example.quizler.domain.usecase.SaveResultRecordUseCase
 import com.example.quizler.domain.usecase.SaveUsernameUseCase
@@ -24,15 +22,13 @@ import javax.inject.Inject
 class QuizViewModel @Inject constructor(
     private val quizHost: IQuizHost,
     private val saveUsernameUseCase: SaveUsernameUseCase,
-    private val reportQuestionUseCase: ReportQuestionUseCase,
     private val saveAnswerRecordUseCase: SaveAnswerRecordUseCase,
     private val saveResultRecordUseCase: SaveResultRecordUseCase,
     getUsernameUseCase: GetUsernameUseCase,
-    getReportTypesUseCase: GetReportTypesUseCase
 ) : ViewModel() {
 
-    val state = combine(quizHost.state, getReportTypesUseCase(), getUsernameUseCase()) { state, types, username ->
-        state.copy(reportTypes = types, username = username)
+    val state = combine(quizHost.state, getUsernameUseCase()) { state, username ->
+        state.copy(username = username)
     }.stateIn(
         viewModelScope,
         SharingStarted.Lazily,

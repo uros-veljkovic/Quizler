@@ -1,6 +1,6 @@
 package com.example.quizler.ui.screen.splash
 
-import com.example.quizler.ui.components.InfoBannerData
+import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.util.State
 
 data class SplashScreenState(

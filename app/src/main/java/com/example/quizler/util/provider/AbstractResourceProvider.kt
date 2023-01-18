@@ -7,7 +7,7 @@ import timber.log.Timber
 
 abstract class AbstractResourceProvider<T>
 constructor(
-    private val context: Context,
+    protected val context: Context,
 ) {
 
     protected abstract val resourceTypeLowercase: String

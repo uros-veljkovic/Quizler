@@ -25,6 +25,7 @@ import com.example.quizler.data.remote.dto.mapper.DifficultyModeDtoMapper
 import com.example.quizler.data.remote.dto.mapper.LengthModeDtoMapper
 import com.example.quizler.data.remote.dto.mapper.QuestionDtoMapper
 import com.example.quizler.data.remote.dto.mapper.QuestionWithAnswersDtoMapper
+import com.example.quizler.data.remote.dto.mapper.ReportTypeDtoMapper
 import com.example.quizler.data.remote.dto.mapper.ScoreDtoMapper
 import com.example.quizler.domain.QSendDataToServerWorker
 import com.example.quizler.domain.SendDataToServerWorker
@@ -38,10 +39,10 @@ import com.example.quizler.domain.usecase.GetQuestionsUseCase
 import com.example.quizler.domain.usecase.GetReportTypesUseCase
 import com.example.quizler.domain.usecase.GetScoresUseCase
 import com.example.quizler.domain.usecase.HandleStartupDataUseCase
-import com.example.quizler.domain.usecase.ReportTypeDtoMapper
 import com.example.quizler.util.INetworkActionHandler
 import com.example.quizler.util.NetworkActionHandler
 import com.example.quizler.util.mapper.DataMapper
+import com.example.quizler.util.provider.AbstractResourceProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -101,8 +102,10 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun provideReportTypeDtoMapper(): DataMapper<ReportTypeDto, ReportTypeEntity> {
-        return ReportTypeDtoMapper()
+    fun provideReportTypeDtoMapper(
+        resourceProvider: AbstractResourceProvider<String>
+    ): DataMapper<ReportTypeDto, ReportTypeEntity> {
+        return ReportTypeDtoMapper(resourceProvider)
     }
 
     @Provides

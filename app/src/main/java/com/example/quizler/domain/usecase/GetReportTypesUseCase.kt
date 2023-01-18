@@ -5,6 +5,7 @@ import com.example.quizler.data.remote.QRealRemoteRepo
 import com.example.quizler.data.remote.dto.ReportTypeDto
 import com.example.quizler.domain.data.local.IQuizLocalRepository
 import com.example.quizler.domain.data.remote.IQuizRemoteRepository
+import com.example.quizler.ui.model.ReportType
 import com.example.quizler.util.INetworkActionHandler
 import com.example.quizler.util.State
 import com.example.quizler.util.mapper.DataMapper
@@ -16,9 +17,10 @@ class GetReportTypesUseCase @Inject constructor(
     @QRealRemoteRepo private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
     private val mapper: DataMapper<ReportTypeDto, ReportTypeEntity>,
+    private val uiMapper: DataMapper<ReportTypeEntity, ReportType>,
 ) : IFetchAndCacheUseCase {
 
-    operator fun invoke(): Flow<List<ReportTypeEntity>> = localRepository.readReportTypes()
+    operator fun invoke(): Flow<List<ReportType>> = uiMapper.map(localRepository.readReportTypes())
 
     override suspend fun fetchAndCache(): State<Unit> {
         return networkActionHandler.fetchAndCache(
@@ -26,15 +28,6 @@ class GetReportTypesUseCase @Inject constructor(
             shouldFetch = { it.isEmpty() },
             fetch = { remoteRepository.getReportTypes() },
             cache = { localRepository.insertReportTypes(mapper.map(it)) }
-        )
-    }
-}
-
-class ReportTypeDtoMapper : DataMapper<ReportTypeDto, ReportTypeEntity> {
-    override fun map(input: ReportTypeDto): ReportTypeEntity {
-        return ReportTypeEntity(
-            id = input.id,
-            type = input.type
         )
     }
 }

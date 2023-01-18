@@ -2,7 +2,7 @@ package com.example.quizler.util
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
-import com.example.quizler.ui.components.InfoBannerData
+import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.screen.info.InfoScreenVariants
 
 @Immutable

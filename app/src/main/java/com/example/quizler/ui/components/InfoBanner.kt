@@ -1,8 +1,6 @@
 package com.example.quizler.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -29,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.quizler.R
+import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.spaceL
 import com.example.quizler.ui.theme.spaceM
@@ -122,31 +119,4 @@ fun PreviewInfoBanner() {
             }
         }
     }
-}
-
-sealed class InfoBannerData(
-    @DrawableRes val icon: Int,
-    @StringRes val title: Int,
-    @StringRes val description: Int? = null,
-    val color: Color,
-    @StringRes val actionButtonText: Int? = null,
-) {
-    object NoNetwork : InfoBannerData(
-        icon = R.drawable.ic_no_wifi,
-        title = R.string.no_internet_connection,
-        description = R.string.no_internet_connection_description,
-        color = Color(0xffef9a9a),
-        actionButtonText = R.string.try_again
-    )
-
-    object ErrorLoadingContent : InfoBannerData(
-        icon = R.drawable.ic_no_content,
-        title = R.string.error_unknow,
-        description = R.string.error_unknow_description,
-        color = Color(0xffffcc80),
-    )
-
-    object Loading : InfoBannerData(
-        icon = R.drawable.ic_sand_clock, title = R.string.loading, color = Color(0xff90caf9)
-    )
 }

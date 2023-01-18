@@ -9,9 +9,7 @@ import javax.inject.Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class QQuizModeTitleProvider
 
-class QuizModeTitleProvider @Inject constructor(
-    private val context: Context
-) : AbstractResourceProvider<String>(context) {
+class QuizModeTitleProvider @Inject constructor(context: Context) : AbstractResourceProvider<String>(context) {
 
     override val resourceTypeLowercase: String = "string"
     override val prefix = "mode_title_"

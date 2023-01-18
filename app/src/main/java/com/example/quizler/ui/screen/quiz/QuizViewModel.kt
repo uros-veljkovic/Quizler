@@ -5,15 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.quizler.data.remote.dto.AnswerRecordDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.domain.model.ReportedQuestion
+import com.example.quizler.domain.usecase.GetReportTypesUseCase
 import com.example.quizler.domain.usecase.GetUsernameUseCase
 import com.example.quizler.domain.usecase.ReportQuestionUseCase
 import com.example.quizler.domain.usecase.SaveAnswerRecordUseCase
 import com.example.quizler.domain.usecase.SaveResultRecordUseCase
 import com.example.quizler.domain.usecase.SaveUsernameUseCase
+import com.example.quizler.ui.model.IChoosableOptionItem
 import com.example.quizler.ui.screen.quiz.host.IQuizHost
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,13 +24,21 @@ import javax.inject.Inject
 class QuizViewModel @Inject constructor(
     private val quizHost: IQuizHost,
     private val saveUsernameUseCase: SaveUsernameUseCase,
-    private val getUsernameUseCase: GetUsernameUseCase,
     private val reportQuestionUseCase: ReportQuestionUseCase,
     private val saveAnswerRecordUseCase: SaveAnswerRecordUseCase,
-    private val saveResultRecordUseCase: SaveResultRecordUseCase
+    private val saveResultRecordUseCase: SaveResultRecordUseCase,
+    getUsernameUseCase: GetUsernameUseCase,
+    getReportTypesUseCase: GetReportTypesUseCase
 ) : ViewModel() {
 
-    val state = quizHost.state
+    val state = combine(quizHost.state, getReportTypesUseCase(), getUsernameUseCase()) { state, types, username ->
+        state.copy(reportTypes = types, username = username)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        QuizScreenState()
+    )
+
     var modeId: String = ""
 
     fun answered(type: AnswerType) {
@@ -47,7 +58,7 @@ class QuizViewModel @Inject constructor(
 
     private fun setSavedUsername() {
         viewModelScope.launch {
-            quizHost.setUsername(getUsernameUseCase().first())
+            quizHost.setUsername(state.value.username)
         }
     }
 
@@ -67,8 +78,8 @@ class QuizViewModel @Inject constructor(
 
     fun reportQuestion(questionId: String) {
         viewModelScope.launch {
-            reportQuestionUseCase(ReportedQuestion(questionId))
-            quizHost.notifyQuestionReported()
+//            reportQuestionUseCase(ReportedQuestion(questionId))
+            quizHost.onReportQuestion()
         }
     }
 
@@ -96,5 +107,13 @@ class QuizViewModel @Inject constructor(
         if (state.value.shouldSaveUsername) {
             saveUsernameUseCase(state.value.username)
         }
+    }
+
+    fun onReportItemChosen(optionItem: IChoosableOptionItem) {
+        quizHost.onReportItemChosen(optionItem)
+    }
+
+    fun onConfirmReportQuestion() {
+        quizHost.confirmReportQuestion()
     }
 }

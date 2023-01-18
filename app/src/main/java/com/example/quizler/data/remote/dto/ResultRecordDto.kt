@@ -1,7 +1,9 @@
 package com.example.quizler.data.remote.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class ResultRecordDto(
-    val username: String,
-    val mode: String,
-    val score: Int
+    @SerializedName("username") val username: String,
+    @SerializedName("mode") val mode: String,
+    @SerializedName("score") val score: Int
 )

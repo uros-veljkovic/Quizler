@@ -10,7 +10,7 @@ import javax.inject.Qualifier
 annotation class QQuizModeDescriptionProvider
 
 class QuizModeDescriptionProvider @Inject constructor(
-    private val context: Context
+    context: Context
 ) : AbstractResourceProvider<String>(context) {
 
     override val resourceTypeLowercase: String = "string"

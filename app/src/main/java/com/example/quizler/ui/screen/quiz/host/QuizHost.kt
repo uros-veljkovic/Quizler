@@ -1,6 +1,7 @@
 package com.example.quizler.ui.screen.quiz.host
 
 import com.example.quizler.domain.model.AnswerType
+import com.example.quizler.ui.model.IChoosableOptionItem
 import com.example.quizler.ui.screen.quiz.IQuizResultStateGenerator
 import com.example.quizler.ui.screen.quiz.QuestionBundle
 import com.example.quizler.ui.screen.quiz.QuizScreenState
@@ -56,7 +57,8 @@ class QuizHost @Inject constructor(
     }
 
     private suspend fun tickOrTimeOut(scope: CoroutineScope) {
-        if (state.value.isExitDialogVisible.not()) {
+        val allDialogsInvisible = state.value.isExitDialogVisible.not() && state.value.isReportQuestionDialogVisible.not()
+        if (allDialogsInvisible) {
             state.value.question?.time?.let { time ->
                 delay(1000)
                 if (time > 0) {
@@ -142,8 +144,26 @@ class QuizHost @Inject constructor(
         return resultGenerator.getResultInfo()
     }
 
-    override fun notifyQuestionReported() {
-        state.update { it.copy(isReportQuestionButtonVisible = false) }
+    override fun onReportQuestion() {
+        state.update { it.copy(isReportQuestionButtonVisible = false, isReportQuestionDialogVisible = true) }
+    }
+
+    override fun confirmReportQuestion() {
+        state.update { it.copy(isReportQuestionButtonVisible = true, isReportQuestionDialogVisible = false) }
+    }
+
+    override fun onReportItemChosen(optionItem: IChoosableOptionItem) {
+        val item = state.value.reportTypes.find { it.getItemId() == optionItem.getItemId() }
+        val index = state.value.reportTypes.indexOfFirst { it.getItemId() == optionItem.getItemId() }
+
+        state.update {
+            it.copy(
+                reportTypes = state.value.reportTypes.toMutableList().apply {
+                    remove(item)
+                    add(index, optionItem)
+                }
+            )
+        }
     }
 
     override fun setUsername(username: String) {

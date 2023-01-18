@@ -8,6 +8,7 @@ import com.example.quizler.util.provider.QQuizModeTitleProvider
 import com.example.quizler.util.provider.QuizModeDescriptionProvider
 import com.example.quizler.util.provider.QuizModeIconProvider
 import com.example.quizler.util.provider.QuizModeTitleProvider
+import com.example.quizler.util.provider.ReportTypeTitleResourceProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,5 +58,13 @@ class AppModule {
         @ApplicationContext context: Context
     ): AbstractResourceProvider<Drawable> {
         return QuizModeIconProvider(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideReportTypeTitleResourceProvider(
+        @ApplicationContext context: Context
+    ): AbstractResourceProvider<String> {
+        return ReportTypeTitleResourceProvider(context)
     }
 }

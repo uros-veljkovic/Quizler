@@ -1,8 +1,8 @@
 package com.example.quizler.ui.screen.score
 
 import androidx.compose.runtime.Stable
-import com.example.quizler.ui.components.InfoBannerData
 import com.example.quizler.ui.model.DropdownItem
+import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.model.Score
 import javax.annotation.concurrent.Immutable
 

@@ -18,8 +18,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.quizler.R
 import com.example.quizler.ui.components.BasicDialog
+import com.example.quizler.ui.components.OptionsPickerDialog
 import com.example.quizler.ui.components.QuestionScreenContent
 import com.example.quizler.ui.components.ResultInfoDialog
+import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.screen.Screen
 import com.example.quizler.ui.utils.navigate
 
@@ -76,6 +78,18 @@ fun QuizScreen(
                 onGoToHomeScreenClick = viewModel::endQuiz
             )
         }
+    }
+    AnimatedVisibility(
+        visible = state.isReportQuestionDialogVisible,
+        enter = fadeIn(tween(200)),
+        exit = fadeOut(tween(200))
+    ) {
+        OptionsPickerDialog(
+            data = InfoBannerData.ReportQuestion,
+            items = state.reportTypes,
+            onChooseItem = viewModel::onReportItemChosen,
+            onConfirm = viewModel::onConfirmReportQuestion
+        )
     }
     AnimatedVisibility(
         visible = state.isExitDialogVisible, enter = fadeIn(tween(200)), exit = fadeOut(tween(200))

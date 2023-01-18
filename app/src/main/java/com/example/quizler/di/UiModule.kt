@@ -6,6 +6,7 @@ import com.example.quizler.data.local.entity.AnswerRecordEntity
 import com.example.quizler.data.local.entity.BaseQuizModeEntity
 import com.example.quizler.data.local.entity.QuestionEntity
 import com.example.quizler.data.local.entity.QuestionWithAnswersEntity
+import com.example.quizler.data.local.entity.ReportTypeEntity
 import com.example.quizler.data.local.entity.ReportedQuestionEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.ScoreEntity
@@ -22,6 +23,7 @@ import com.example.quizler.domain.model.QuizMode
 import com.example.quizler.domain.model.ReportedQuestion
 import com.example.quizler.domain.usecase.GetQuestionsUseCase
 import com.example.quizler.ui.model.DropdownItem
+import com.example.quizler.ui.model.ReportType
 import com.example.quizler.ui.model.Score
 import com.example.quizler.ui.screen.home.mapper.QuizModeMapper
 import com.example.quizler.ui.screen.quiz.IQuizResultStateGenerator
@@ -35,6 +37,7 @@ import com.example.quizler.ui.screen.quiz.host.QuizQuestionManager
 import com.example.quizler.ui.screen.quiz.mapper.AnswerUiMapper
 import com.example.quizler.ui.screen.quiz.mapper.QuestionBundleMapper
 import com.example.quizler.ui.screen.quiz.mapper.QuestionUiMapper
+import com.example.quizler.ui.screen.quiz.mapper.ReportTypeUiMapper
 import com.example.quizler.util.mapper.DataMapper
 import com.example.quizler.util.provider.AbstractResourceProvider
 import com.example.quizler.util.provider.QQuizModeTitleProvider
@@ -77,6 +80,12 @@ class UiModuleSingleton {
     @Singleton
     fun provideQuestionUiMapper(): DataMapper<QuestionEntity, Question> {
         return QuestionUiMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideReportTypeUiMapper(): DataMapper<ReportTypeEntity, ReportType> {
+        return ReportTypeUiMapper()
     }
 
     @Provides

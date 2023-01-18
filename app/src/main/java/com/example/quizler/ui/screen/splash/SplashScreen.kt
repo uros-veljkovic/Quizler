@@ -21,8 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.quizler.ui.components.InfoBanner
-import com.example.quizler.ui.components.InfoBannerData
 import com.example.quizler.ui.components.Logo
+import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.screen.Screen
 import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.spaceXL

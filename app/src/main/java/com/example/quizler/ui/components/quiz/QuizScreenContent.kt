@@ -69,7 +69,7 @@ fun QuestionScreenContent(
         }
         AnimatedVisibility(
             modifier = Modifier.layoutId("reportButton"),
-            visible = state.isReportQuestionButtonVisible
+            visible = state.isInvalidQuestionReportButtonVisible()
         ) {
             ExtendedFloatingActionButton(
                 onClick = { state.question?.question?.id?.let { id -> onReportQuestion(id) } },

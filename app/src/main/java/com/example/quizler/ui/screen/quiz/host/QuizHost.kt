@@ -152,7 +152,13 @@ class QuizHost @Inject constructor(
     }
 
     override fun onReportQuestion() {
-        state.update { it.copy(isReportQuestionButtonVisible = false, isReportQuestionDialogVisible = true) }
+        state.update {
+            it.copy(
+                isReportQuestionButtonVisible = false,
+                isReportQuestionDialogVisible = true,
+                questionReportCount = it.questionReportCount + 1
+            )
+        }
     }
 
     override fun confirmReportQuestion() {

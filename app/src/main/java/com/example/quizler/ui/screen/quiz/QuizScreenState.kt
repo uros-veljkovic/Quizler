@@ -17,13 +17,14 @@ data class QuizScreenState(
     val points: Int = 0,
     val isNoQuestionsGenerated: Boolean = false,
     val isExitDialogVisible: Boolean = false,
-    val isReportQuestionButtonVisible: Boolean = true,
+    private val isReportQuestionButtonVisible: Boolean = true,
     val isAnyAnswerChosen: Boolean? = null,
     val isReportQuestionDialogVisible: Boolean = false,
     val username: String = "",
     val shouldSaveUsername: Boolean = false,
     val shouldExitQuiz: Boolean = false,
-    val reportTypes: List<ReportType> = emptyList()
+    val reportTypes: List<ReportType> = emptyList(),
+    val questionReportCount: Int = 0,
 ) {
 
     fun copyWithNewQuestion(questionBundle: QuestionBundle): QuizScreenState {
@@ -50,6 +51,8 @@ data class QuizScreenState(
     fun copyWithTotalQuestionNumber(totalQuestionCount: Int): QuizScreenState {
         return copy(questionNumberSpan = questionNumberSpan.copy(totalQuestions = totalQuestionCount))
     }
+
+    fun isInvalidQuestionReportButtonVisible() = questionReportCount <= 3 && isReportQuestionButtonVisible
 }
 
 @Immutable

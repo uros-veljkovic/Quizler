@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import com.example.quizler.data.local.entity.AnswerRecordEntity
 import com.example.quizler.data.local.entity.BaseQuizModeEntity
+import com.example.quizler.data.local.entity.InvalidQuestionReportEntity
 import com.example.quizler.data.local.entity.QuestionEntity
 import com.example.quizler.data.local.entity.QuestionWithAnswersEntity
 import com.example.quizler.data.local.entity.ReportTypeEntity
-import com.example.quizler.data.local.entity.InvalidQuestionReportEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.ScoreEntity
 import com.example.quizler.data.remote.dto.AnswerRecordDto
@@ -18,9 +18,9 @@ import com.example.quizler.domain.mapper.QuizModeDropdownItemMapper
 import com.example.quizler.domain.mapper.ReportedQuestionMapper
 import com.example.quizler.domain.mapper.ScoresUiMapper
 import com.example.quizler.domain.model.Answer
+import com.example.quizler.domain.model.InvalidQuestionReport
 import com.example.quizler.domain.model.Question
 import com.example.quizler.domain.model.QuizMode
-import com.example.quizler.domain.model.InvalidQuestionReport
 import com.example.quizler.domain.usecase.GetQuestionsUseCase
 import com.example.quizler.domain.usecase.GetReportTypesUseCase
 import com.example.quizler.domain.usecase.SendInvalidQuestionReportUseCase

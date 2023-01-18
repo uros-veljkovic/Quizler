@@ -5,10 +5,10 @@ import com.example.quizler.data.local.db.dao.QuizModeDatabase
 import com.example.quizler.data.local.entity.AnswerRecordEntity
 import com.example.quizler.data.local.entity.CategoryModeEntity
 import com.example.quizler.data.local.entity.DifficultyModeEntity
+import com.example.quizler.data.local.entity.InvalidQuestionReportEntity
 import com.example.quizler.data.local.entity.LengthModeEntity
 import com.example.quizler.data.local.entity.QuestionWithAnswersEntity
 import com.example.quizler.data.local.entity.ReportTypeEntity
-import com.example.quizler.data.local.entity.InvalidQuestionReportEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.ScoreEntity
 import com.example.quizler.domain.data.local.IQuizLocalRepository

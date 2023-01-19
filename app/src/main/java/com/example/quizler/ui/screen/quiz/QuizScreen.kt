@@ -34,7 +34,7 @@ fun QuizScreen(
 ) {
 
     BackHandler(enabled = true) {
-        viewModel.showExitDialog(true)
+        viewModel.onBackPressed()
     }
 
     val mode by remember { mutableStateOf(modeId) }
@@ -101,9 +101,7 @@ fun QuizScreen(
             positiveButtonText = stringResource(id = R.string.yes),
             onPositiveButtonClick = viewModel::exitQuiz,
             negativeButtonText = stringResource(id = R.string.no),
-            onNegativeButtonClick = {
-                viewModel.showExitDialog(false)
-            }
+            onNegativeButtonClick = viewModel::onBackPressed
         )
     }
 }

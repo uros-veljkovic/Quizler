@@ -96,8 +96,20 @@ class QuizHost @Inject constructor(
         return isAnswerCorrect
     }
 
-    override fun showExitDialog(shouldShow: Boolean) {
-        state.update { it.copy(isExitDialogVisible = shouldShow) }
+    override fun onBackPressed() {
+        if (state.value.isReportQuestionDialogVisible) {
+            hideReportDialog()
+            return
+        }
+        state.update { it.copy(isExitDialogVisible = it.isExitDialogVisible.not()) }
+    }
+
+    private fun hideReportDialog() {
+        state.update {
+            it.copy(
+                isReportQuestionDialogVisible = it.isReportQuestionDialogVisible.not(),
+                reportTypes = it.reportTypes.map { it.copy(isSelected = false) })
+        }
     }
 
     private fun setQuestionAnswered(type: AnswerType): Boolean {

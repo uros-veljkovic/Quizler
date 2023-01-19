@@ -13,7 +13,7 @@ interface IQuizHost {
     fun startQuiz(modeId: String)
     suspend fun answered(type: AnswerType): Boolean
     fun onReportQuestion()
-    fun showExitDialog(shouldShow: Boolean)
+    fun onBackPressed()
     fun exitQuiz()
     suspend fun getResultInfo(): ResultInfo
 

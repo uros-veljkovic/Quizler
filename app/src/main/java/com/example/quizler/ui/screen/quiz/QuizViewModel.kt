@@ -47,8 +47,8 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    fun showExitDialog(show: Boolean) {
-        quizHost.showExitDialog(show)
+    fun onBackPressed() {
+        quizHost.onBackPressed()
     }
 
     fun onUsernameChange(value: String) {

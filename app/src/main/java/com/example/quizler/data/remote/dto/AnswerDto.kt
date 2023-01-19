@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class AnswerDto(
     @SerializedName("_id") val id: String,
-    val isCorrect: Boolean,
-    val text: String
+    @SerializedName("isCorrect") val isCorrect: Boolean,
+    @SerializedName("text") val text: String
 )

@@ -1,6 +1,8 @@
 package com.example.quizler.data.remote.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class AnswerRecordDto(
-    val questionId: String,
-    val isCorrect: Boolean
+    @SerializedName("questionId") val questionId: String,
+    @SerializedName("isCorrect") val isCorrect: Boolean
 )

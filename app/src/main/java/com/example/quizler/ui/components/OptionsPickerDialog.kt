@@ -2,6 +2,7 @@ package com.example.quizler.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import com.example.quizler.R
 import com.example.quizler.ui.model.IChoosableOptionItem
 import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.theme.QuizlerTheme
+import com.example.quizler.ui.theme.colorAcomodatedToLightOrDarkMode
 import com.example.quizler.ui.theme.spaceL
 import com.example.quizler.ui.theme.spaceM
 import com.example.quizler.ui.theme.spaceXL
@@ -46,17 +48,18 @@ fun OptionsPickerDialog(
     onConfirm: () -> Unit
 ) {
 
-    val backgroundColor = data.color
+    val backgroundColor = colorAcomodatedToLightOrDarkMode(color = data.color)
 
-    Surface(modifier = Modifier.fillMaxSize(), color = Color.Gray.copy(alpha = .5f)) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.Gray.copy(alpha = .5f),
+    ) {
         Card(
             modifier = modifier
                 .fillMaxWidth()
-                .wrapContentHeight().padding(start = spaceXL, end = spaceXL),
-            colors = CardDefaults.cardColors(
-                containerColor = backgroundColor,
-                contentColor = contentColorFor(backgroundColor = backgroundColor)
-            )
+                .wrapContentHeight()
+                .padding(start = spaceXL, end = spaceXL),
+            colors = CardDefaults.cardColors(containerColor = backgroundColor)
         ) {
             Column(
                 modifier = Modifier.padding(spaceM),
@@ -78,13 +81,11 @@ fun OptionsPickerDialog(
                         Text(
                             text = stringResource(id = data.title),
                             style = MaterialTheme.typography.titleLarge,
-                            color = contentColorFor(backgroundColor = backgroundColor),
                         )
                         data.description?.let {
                             Text(
                                 text = stringResource(id = it),
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = contentColorFor(backgroundColor = backgroundColor)
                             )
                         }
                     }
@@ -98,7 +99,7 @@ fun OptionsPickerDialog(
                 }
                 Spacer(modifier = Modifier.size(spaceM))
                 Button(modifier = Modifier.fillMaxWidth(), onClick = onConfirm) {
-                    Text(text = stringResource(id = R.string.confirm), color = contentColorFor(backgroundColor = backgroundColor))
+                    Text(text = stringResource(id = R.string.confirm))
                 }
             }
         }
@@ -110,28 +111,30 @@ fun OptionsPickerDialog(
 @Composable
 fun PreviewOptionsPickerDialog() {
     QuizlerTheme {
-        OptionsPickerDialog(
-            modifier = Modifier,
-            data = InfoBannerData.ReportQuestion,
-            items = mutableListOf<IChoosableOptionItem>().apply {
-                repeat(4) {
-                    add(object : IChoosableOptionItem {
-                        override fun getItemId(): String {
-                            return "id:$it"
-                        }
+        Surface {
+            OptionsPickerDialog(
+                modifier = Modifier,
+                data = InfoBannerData.ReportQuestion,
+                items = mutableListOf<IChoosableOptionItem>().apply {
+                    repeat(4) {
+                        add(object : IChoosableOptionItem {
+                            override fun getItemId(): String {
+                                return "id:$it"
+                            }
 
-                        override fun getTitle(): String {
-                            return "This is some random description"
-                        }
+                            override fun getTitle(): String {
+                                return "This is some random description"
+                            }
 
-                        override fun getIsChosen(): Boolean {
-                            return it % 2 == 0
-                        }
-                    })
-                }
-            },
-            onChooseItem = {},
-            onConfirm = {}
-        )
+                            override fun getIsChosen(): Boolean {
+                                return it % 2 == 0
+                            }
+                        })
+                    }
+                },
+                onChooseItem = {},
+                onConfirm = {}
+            )
+        }
     }
 }

@@ -23,6 +23,7 @@ import com.example.quizler.domain.model.Question
 import com.example.quizler.domain.model.QuizMode
 import com.example.quizler.domain.usecase.GetQuestionsUseCase
 import com.example.quizler.domain.usecase.GetReportTypesUseCase
+import com.example.quizler.domain.usecase.GetUsernameUseCase
 import com.example.quizler.domain.usecase.SendInvalidQuestionReportUseCase
 import com.example.quizler.ui.model.DropdownItem
 import com.example.quizler.ui.model.ReportType
@@ -152,6 +153,7 @@ class UiModuleViewModel {
         quizResultStateGenerator: IQuizResultStateGenerator,
         questionFilterManager: IQuizQuestionManager,
         getReportTypesUseCase: GetReportTypesUseCase,
+        getUsernameUseCase: GetUsernameUseCase,
         sendInvalidQuestionReportUseCase: SendInvalidQuestionReportUseCase
     ): IQuizHost {
         return QuizHost(
@@ -159,6 +161,7 @@ class UiModuleViewModel {
             quizResultStateGenerator,
             questionFilterManager,
             getReportTypesUseCase,
+            getUsernameUseCase,
             sendInvalidQuestionReportUseCase
         )
     }

@@ -28,6 +28,7 @@ import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.ui.theme.AlertRed
 import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.SuccessGreen
+import com.example.quizler.ui.theme.colorAcomodatedToLightOrDarkMode
 import com.example.quizler.ui.theme.spaceM
 
 @Composable
@@ -46,7 +47,7 @@ fun AnswerButton(
 
     val animationTime = if (answer.isChosen) 500 else 100
     val animatedButtonColor = animateColorAsState(
-        targetValue = color,
+        targetValue = colorAcomodatedToLightOrDarkMode(color = color),
         animationSpec = tween(animationTime, 0, LinearEasing)
     )
 

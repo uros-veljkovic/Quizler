@@ -3,6 +3,7 @@ package com.example.quizler.ui.screen.quiz.host
 import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.domain.model.InvalidQuestionReport
 import com.example.quizler.domain.usecase.GetReportTypesUseCase
+import com.example.quizler.domain.usecase.GetUsernameUseCase
 import com.example.quizler.domain.usecase.SendInvalidQuestionReportUseCase
 import com.example.quizler.ui.model.IChoosableOptionItem
 import com.example.quizler.ui.screen.quiz.IQuizResultStateGenerator
@@ -32,6 +33,7 @@ class QuizHost @Inject constructor(
     private val resultGenerator: IQuizResultStateGenerator,
     private val questionFilterManager: IQuizQuestionManager,
     private val getResultTypesUseCase: GetReportTypesUseCase,
+    private val getUsernameUseCase: GetUsernameUseCase,
     private val sendInvalidQuestionReportUseCase: SendInvalidQuestionReportUseCase
 ) : IQuizHost {
 
@@ -45,7 +47,7 @@ class QuizHost @Inject constructor(
     override fun startQuiz(modeId: String) {
         this.modeId = modeId
         coroutineScope.launch(Dispatchers.IO) {
-            state.update { it.copy(reportTypes = getResultTypesUseCase.invoke().first()) }
+            state.update { it.copy(reportTypes = getResultTypesUseCase().first(), username = getUsernameUseCase().first()) }
             populateQuestions(modeId)
             setNewQuestion()
             initTimer()

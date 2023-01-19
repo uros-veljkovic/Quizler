@@ -1,5 +1,6 @@
 package com.example.quizler.ui.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -103,28 +105,29 @@ val quizScreenConstraintSet = ConstraintSet {
 }
 
 @Preview(showBackground = true)
-@Preview(showBackground = true, device = Devices.PIXEL_3)
-@Preview(showBackground = true, device = Devices.PIXEL_4_XL)
+@Preview(showBackground = true, device = Devices.PIXEL_3, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewQuestionScreenContent() {
     QuizlerTheme() {
-        QuestionScreenContent(
-            padding = PaddingValues(),
-            state = QuizScreenState(
-                question = QuestionBundle(
-                    time = 20,
-                    question = Question("", "This is question", ""),
-                    answers = mutableListOf<Answer>().apply {
-                        repeat(4) {
-                            add(Answer("1", "This is some text", type = AnswerType.A))
-                        }
-                    },
-                    difficulty = Difficulty.Easy
+        Surface {
+            QuestionScreenContent(
+                padding = PaddingValues(),
+                state = QuizScreenState(
+                    question = QuestionBundle(
+                        time = 20,
+                        question = Question("", "This is question", ""),
+                        answers = mutableListOf<Answer>().apply {
+                            repeat(4) {
+                                add(Answer(Math.random().toString(), "This is some text", type = AnswerType.A))
+                            }
+                        },
+                        difficulty = Difficulty.Easy
+                    ),
+                    isReportQuestionButtonVisible = true
                 ),
-                isReportQuestionButtonVisible = true
-            ),
-            onQuestionAnswered = {},
-            onReportQuestion = {},
-        )
+                onQuestionAnswered = {},
+                onReportQuestion = {},
+            )
+        }
     }
 }

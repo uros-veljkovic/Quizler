@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -73,7 +74,9 @@ fun QuestionTextComponent(
             Text(
                 modifier = Modifier.padding(top = 2.dp),
                 text = "Pitanje " + span.currentQuestion.toString() + " / " + span.totalQuestions,
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
+                // TODO: Adapt
+                color = Color.Black
             )
         }
         FilterChip(
@@ -87,6 +90,8 @@ fun QuestionTextComponent(
                     text = points.toString(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.labelLarge,
+                    // TODO: Adapt
+                    color = Color.Black
                 )
             }, trailingIcon = {
             Image(

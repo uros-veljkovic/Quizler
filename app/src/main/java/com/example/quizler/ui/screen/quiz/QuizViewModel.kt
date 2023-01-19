@@ -5,16 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.quizler.data.remote.dto.AnswerRecordDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.domain.usecase.GetUsernameUseCase
 import com.example.quizler.domain.usecase.SaveAnswerRecordUseCase
 import com.example.quizler.domain.usecase.SaveResultRecordUseCase
 import com.example.quizler.domain.usecase.SaveUsernameUseCase
 import com.example.quizler.ui.model.IChoosableOptionItem
 import com.example.quizler.ui.screen.quiz.host.IQuizHost
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,16 +20,9 @@ class QuizViewModel @Inject constructor(
     private val saveUsernameUseCase: SaveUsernameUseCase,
     private val saveAnswerRecordUseCase: SaveAnswerRecordUseCase,
     private val saveResultRecordUseCase: SaveResultRecordUseCase,
-    getUsernameUseCase: GetUsernameUseCase,
 ) : ViewModel() {
 
-    val state = combine(quizHost.state, getUsernameUseCase()) { state, username ->
-        state.copy(username = username)
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        QuizScreenState()
-    )
+    val state = quizHost.state
 
     var modeId: String = ""
 
@@ -74,7 +63,6 @@ class QuizViewModel @Inject constructor(
 
     fun reportQuestion(questionId: String) {
         viewModelScope.launch {
-//            reportQuestionUseCase(ReportedQuestion(questionId))
             quizHost.onReportQuestion()
         }
     }

@@ -34,8 +34,10 @@ class NetworkActionHandler @Inject constructor(
                     }
                 }
             } catch (e: ConnectException) {
+                Timber.e(e)
                 RepositoryResponse.Failure(ServerUnavailableException())
             } catch (e: Exception) {
+                Timber.e(e)
                 RepositoryResponse.Failure(ServerUnavailableException())
             }
         }

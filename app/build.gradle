@@ -16,8 +16,8 @@ android {
         applicationId "com.wombatech.quizler"
         minSdk 24
         targetSdk 33
-        versionCode 7
-        versionName "1.0.0-beta7"
+        versionCode 8
+        versionName "1.0.0-beta8"
 
         Properties properties = new Properties()
         if (project.rootProject.file('local.properties').canRead()) {

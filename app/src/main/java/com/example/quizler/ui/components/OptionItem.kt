@@ -30,7 +30,7 @@ fun OptionItem(
             checked = item.getIsChosen(),
             onCheckedChange = { onChosen(item) },
         )
-        Text(modifier = Modifier.fillMaxWidth(), text = item.getTitle(), color = MaterialTheme.colorScheme.onSurface)
+        Text(modifier = Modifier.fillMaxWidth(), text = item.getTitle())
     }
 }
 

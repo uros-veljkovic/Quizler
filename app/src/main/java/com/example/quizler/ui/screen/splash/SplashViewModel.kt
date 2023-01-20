@@ -8,58 +8,69 @@ import com.example.quizler.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val networkRepository: INetworkRepository,
+    networkRepository: INetworkRepository,
     private val handleStartupDataUseCase: HandleStartupDataUseCase
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<SplashScreenState> = MutableStateFlow(SplashScreenState())
-    val state = _state.asStateFlow()
+    val state = _state.combine(networkRepository.getHasInternetConnectionFlow()) { state, connectivity ->
+        connectivity?.let {
+            state.copy(hasConnection = connectivity)
+        } ?: state
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = SplashScreenState()
+    )
 
     init {
         fetchData()
     }
 
     fun fetchData() {
+        _state.update { it.copy(isDataFetchInProgress = true) }
         viewModelScope.launch {
             launch(Dispatchers.IO) {
                 handleStartupData()
-            }
-            launch {
-                handleNetworkConnectivity()
-            }
-        }
-    }
-
-    private suspend fun handleNetworkConnectivity() {
-        networkRepository.getHasInternetConnectionFlow().collect { hasConnection ->
-            hasConnection?.let {
-                _state.update { it.copyWithChangedNetworkConnectivity(hasConnection) }
             }
         }
     }
 
     private suspend fun handleStartupData() {
-        handleStartupDataUseCase().collect { result ->
-            when (result) {
-                is State.Error -> handleError(result)
-                else -> handleProgress(result.data ?: 0f, result is State.Success)
+        handleStartupDataUseCase().collect { newState ->
+            when (newState) {
+                is State.Error -> handleError(newState)
+                else -> handleProgress(newState.data ?: 0f, newState is State.Success)
             }
         }
     }
 
-    private suspend fun handleProgress(progress: Float, isAllFetchedAndCached: Boolean) = withContext(Dispatchers.Main) {
-        _state.update { it.copy(progress = progress, isGoToHomeScreen = isAllFetchedAndCached) }
+    private fun handleProgress(progress: Float, isAllFetchedAndCached: Boolean) {
+        _state.update {
+            it.copy(
+                progress = progress,
+                isGoToHomeScreen = isAllFetchedAndCached,
+                isDataFetchInProgress = isAllFetchedAndCached.not()
+            )
+        }
     }
 
     private fun handleError(progress: State.Error<Float>) {
-        _state.update { it.copyWithError(progress) }
+        _state.update {
+            it.copy(
+                isProgressVisible = false,
+                infoBannerData = progress.getInfoBanner(),
+                isDataFetchInProgress = false
+            )
+        }
     }
 }

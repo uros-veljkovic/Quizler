@@ -21,23 +21,22 @@ sealed class State<T>(
 
     @Immutable
     class Error<T>(
-        throwable: Throwable? = null,
-        data: T? = null,
-        messageTitleResId: Int? = null,
-        messageDescriptionResId: Int? = null
+        throwable: Throwable? = null, data: T? = null, messageTitleResId: Int? = null, messageDescriptionResId: Int? = null
     ) : State<T>(data, throwable, messageTitleResId, messageDescriptionResId) {
         fun getInfoBanner(): InfoBannerData {
-            return if (this.error is ConnectivityException)
-                InfoBannerData.NoNetwork
-            else
-                InfoBannerData.ErrorLoadingContent
+            return InfoBannerData.NoNetwork
+            /*
+            TODO: Think about showing right notification on error
+                    return if (this.error is ConnectivityException)
+                        InfoBannerData.NoNetwork
+                    else
+                        InfoBannerData.ErrorLoadingContent
+                    */
         }
 
         fun getInfoScreenData(): InfoScreenVariants {
-            return if (this.error is ConnectivityException)
-                InfoScreenVariants.NoNetwork
-            else
-                InfoScreenVariants.ErrorLoadingContent
+            return if (this.error is ConnectivityException) InfoScreenVariants.NoNetwork
+            else InfoScreenVariants.ErrorLoadingContent
         }
     }
 

@@ -9,18 +9,10 @@ data class SplashScreenState(
     val isGoToHomeScreen: Boolean = false,
     val infoBannerData: InfoBannerData? = InfoBannerData.Loading,
     val hasConnection: Boolean = true,
+    val isDataFetchInProgress: Boolean = false,
 ) {
     fun copyWithError(error: State.Error<*>): SplashScreenState {
         return this.copy(isProgressVisible = false, infoBannerData = error.getInfoBanner())
-    }
-
-    fun copyWithProgress(progress: Float): SplashScreenState {
-        return copy(
-            progress = progress,
-            isProgressVisible = true,
-            isGoToHomeScreen = progress == 1f,
-            infoBannerData = InfoBannerData.Loading
-        )
     }
 
     fun copyWithChangedNetworkConnectivity(hasConnectivity: Boolean): SplashScreenState {

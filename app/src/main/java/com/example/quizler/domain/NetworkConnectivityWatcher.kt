@@ -16,6 +16,7 @@ class NetworkConnectivityWatcher @Inject constructor(
     private val repository: INetworkRepository,
 ) {
 
+    private lateinit var connectivityManager: ConnectivityManager
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
 
         override fun onCapabilitiesChanged(
@@ -42,13 +43,27 @@ class NetworkConnectivityWatcher @Inject constructor(
     }
 
     fun observeConnectivity(context: Context) {
+        checkFirstTimeNetworkAvailability(context)
         val networkRequest =
             NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
                 .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
                 .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR).build()
-        val connectivityManager =
-            context.getSystemService(ConnectivityManager::class.java) as ConnectivityManager
         connectivityManager.requestNetwork(networkRequest, networkCallback)
+    }
+
+    private fun checkFirstTimeNetworkAvailability(context: Context) {
+        connectivityManager = context.getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+        CoroutineScope(Dispatchers.Default).launch {
+            setHasConnection(
+                capabilities?.let {
+                    it.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || capabilities.hasTransport(
+                        NetworkCapabilities.TRANSPORT_WIFI
+                    )
+                } ?: false
+            )
+        }
     }
 
     private fun setHasConnection(hasConnection: Boolean) {

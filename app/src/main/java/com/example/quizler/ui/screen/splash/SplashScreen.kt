@@ -54,7 +54,7 @@ fun SplashScreen(
         state.infoBannerData?.let {
             InfoBanner(
                 modifier = Modifier.layoutId("banner"),
-                isActionButtonEnabled = state.hasConnection,
+                isActionButtonEnabled = state.hasConnection && state.isDataFetchInProgress.not(),
                 data = it,
                 onActionButtonClick = viewModel::fetchData
             )

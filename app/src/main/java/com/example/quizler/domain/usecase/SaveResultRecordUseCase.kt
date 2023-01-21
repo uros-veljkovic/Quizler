@@ -11,20 +11,17 @@ import com.example.quizler.util.mapper.DataMapper
 import javax.inject.Inject
 
 class SaveResultRecordUseCase @Inject constructor(
+    private val getScoresUseCase: GetScoresUseCase,
     @QRealRemoteRepo private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
     private val mapper: DataMapper<ResultRecordDto, ResultRecordEntity>
 ) {
     suspend operator fun invoke(record: ResultRecordDto) {
         val result = remoteRepository.record(record)
-        Log.d(TAG, "invoke: SAVING REMOTELY")
         if (result is RepositoryResponse.Failure) {
-            Log.d(TAG, "invoke: SAVING LOCALLY INSTEAD")
             localRepository.insertResultRecord(mapper.map(record))
+        } else {
+            getScoresUseCase.fetchAndCache(true)
         }
-    }
-
-    companion object {
-        const val TAG = "SaveResultRecordUseCase"
     }
 }

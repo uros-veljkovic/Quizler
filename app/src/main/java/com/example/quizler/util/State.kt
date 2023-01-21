@@ -21,36 +21,19 @@ sealed class State<T>(
 
     @Immutable
     class Error<T>(
-        throwable: Throwable? = null, data: T? = null, messageTitleResId: Int? = null, messageDescriptionResId: Int? = null
+        throwable: Throwable? = null,
+        data: T? = null,
+        messageTitleResId: Int? = null,
+        messageDescriptionResId: Int? = null
     ) : State<T>(data, throwable, messageTitleResId, messageDescriptionResId) {
         fun getInfoBanner(): InfoBannerData {
             return InfoBannerData.NoNetwork
-            /*
-            TODO: Think about showing right notification on error
-                    return if (this.error is ConnectivityException)
-                        InfoBannerData.NoNetwork
-                    else
-                        InfoBannerData.ErrorLoadingContent
-                    */
-        }
-
-        fun getInfoScreenData(): InfoScreenVariants {
-            return if (this.error is ConnectivityException) InfoScreenVariants.NoNetwork
-            else InfoScreenVariants.ErrorLoadingContent
         }
     }
 
     companion object {
         fun isAllSuccess(vararg states: State<*>): Boolean {
             return states.all { it is Success }
-        }
-
-        fun isAnyLoading(vararg states: State<*>): Boolean {
-            return states.any { it is Loading }
-        }
-
-        fun isAnyError(vararg states: State<*>): Boolean {
-            return states.any { it is Error }
         }
     }
 }

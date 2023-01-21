@@ -18,14 +18,10 @@ class ConnectivityException : Exception("No connection")
 
 class NetworkActionHandler @Inject constructor(
     private val coroutineContext: CoroutineContext,
-    private val networkRepository: INetworkRepository
 ) : INetworkActionHandler {
     override suspend fun <T> executeNetworkAction(load: suspend () -> Response<T>): RepositoryResponse<T> {
         return withContext(coroutineContext) {
             try {
-                if (networkRepository.getHasInternetConnection().not()) {
-                    return@withContext RepositoryResponse.Failure(ConnectivityException())
-                }
                 load().let { response ->
                     if (response.isSuccessful) {
                         RepositoryResponse.Success(response.body()!!)
@@ -35,7 +31,7 @@ class NetworkActionHandler @Inject constructor(
                 }
             } catch (e: ConnectException) {
                 Timber.e(e)
-                RepositoryResponse.Failure(ServerUnavailableException())
+                RepositoryResponse.Failure(ConnectivityException())
             } catch (e: Exception) {
                 Timber.e(e)
                 RepositoryResponse.Failure(ServerUnavailableException())
@@ -49,15 +45,11 @@ class NetworkActionHandler @Inject constructor(
         fetch: suspend () -> RepositoryResponse<Dto>,
         cache: suspend (Dto) -> Unit
     ): State<Unit> {
-        return withContext(Dispatchers.IO) {
+        return withContext(coroutineContext) {
             try {
                 val data = query().first()
 
                 if (shouldFetch(data)) {
-                    if (networkRepository.getHasInternetConnection().not()) {
-                        // FIXME: DataManagementService to update on connection change
-                        return@withContext State.Error(ConnectivityException())
-                    }
                     when (val fetchResult = fetch()) {
                         is RepositoryResponse.Failure -> {
                             Timber.e(fetchResult.throwable)
@@ -75,7 +67,7 @@ class NetworkActionHandler @Inject constructor(
             } catch (e: ConnectException) {
                 Timber.e(e)
                 State.Error(
-                    throwable = ServerUnavailableException(),
+                    throwable = ConnectivityException(),
                     messageTitleResId = R.string.no_internet_connection,
                     messageDescriptionResId = R.string.no_internet_connection_description
                 )

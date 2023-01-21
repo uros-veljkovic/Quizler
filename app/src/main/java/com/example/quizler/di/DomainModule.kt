@@ -116,10 +116,8 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun provideNetworkActionHandler(
-        networkRepository: INetworkRepository
-    ): INetworkActionHandler {
-        return NetworkActionHandler(Dispatchers.IO, networkRepository)
+    fun provideNetworkActionHandler(): INetworkActionHandler {
+        return NetworkActionHandler(Dispatchers.IO)
     }
 
     /**

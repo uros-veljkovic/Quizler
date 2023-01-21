@@ -151,21 +151,21 @@ class DomainModule {
     @Provides
     @Singleton
     fun provideHandleStartupDataUseCase(
-        getQuestionsUseCase: GetQuestionsUseCase,
         getModesDifficultyUseCase: GetModesDifficultyUseCase,
         getModesLengthUseCase: GetModesLengthUseCase,
         getModesCategoryUseCase: GetModesCategoryUseCase,
         getScoresUseCase: GetScoresUseCase,
-        getReportTypesUseCase: GetReportTypesUseCase
+        getReportTypesUseCase: GetReportTypesUseCase,
+        getQuestionsUseCase: GetQuestionsUseCase,
     ): HandleStartupDataUseCase {
         return HandleStartupDataUseCase(
             listOf(
-                getQuestionsUseCase,
                 getModesDifficultyUseCase,
                 getModesLengthUseCase,
                 getModesCategoryUseCase,
                 getScoresUseCase,
-                getReportTypesUseCase
+                getReportTypesUseCase,
+                getQuestionsUseCase,
             )
         )
     }

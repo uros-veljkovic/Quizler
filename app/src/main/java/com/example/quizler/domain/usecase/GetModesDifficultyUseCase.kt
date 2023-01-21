@@ -20,7 +20,7 @@ class GetModesDifficultyUseCase @Inject constructor(
 
     operator fun invoke(): Flow<List<DifficultyModeEntity>> = localRepository.readDifficultyModes()
 
-    override suspend fun fetchAndCache(): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readDifficultyModes() },
             shouldFetch = { it.isEmpty() },

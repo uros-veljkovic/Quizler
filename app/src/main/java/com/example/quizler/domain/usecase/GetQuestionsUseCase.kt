@@ -14,6 +14,8 @@ import com.example.quizler.util.mapper.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
+import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
@@ -34,12 +36,11 @@ class GetQuestionsUseCase @Inject constructor(
                 list.filter { it.question.isApproved == isApproved }.map { uiMapper.map(it) }
             }
 
-    override suspend fun fetchAndCache(): State<Unit> {
-        val hasPast30Days = dateManager.hasPast(30, dataSyncCoordinator.getDataSyncTime().first())
-
+    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
+        val hasPast30Days = dateManager.hasDaysPassed(dataSyncCoordinator.getDataSyncTime().first(), 30)
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readQuestionsWithAnswers() },
-            shouldFetch = { it.isEmpty() || hasPast30Days },
+            shouldFetch = { it.isEmpty() || hasPast30Days || isForceRefresh },
             fetch = { remoteRepository.getQuestions() },
             cache = {
                 refreshTimeDataSynced()

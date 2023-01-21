@@ -20,7 +20,7 @@ class GetModesCategoryUseCase @Inject constructor(
 
     operator fun invoke(): Flow<List<CategoryModeEntity>> = localRepository.readCategoriesModes()
 
-    override suspend fun fetchAndCache(): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readCategoriesModes() },
             shouldFetch = { it.isEmpty() },

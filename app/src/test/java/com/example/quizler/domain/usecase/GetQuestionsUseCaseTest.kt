@@ -64,7 +64,7 @@ internal class GetQuestionsUseCaseTest {
         every { netRepo.getHasInternetConnection() } returns true
 
         coEvery { dataSyncCoordinator.getDataSyncTime() } returns flowOf(0)
-        coEvery { dateManager.hasPast(any(), any()) } returns true
+        coEvery { dateManager.hasDaysPassed(any(), any()) } returns true
 
         every { localRepository.readQuestionsWithAnswers() } returns flowOf(mockk())
         coEvery { remoteRepository.getQuestions() } returns RepositoryResponse.Success(mockk())
@@ -85,7 +85,7 @@ internal class GetQuestionsUseCaseTest {
         every { netRepo.getHasInternetConnection() } returns true
 
         coEvery { dataSyncCoordinator.getDataSyncTime() } returns flowOf(0)
-        coEvery { dateManager.hasPast(any(), any()) } returns false
+        coEvery { dateManager.hasDaysPassed(any(), any()) } returns false
 
         every { localRepository.readQuestionsWithAnswers() } returns flowOf(mockk())
 

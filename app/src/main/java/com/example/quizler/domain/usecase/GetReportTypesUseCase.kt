@@ -22,7 +22,7 @@ class GetReportTypesUseCase @Inject constructor(
 
     operator fun invoke(): Flow<List<ReportType>> = uiMapper.map(localRepository.readReportTypes())
 
-    override suspend fun fetchAndCache(): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readReportTypes() },
             shouldFetch = { it.isEmpty() },

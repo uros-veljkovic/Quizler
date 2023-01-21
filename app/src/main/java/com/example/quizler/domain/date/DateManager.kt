@@ -1,10 +1,17 @@
 package com.example.quizler.domain.date
 
-import java.util.Date
+import java.time.LocalDate
+import java.time.Period
+import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 class DateManager : IDateManager {
 
-    override fun hasPast(days: Int, fromTimInMillis: Long): Boolean {
-        return Date().time - Date(fromTimInMillis).time > days * 24 * 60 * 60 * 1000
+    override fun hasDaysPassed(dateInMillis: Long, days: Int): Boolean {
+        val currentDate = Calendar.getInstance()
+        val diff = currentDate.timeInMillis - dateInMillis
+        val passedDays = TimeUnit.MILLISECONDS.toDays(diff)
+        return passedDays >= days
     }
+
 }

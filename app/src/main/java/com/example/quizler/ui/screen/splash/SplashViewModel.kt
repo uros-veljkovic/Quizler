@@ -48,7 +48,10 @@ class SplashViewModel @Inject constructor(
     private suspend fun handleStartupData() {
         handleStartupDataUseCase().collect { newState ->
             when (newState) {
-                is State.Error -> handleError(newState)
+                is State.Error -> {
+                    handleError(newState)
+                    return@collect
+                }
                 else -> handleProgress(newState.data ?: 0f, newState is State.Success)
             }
         }

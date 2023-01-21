@@ -20,7 +20,7 @@ class GetModesLengthUseCase @Inject constructor(
 
     operator fun invoke(): Flow<List<LengthModeEntity>> = localRepository.readLengthModes()
 
-    override suspend fun fetchAndCache(): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
         return networkActionHandler.fetchAndCache(
             query = { localRepository.readLengthModes() },
             shouldFetch = { it.isEmpty() },

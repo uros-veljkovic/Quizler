@@ -23,9 +23,9 @@ class GetScoresUseCase @Inject constructor(
 
     operator fun invoke(): Flow<List<Score>> = localRepository.readScores().map { uiMapper.map(it) }
 
-    override suspend fun fetchAndCache(): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
         return networkActionHandler.fetchAndCache(
-            shouldFetch = { true },
+            shouldFetch = { it.isEmpty() || isForceRefresh },
             query = { localRepository.readScores() },
             fetch = { remoteRepository.getScores() },
             cache = { localRepository.insertScores(mapper.map(getScoreDtosWithRankings(it))) }

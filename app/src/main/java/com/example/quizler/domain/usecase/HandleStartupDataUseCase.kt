@@ -22,7 +22,7 @@ class HandleStartupDataUseCase @Inject constructor(
         resetProgress()
 
         useCases.forEach {
-            val result = it.fetchAndCache()
+            val result = it.fetchAndCache(false)
             emitProgressIfSuccess(result)
         }
     }.flowOn(Dispatchers.IO)

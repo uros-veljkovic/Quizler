@@ -19,23 +19,25 @@ fun BottomNavigation(
     bottomNavigationConfig: BottomNavigationConfig,
     onSelectedItem: (BottomNavigationItem) -> Unit,
 ) {
-    NavigationBar {
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.Home, contentDescription = "") },
-            label = { Text(text = stringResource(id = R.string.home)) },
-            selected = bottomNavigationConfig.itemSelected == BottomNavigationItem.Home,
-            onClick = {
-                onSelectedItem(BottomNavigationItem.Home)
-            }
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.List, contentDescription = "") },
-            label = { Text(text = stringResource(id = R.string.scoreboard)) },
-            selected = bottomNavigationConfig.itemSelected == BottomNavigationItem.Scoreboard,
-            onClick = {
-                onSelectedItem(BottomNavigationItem.Scoreboard)
-            }
-        )
+    if (bottomNavigationConfig.isBottomNavVisible) {
+        NavigationBar {
+            NavigationBarItem(
+                icon = { Icon(Icons.Filled.Home, contentDescription = "") },
+                label = { Text(text = stringResource(id = R.string.home)) },
+                selected = bottomNavigationConfig.itemSelected == BottomNavigationItem.Home,
+                onClick = {
+                    onSelectedItem(BottomNavigationItem.Home)
+                }
+            )
+            NavigationBarItem(
+                icon = { Icon(Icons.Filled.List, contentDescription = "") },
+                label = { Text(text = stringResource(id = R.string.scoreboard)) },
+                selected = bottomNavigationConfig.itemSelected == BottomNavigationItem.Scoreboard,
+                onClick = {
+                    onSelectedItem(BottomNavigationItem.Scoreboard)
+                }
+            )
+        }
     }
 }
 

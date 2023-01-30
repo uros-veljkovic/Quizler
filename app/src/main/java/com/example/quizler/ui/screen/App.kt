@@ -67,12 +67,10 @@ fun App(
     Scaffold(
         modifier = Modifier.disableSplitMotionEvents(),
         bottomBar = {
-            AnimatedVisibility(state.bottomNavigationConfig.isBottomNavVisible) {
-                BottomNavigation(
-                    bottomNavigationConfig = state.bottomNavigationConfig,
-                    onSelectedItem = viewModel::setBottomNavItem
-                )
-            }
+            BottomNavigation(
+                bottomNavigationConfig = state.bottomNavigationConfig,
+                onSelectedItem = viewModel::setBottomNavItem
+            )
         }
     ) { padding ->
         Box {
@@ -110,16 +108,16 @@ fun App(
                     }
                 }
             }
-            AnimatedVisibility(
-                visible = state.isExitDialogVisible,
-                enter = fadeIn(tween(200)),
-                exit = fadeOut(tween(200))
-            ) {
-                ExitDialog(
-                    onConfirm = viewModel::closeApp,
-                    onDecline = viewModel::handleExitDialogDecline
-                )
-            }
         }
+    }
+    AnimatedVisibility(
+        visible = state.isExitDialogVisible,
+        enter = fadeIn(tween(200)),
+        exit = fadeOut(tween(200))
+    ) {
+        ExitDialog(
+            onConfirm = viewModel::closeApp,
+            onDecline = viewModel::handleExitDialogDecline
+        )
     }
 }

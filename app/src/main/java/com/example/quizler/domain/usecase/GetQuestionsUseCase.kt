@@ -14,8 +14,6 @@ import com.example.quizler.util.mapper.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
-import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 

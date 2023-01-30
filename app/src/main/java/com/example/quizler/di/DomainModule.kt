@@ -29,7 +29,6 @@ import com.example.quizler.data.remote.dto.mapper.ReportTypeDtoMapper
 import com.example.quizler.data.remote.dto.mapper.ScoreDtoMapper
 import com.example.quizler.domain.QSendDataToServerWorker
 import com.example.quizler.domain.SendDataToServerWorker
-import com.example.quizler.domain.data.local.INetworkRepository
 import com.example.quizler.domain.date.DateManager
 import com.example.quizler.domain.date.IDateManager
 import com.example.quizler.domain.usecase.GetModesCategoryUseCase

@@ -108,7 +108,8 @@ class QuizHost @Inject constructor(
         state.update {
             it.copy(
                 isReportQuestionDialogVisible = it.isReportQuestionDialogVisible.not(),
-                reportTypes = it.reportTypes.map { it.copy(isSelected = false) })
+                reportTypes = it.reportTypes.map { it.copy(isSelected = false) }
+            )
         }
     }
 

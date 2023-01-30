@@ -82,7 +82,10 @@ class QuizLocalRepository(
     }
 
     override suspend fun insertScores(data: List<ScoreEntity>) {
-        db.daoScores().insert(data)
+        with(db.daoScores()) {
+            deleteAll()
+            insert(data)
+        }
     }
 
     override suspend fun insertReportedQuestion(data: InvalidQuestionReportEntity) {

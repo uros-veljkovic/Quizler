@@ -1,7 +1,5 @@
 package com.example.quizler.domain.date
 
-import java.time.LocalDate
-import java.time.Period
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -13,5 +11,4 @@ class DateManager : IDateManager {
         val passedDays = TimeUnit.MILLISECONDS.toDays(diff)
         return passedDays >= days
     }
-
 }

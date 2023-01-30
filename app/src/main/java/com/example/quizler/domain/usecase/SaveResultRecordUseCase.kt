@@ -1,6 +1,5 @@
 package com.example.quizler.domain.usecase
 
-import android.util.Log
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.remote.QRealRemoteRepo
 import com.example.quizler.data.remote.dto.ResultRecordDto

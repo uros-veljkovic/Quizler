@@ -1,23 +1,19 @@
 package com.example.quizler.ui.screen.score
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -75,11 +71,11 @@ fun ScoreScreen(
                 .padding(it.plus(spaceS)),
             isDropdownExpanded = state.isDropdownExpanded,
             onExpandDropdown = viewModel::setIsDropdownExpanded,
-            chosenMode = state.chosenMode,
+            chosenMode = state.getChosenMode(),
             isLoading = state.isLoading,
             modes = state.modes,
             onSetChosenMode = viewModel::setChosenMode,
-            scores = state.scores,
+            scores = state.getFilteredScores(),
         )
     }
 }
@@ -99,7 +95,7 @@ fun ScoreScreenContent(
         AnimatedVisibility(
             modifier = modifier, visible = modes.isNotEmpty()
         ) {
-            Column {
+            Column(verticalArrangement = Arrangement.spacedBy(spaceS)) {
                 chosenMode?.let {
                     BasicDropdownMenu(
                         isExpanded = isDropdownExpanded,
@@ -108,20 +104,16 @@ fun ScoreScreenContent(
                         items = modes,
                         onItemClick = onSetChosenMode
                     )
-                    Spacer(modifier = Modifier.size(spaceS))
                 }
-                Spacer(modifier = Modifier.size(spaceS))
+                if (isLoading) {
+                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                }
                 ScoreList(
                     modifier = Modifier.fillMaxSize(),
                     spaceBetweenItems = spaceS,
                     list = scores
                 )
             }
-        }
-        AnimatedVisibility(
-            visible = isLoading, enter = fadeIn(tween(200)), exit = fadeOut(tween(200))
-        ) {
-            CircularProgressIndicator()
         }
     }
 }

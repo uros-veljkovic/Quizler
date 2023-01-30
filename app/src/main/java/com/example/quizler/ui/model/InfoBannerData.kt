@@ -2,8 +2,6 @@ package com.example.quizler.ui.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.example.quizler.R
 
@@ -40,5 +38,11 @@ sealed class InfoBannerData(
         title = R.string.report_question_title,
         description = R.string.report_question_description,
         color = Color(0xffCBEDFD)
+    )
+
+    class DataRefreshed(title: Int = R.string.data_refresh_title) : InfoBannerData(
+        icon = R.drawable.ic_refresh,
+        title = title,
+        color = Color(0xffaee4da)
     )
 }

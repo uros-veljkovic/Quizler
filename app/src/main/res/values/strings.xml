@@ -114,6 +114,8 @@
     <string name="report_type_no_correct_answer">Tačan odgovor nije ponuđen</string>
     <string name="report_type_typos">Slovne greške</string>
     <string name="report_type_wrong_correct_answer">Netačan odgovor obeležen kao tačan</string>
+    <string name="score_refresh_title">Rezultati su osvezeni!</string>
+    <string name="data_refresh_title">Podaci su osvezeni!</string>
 
 
 </resources>

@@ -1,5 +1,5 @@
 package com.example.quizler.ui.components
 
-enum class BottomNavigationItems {
+enum class BottomNavigationItem {
     Home, Scoreboard
 }

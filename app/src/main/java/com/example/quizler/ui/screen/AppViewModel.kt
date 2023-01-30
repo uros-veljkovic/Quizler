@@ -1,7 +1,7 @@
 package com.example.quizler.ui.screen
 
 import androidx.lifecycle.ViewModel
-import com.example.quizler.ui.components.BottomNavigationItems
+import com.example.quizler.ui.components.BottomNavigationItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,10 +21,10 @@ class AppViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun setBottomNavItem(item: BottomNavigationItems) {
+    fun setBottomNavItem(item: BottomNavigationItem) {
         val route = when (item) {
-            BottomNavigationItems.Home -> Pair(Screen.Scoreboard, Screen.Home)
-            BottomNavigationItems.Scoreboard -> Pair(Screen.Home, Screen.Scoreboard)
+            BottomNavigationItem.Home -> Pair(Screen.Scoreboard, Screen.Home)
+            BottomNavigationItem.Scoreboard -> Pair(Screen.Home, Screen.Scoreboard)
         }
         state.update {
             it.copy(

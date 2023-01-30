@@ -105,7 +105,7 @@
     <string name="error_unexpected_description">Dogodila se greška na serveru. Molimo pokušajte kasnije.</string>
     <string name="report_question">Prijavi nevalidno pitanje</string>
     <string name="report_question_title">Prijava nevalidnog pitanja</string>
-    <string name="report_question_description">Obelezite razloge zasto mislite da je pitanje nevalidno.</string>
+    <string name="report_question_description">Obeležite razloge zašto mislite da je pitanje nevalidno.</string>
     <string name="cancel">Otkaži</string>@
     <string name="confirm">Potvrdi</string>
     <string name="unknown">Nepoznato</string>
@@ -114,8 +114,8 @@
     <string name="report_type_no_correct_answer">Tačan odgovor nije ponuđen</string>
     <string name="report_type_typos">Slovne greške</string>
     <string name="report_type_wrong_correct_answer">Netačan odgovor obeležen kao tačan</string>
-    <string name="score_refresh_title">Rezultati su osvezeni!</string>
-    <string name="data_refresh_title">Podaci su osvezeni!</string>
+    <string name="score_refresh_title">Rezultati su osveženi!</string>
+    <string name="data_refresh_title">Podaci su osveženi!</string>
 
 
 </resources>

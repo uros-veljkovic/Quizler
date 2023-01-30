@@ -17,23 +17,23 @@ import com.example.quizler.ui.theme.QuizlerTheme
 @Composable
 fun BottomNavigation(
     bottomNavigationConfig: BottomNavigationConfig,
-    onSelectedItem: (BottomNavigationItems) -> Unit,
+    onSelectedItem: (BottomNavigationItem) -> Unit,
 ) {
     NavigationBar {
         NavigationBarItem(
             icon = { Icon(Icons.Filled.Home, contentDescription = "") },
             label = { Text(text = stringResource(id = R.string.home)) },
-            selected = bottomNavigationConfig.itemSelected == BottomNavigationItems.Home,
+            selected = bottomNavigationConfig.itemSelected == BottomNavigationItem.Home,
             onClick = {
-                onSelectedItem(BottomNavigationItems.Home)
+                onSelectedItem(BottomNavigationItem.Home)
             }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.List, contentDescription = "") },
             label = { Text(text = stringResource(id = R.string.scoreboard)) },
-            selected = bottomNavigationConfig.itemSelected == BottomNavigationItems.Scoreboard,
+            selected = bottomNavigationConfig.itemSelected == BottomNavigationItem.Scoreboard,
             onClick = {
-                onSelectedItem(BottomNavigationItems.Scoreboard)
+                onSelectedItem(BottomNavigationItem.Scoreboard)
             }
         )
     }

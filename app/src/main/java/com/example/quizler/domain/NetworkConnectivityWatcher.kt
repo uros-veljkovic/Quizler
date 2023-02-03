@@ -5,11 +5,11 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.util.Log
 import com.example.quizler.domain.data.local.INetworkRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class NetworkConnectivityWatcher @Inject constructor(
@@ -19,21 +19,17 @@ class NetworkConnectivityWatcher @Inject constructor(
     private lateinit var connectivityManager: ConnectivityManager
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
 
+        override fun onAvailable(network: Network) {
+            super.onAvailable(network)
+            setHasConnection(true)
+        }
+
         override fun onCapabilitiesChanged(
             network: Network,
             networkCapabilities: NetworkCapabilities
         ) {
             super.onCapabilitiesChanged(network, networkCapabilities)
-
-            val hasConnection = networkCapabilities.hasCapability(
-                NetworkCapabilities.NET_CAPABILITY_INTERNET
-            )
-            setHasConnection(hasConnection)
-        }
-
-        override fun onUnavailable() {
-            super.onUnavailable()
-            setHasConnection(NO_CONNECTION)
+            setHasConnection(hasAnyTypeOfInternetConnection(networkCapabilities))
         }
 
         override fun onLost(network: Network) {
@@ -45,7 +41,7 @@ class NetworkConnectivityWatcher @Inject constructor(
     fun observeConnectivity(context: Context) {
         checkFirstTimeNetworkAvailability(context)
         val networkRequest =
-            NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
+            NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                 .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
                 .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR).build()
         connectivityManager.requestNetwork(networkRequest, networkCallback)
@@ -55,21 +51,16 @@ class NetworkConnectivityWatcher @Inject constructor(
         connectivityManager = context.getSystemService(ConnectivityManager::class.java) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
-        CoroutineScope(Dispatchers.Default).launch {
-            setHasConnection(
-                capabilities?.let {
-                    it.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || capabilities.hasTransport(
-                        NetworkCapabilities.TRANSPORT_WIFI
-                    )
-                } ?: false
-            )
-        }
+        setHasConnection(hasAnyTypeOfInternetConnection(capabilities))
     }
+
+    private fun hasAnyTypeOfInternetConnection(capabilities: NetworkCapabilities?) =
+        capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: NO_CONNECTION
 
     private fun setHasConnection(hasConnection: Boolean) {
         CoroutineScope(Dispatchers.Default).launch {
             repository.setHasInternetConnection(hasConnection)
-            Log.d(TAG, "onCapabilitiesChanged: $hasConnection")
+            Timber.d(TAG, "onCapabilitiesChanged: $hasConnection")
         }
     }
 

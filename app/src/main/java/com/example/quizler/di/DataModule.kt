@@ -6,7 +6,7 @@ import androidx.room.Room
 import com.example.quizler.BuildConfig
 import com.example.quizler.data.local.NetworkRepository
 import com.example.quizler.data.local.QuizLocalRepository
-import com.example.quizler.data.local.db.dao.QuizModeDatabase
+import com.example.quizler.data.local.db.dao.QuizlerDatabase
 import com.example.quizler.data.local.entity.AnswerRecordEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.mapper.AnswerRecordEntityMapper
@@ -78,15 +78,15 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideQuizModeDatabase(@ApplicationContext context: Context): QuizModeDatabase {
-        return Room.databaseBuilder(context, QuizModeDatabase::class.java, "db_quizler")
+    fun provideQuizModeDatabase(@ApplicationContext context: Context): QuizlerDatabase {
+        return Room.databaseBuilder(context, QuizlerDatabase::class.java, "db_quizler")
             .fallbackToDestructiveMigration().build()
     }
 
     @Singleton
     @Provides
-    fun provideLocalRepository(quizModeDatabase: QuizModeDatabase): IQuizLocalRepository {
-        return QuizLocalRepository(quizModeDatabase)
+    fun provideLocalRepository(quizlerDatabase: QuizlerDatabase): IQuizLocalRepository {
+        return QuizLocalRepository(quizlerDatabase)
     }
 
     @Singleton

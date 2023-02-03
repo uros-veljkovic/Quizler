@@ -10,7 +10,7 @@ import androidx.room.Transaction
 interface BaseDao<T> {
 
     @Transaction
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(data: T)
 
     @Transaction

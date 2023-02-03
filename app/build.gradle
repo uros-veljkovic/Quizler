@@ -26,7 +26,7 @@ android {
 
         buildConfigField "String", "SERVER_URL", properties.getProperty('QUIZLER_SERVER_URL', '"192.168.1.113:2000"')
 
-        testInstrumentationRunner "com.example.mumble.HiltTestRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -45,6 +45,11 @@ android {
                 useLegacyPackaging true
             }
         }
+    }
+    sourceSets {
+        main { java.srcDirs = ['src/main/java'] }
+        test { java.srcDirs = ['src/test/java'] }
+        androidTest { java.srcDirs = ['src/androidTest/java'] }
     }
     configurations {
         ktlint
@@ -105,6 +110,7 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:$version_room"
     implementation 'androidx.core:core-ktx:1.7.10'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter'
     annotationProcessor "androidx.room:room-compiler:$version_room"
     kapt "androidx.room:room-compiler:$version_room"

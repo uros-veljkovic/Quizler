@@ -1,7 +1,7 @@
 package com.example.quizler.data.local
 
 import androidx.room.withTransaction
-import com.example.quizler.data.local.db.dao.QuizModeDatabase
+import com.example.quizler.data.local.db.dao.QuizlerDatabase
 import com.example.quizler.data.local.entity.AnswerRecordEntity
 import com.example.quizler.data.local.entity.CategoryModeEntity
 import com.example.quizler.data.local.entity.DifficultyModeEntity
@@ -15,7 +15,7 @@ import com.example.quizler.domain.data.local.IQuizLocalRepository
 import kotlinx.coroutines.flow.Flow
 
 class QuizLocalRepository(
-    private val db: QuizModeDatabase,
+    private val db: QuizlerDatabase,
 ) : IQuizLocalRepository {
 
     override fun readCategoriesModes(): Flow<List<CategoryModeEntity>> {

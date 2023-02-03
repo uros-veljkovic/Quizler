@@ -40,7 +40,7 @@ internal class GetQuestionsUseCaseTest {
     @Before
     fun setUp() {
         netRepo = mockk()
-        networkActionHandler = NetworkActionHandler(UnconfinedTestDispatcher(), netRepo)
+        networkActionHandler = NetworkActionHandler(UnconfinedTestDispatcher())
         remoteRepository = mockk()
         localRepository = mockk()
         dataSyncCoordinator = mockk()

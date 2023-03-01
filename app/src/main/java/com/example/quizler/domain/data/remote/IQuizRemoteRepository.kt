@@ -23,4 +23,5 @@ interface IQuizRemoteRepository {
     suspend fun record(resultRecordDto: ResultRecordDto): RepositoryResponse<Unit>
     suspend fun report(questionId: String): RepositoryResponse<Unit>
     suspend fun report(dto: ReportQuestionDto): RepositoryResponse<Unit>
+    suspend fun create(question: QuestionDto): RepositoryResponse<Unit>
 }

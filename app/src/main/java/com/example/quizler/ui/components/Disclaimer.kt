@@ -2,7 +2,6 @@ package com.example.quizler.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -55,7 +54,7 @@ fun Disclaimer(
                     textSize = with(currentLocalDensity) {
                         ts.size.height.toDp()
                     }
-                }.fillMaxWidth(),
+                },
             text = text
         )
     }

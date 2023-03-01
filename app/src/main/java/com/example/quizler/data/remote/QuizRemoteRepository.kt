@@ -1,6 +1,10 @@
 package com.example.quizler.data.remote
 
 import com.example.quizler.data.remote.dto.AnswerRecordDto
+import com.example.quizler.data.remote.dto.CategoryModesDto
+import com.example.quizler.data.remote.dto.DifficultyModesDto
+import com.example.quizler.data.remote.dto.LengthModesDto
+import com.example.quizler.data.remote.dto.QuestionDto
 import com.example.quizler.data.remote.dto.ReportQuestionDto
 import com.example.quizler.data.remote.dto.ReportTypeDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
@@ -20,22 +24,22 @@ class QuizRemoteRepository(
     private val networkActionHandler: INetworkActionHandler
 ) : IQuizRemoteRepository {
 
-    override suspend fun getCategoryModes() =
+    override suspend fun getCategoryModes(): RepositoryResponse<CategoryModesDto> =
         networkActionHandler.executeNetworkAction {
             service.getCategoryModes()
         }
 
-    override suspend fun getLengthModes() =
+    override suspend fun getLengthModes(): RepositoryResponse<LengthModesDto> =
         networkActionHandler.executeNetworkAction {
             service.getLengthModes()
         }
 
-    override suspend fun getDifficultyModes() =
+    override suspend fun getDifficultyModes(): RepositoryResponse<DifficultyModesDto> =
         networkActionHandler.executeNetworkAction {
             service.getDifficultyModes()
         }
 
-    override suspend fun getQuestions() =
+    override suspend fun getQuestions(): RepositoryResponse<List<QuestionDto>> =
         networkActionHandler.executeNetworkAction {
             service.getQuestions()
         }
@@ -68,5 +72,10 @@ class QuizRemoteRepository(
     override suspend fun report(dto: ReportQuestionDto): RepositoryResponse<Unit> =
         networkActionHandler.executeNetworkAction {
             service.reportQuestion(dto)
+        }
+
+    override suspend fun create(question: QuestionDto): RepositoryResponse<Unit> =
+        networkActionHandler.executeNetworkAction {
+            service.create(question)
         }
 }

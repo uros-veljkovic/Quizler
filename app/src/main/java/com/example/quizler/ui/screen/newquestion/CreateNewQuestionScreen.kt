@@ -1,0 +1,127 @@
+package com.example.quizler.ui.screen.newquestion
+
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.quizler.R
+import com.example.quizler.ui.components.AnswerTextField
+import com.example.quizler.ui.components.CorrectAnswerPicker
+import com.example.quizler.ui.components.HorizontalChipPicker
+import com.example.quizler.ui.components.fakeCategoryChips
+import com.example.quizler.ui.screen.home.plus
+import com.example.quizler.ui.theme.QuizlerTheme
+import com.example.quizler.ui.theme.spaceM
+import com.example.quizler.ui.theme.spaceS
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CreateNewQuestionScreen(
+    viewModel: CreateNewQuestionViewModel = hiltViewModel(),
+    paddingValues: PaddingValues
+) {
+    val state by viewModel.screenState.collectAsState()
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .padding(paddingValues + spaceS)
+            .fillMaxSize()
+            .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.spacedBy(spaceM),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1.7f),
+            value = state.question.text,
+            onValueChange = viewModel::onQuestionUpdate,
+            maxLines = 3,
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+            placeholder = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.question),
+                    textAlign = TextAlign.Center
+                )
+            },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                placeholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f)
+            )
+        )
+        HorizontalChipPicker(
+            items = fakeCategoryChips,
+            isDropdownExpanded = state.isCategoriesDropdownExpanded,
+            chosenItem = state.chosenCategory,
+            onItemClick = viewModel::onCategoryChosen,
+            onExpandDropdown = viewModel::onExpandDropdown
+        )
+        CorrectAnswerPicker(
+            modifier = Modifier.weight(1.5f),
+            correctAnswerType = state.chosenCorrectAnswer,
+            onCorrectAnswerChosen = viewModel::onCorrectAnswerChosen
+        )
+        state.answers.forEach { answer ->
+            AnswerTextField(
+                modifier = Modifier.weight(1.5f),
+                type = answer.type,
+                isCorrect = state.chosenCorrectAnswer == answer.type,
+                text = answer.text,
+                onTextChange = { type, text -> viewModel.onAnswerUpdate(type, text) }
+            )
+        }
+        ElevatedButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f).padding(bottom = 2.dp),
+            onClick = viewModel::onSaveQuestion
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(spaceS), verticalAlignment = Alignment.CenterVertically) {
+                Icon(imageVector = Icons.Default.Create, contentDescription = null)
+                Text(text = stringResource(id = R.string.save_question))
+            }
+        }
+    }
+}
+
+@Preview(showSystemUi = true, showBackground = true, device = Devices.PIXEL_3A)
+@Preview(showSystemUi = true, showBackground = true, uiMode = UI_MODE_NIGHT_YES, device = Devices.PIXEL_4_XL)
+@Composable
+fun PreviewCreateNewQuestionScreen() {
+    QuizlerTheme {
+        Surface {
+            CreateNewQuestionScreen(paddingValues = PaddingValues(spaceS))
+        }
+    }
+}

@@ -22,14 +22,15 @@ class AppViewModel @Inject constructor() : ViewModel() {
     }
 
     fun setBottomNavItem(item: BottomNavigationItem) {
-        val route = when (item) {
-            BottomNavigationItem.Home -> Pair(Screen.Scoreboard, Screen.Home)
-            BottomNavigationItem.Scoreboard -> Pair(Screen.Home, Screen.Scoreboard)
+        val screen = when (item) {
+            BottomNavigationItem.Home -> Screen.Home
+            BottomNavigationItem.Scoreboard -> Screen.Scoreboard
+            BottomNavigationItem.NewQuestion -> Screen.NewQuestion
         }
         state.update {
             it.copy(
                 bottomNavigationConfig = it.bottomNavigationConfig.copy(itemSelected = item),
-                navigate = route
+                navigate = screen
             )
         }
     }

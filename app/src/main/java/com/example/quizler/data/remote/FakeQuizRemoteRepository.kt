@@ -82,4 +82,8 @@ class FakeQuizRemoteRepository : IQuizRemoteRepository {
     override suspend fun report(dto: ReportQuestionDto): RepositoryResponse<Unit> {
         return RepositoryResponse.Success(Unit)
     }
+
+    override suspend fun create(question: QuestionDto): RepositoryResponse<Unit> {
+        TODO("Not yet implemented")
+    }
 }

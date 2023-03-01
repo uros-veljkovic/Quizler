@@ -46,4 +46,7 @@ interface QuizService {
 
     @POST("invalid-question")
     suspend fun reportQuestion(@Body dto: ReportQuestionDto): Response<Unit>
+
+    @POST("questions")
+    suspend fun create(@Body dto: QuestionDto): Response<Unit>
 }

@@ -7,3 +7,7 @@ data class Answer(
     val isCorrect: Boolean = false,
     val isChosen: Boolean = false
 )
+
+data class CreateAnswerBundle(
+    val text: String
+)

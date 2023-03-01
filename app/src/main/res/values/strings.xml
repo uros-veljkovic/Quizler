@@ -116,6 +116,9 @@
     <string name="report_type_wrong_correct_answer">Netačan odgovor obeležen kao tačan</string>
     <string name="score_refresh_title">Rezultati su osveženi!</string>
     <string name="data_refresh_title">Podaci su osveženi!</string>
+    <string name="answer">Unesi odgovor pod %1$s</string>
+    <string name="save_question">Sacuvaj pitanje</string>
+    <string name="create_question">Kreiraj pitanje</string>
 
 
 </resources>

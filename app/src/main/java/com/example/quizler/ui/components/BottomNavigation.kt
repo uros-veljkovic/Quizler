@@ -1,40 +1,34 @@
 package com.example.quizler.ui.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.quizler.R
-import com.example.quizler.ui.screen.BottomNavigationConfig
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.quizler.ui.theme.QuizlerTheme
 
 @Composable
 fun BottomNavigation(
-    bottomNavigationConfig: BottomNavigationConfig,
-    onSelectedItem: (BottomNavigationItem) -> Unit,
+    navController: NavController = rememberNavController(),
 ) {
-    if (bottomNavigationConfig.isBottomNavVisible) {
-        NavigationBar {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    NavigationBar {
+        BottomNavigationItem.values().forEach { item ->
             NavigationBarItem(
-                icon = { Icon(Icons.Filled.Home, contentDescription = "") },
-                label = { Text(text = stringResource(id = R.string.home)) },
-                selected = bottomNavigationConfig.itemSelected == BottomNavigationItem.Home,
+                icon = { Icon(item.icon, contentDescription = "") },
+                label = { Text(text = stringResource(id = item.titleResId)) },
+                selected = currentRoute == item.route,
                 onClick = {
-                    onSelectedItem(BottomNavigationItem.Home)
-                }
-            )
-            NavigationBarItem(
-                icon = { Icon(Icons.Filled.List, contentDescription = "") },
-                label = { Text(text = stringResource(id = R.string.scoreboard)) },
-                selected = bottomNavigationConfig.itemSelected == BottomNavigationItem.Scoreboard,
-                onClick = {
-                    onSelectedItem(BottomNavigationItem.Scoreboard)
+                    navController.navigate(item.route)
+                    navController.popBackStack(item.route, inclusive = false)
                 }
             )
         }
@@ -45,5 +39,6 @@ fun BottomNavigation(
 @Composable
 fun PreviewBottomNavigation() {
     QuizlerTheme {
+        BottomNavigation()
     }
 }

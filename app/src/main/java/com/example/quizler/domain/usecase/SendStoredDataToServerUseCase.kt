@@ -54,6 +54,9 @@ class SendStoredDataToServerUseCase @Inject constructor(
         return State.Success(Unit)
     }
 
+    /**
+     * TODO: Delete, since now questions are reported through [remoteRepository.report(dto: ReportQuestionDto)]
+     */
     private suspend fun handleSavedReportedQuestions(): State<Unit> {
         val entities = localRepository.readReportedQuestions().first()
         if (entities.isNotEmpty()) {

@@ -1,7 +1,9 @@
 package com.example.quizler.ui.screen.splash
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,13 +15,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.quizler.R
 import com.example.quizler.ui.components.InfoBanner
 import com.example.quizler.ui.components.Logo
 import com.example.quizler.ui.model.InfoBannerData
@@ -42,22 +47,30 @@ fun SplashScreen(
             navController.navigate(Screen.Splash, Screen.Home)
         }
     }
-
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(spaceXL),
-        constraintSet = constraintSet,
-    ) {
-        Logo(modifier = Modifier.layoutId("logo"))
-        LinearProgressIndicator(modifier = Modifier.layoutId("progress"), progress = state.progress)
-        state.infoBannerData?.let {
-            InfoBanner(
-                modifier = Modifier.layoutId("banner"),
-                isActionButtonEnabled = state.hasConnection && state.isDataFetchInProgress.not(),
-                data = it,
-                onActionButtonClick = viewModel::fetchData
-            )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.default_background_pattern),
+            contentScale = ContentScale.FillBounds,
+            alpha = 0.2f,
+            contentDescription = null
+        )
+        ConstraintLayout(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(spaceXL),
+            constraintSet = constraintSet,
+        ) {
+            Logo(modifier = Modifier.layoutId("logo"))
+            LinearProgressIndicator(modifier = Modifier.layoutId("progress"), progress = state.progress)
+            state.infoBannerData?.let {
+                InfoBanner(
+                    modifier = Modifier.layoutId("banner"),
+                    isActionButtonEnabled = state.hasConnection && state.isDataFetchInProgress.not(),
+                    data = it,
+                    onActionButtonClick = viewModel::fetchData
+                )
+            }
         }
     }
 }

@@ -2,7 +2,7 @@ package com.example.quizler.ui.screen.newquestion
 
 import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.ui.components.fakeCategoryChips
-import com.example.quizler.ui.model.DropdownItem
+import com.example.quizler.ui.model.ChosableItem
 
 data class CreateNewQuestionScreenState(
     val question: QuestionFieldState = QuestionFieldState(),
@@ -13,9 +13,9 @@ data class CreateNewQuestionScreenState(
         AnswerFieldState(AnswerType.D),
     ),
     val chosenCorrectAnswer: AnswerType = AnswerType.A,
-    val categories: List<DropdownItem.Content> = fakeCategoryChips,
+    val categories: List<ChosableItem.Content> = fakeCategoryChips,
     val isCategoriesDropdownExpanded: Boolean = false,
-    val chosenCategory: DropdownItem.Content? = null,
+    val chosenCategory: ChosableItem.Content? = null,
 ) {
     fun copyWithUpdatedAnswer(
         type: AnswerType,
@@ -41,7 +41,11 @@ data class CreateNewQuestionScreenState(
         return copy(isCategoriesDropdownExpanded = isCategoriesDropdownExpanded.not())
     }
 
-    fun copyWithChosenCategory(dropdownItem: DropdownItem.Content): CreateNewQuestionScreenState {
-        return copy(chosenCategory = dropdownItem, isCategoriesDropdownExpanded = isCategoriesDropdownExpanded.not())
+    fun copyWithChosenCategory(chosableItem: ChosableItem.Content): CreateNewQuestionScreenState {
+        return copy(chosenCategory = chosableItem, isCategoriesDropdownExpanded = isCategoriesDropdownExpanded.not())
+    }
+
+    fun copyWithUpdatedCategories(categories: List<ChosableItem.Content>): CreateNewQuestionScreenState {
+        return copy(categories = categories, chosenCategory = categories.firstOrNull())
     }
 }

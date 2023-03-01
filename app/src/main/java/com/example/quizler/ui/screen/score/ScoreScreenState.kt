@@ -1,7 +1,7 @@
 package com.example.quizler.ui.screen.score
 
 import androidx.compose.runtime.Stable
-import com.example.quizler.ui.model.DropdownItem
+import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.model.Score
 import javax.annotation.concurrent.Immutable
@@ -9,9 +9,9 @@ import javax.annotation.concurrent.Immutable
 @Immutable
 @Stable
 data class ScoreScreenState(
-    private val chosenMode: DropdownItem.Content? = null,
+    private val chosenMode: ChosableItem.Content? = null,
     val isDropdownExpanded: Boolean = false,
-    val modes: List<DropdownItem> = emptyList(),
+    val modes: List<ChosableItem> = emptyList(),
     private val scores: List<Score> = emptyList(),
     val isLoading: Boolean = false,
     val isDataRefreshed: Boolean = false,
@@ -22,8 +22,8 @@ data class ScoreScreenState(
         return if (getChosenMode() != null) scores.filter { it.mode == getChosenMode()?.itemId } else scores
     }
 
-    fun getChosenMode(): DropdownItem.Content? {
-        return chosenMode ?: modes.firstOrNull { item -> item is DropdownItem.Content } as? DropdownItem.Content
+    fun getChosenMode(): ChosableItem.Content? {
+        return chosenMode ?: modes.firstOrNull { item -> item is ChosableItem.Content } as? ChosableItem.Content
     }
 
     // TODO: Handle when network connection handled properly

@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -31,7 +32,8 @@ import com.example.quizler.ui.theme.spaceS
 fun Disclaimer(
     modifier: Modifier = Modifier,
     dividerWidth: Dp,
-    text: String
+    text: String,
+    color: Color = MaterialTheme.colorScheme.onSurface
 ) {
     val currentLocalDensity = LocalDensity.current
     var textSize by remember { mutableStateOf(Dp.Unspecified) }
@@ -45,7 +47,7 @@ fun Disclaimer(
             modifier = Modifier
                 .width(dividerWidth)
                 .height(textSize + spaceS),
-            color = MaterialTheme.colorScheme.onSurface
+            color = color
         )
         Text(
             modifier = Modifier

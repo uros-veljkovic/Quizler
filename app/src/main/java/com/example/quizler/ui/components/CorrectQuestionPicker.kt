@@ -18,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.quizler.R
 import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.SuccessGreen
@@ -36,10 +38,7 @@ fun CorrectAnswerPicker(
 ) {
     val answers = rememberSaveable { AnswerType.values() }
     Column(modifier = modifier) {
-        Disclaimer(
-            dividerWidth = 3.dp,
-            text = "Izaberi tacan odgovor",
-        )
+        Text(text = stringResource(id = R.string.choose_correct_answer))
         Spacer(modifier = Modifier.size(spaceS))
         Row(
             horizontalArrangement = Arrangement.spacedBy(spaceS),
@@ -50,15 +49,15 @@ fun CorrectAnswerPicker(
                     modifier = Modifier.weight(1f), onClick = { onCorrectAnswerChosen(answer) },
                     label = {
                         Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(end = 8.dp),
+                            modifier = Modifier.fillMaxWidth().padding(end = 8.dp),
                             text = answer.char.toString(),
                             textAlign = TextAlign.Center
                         )
                     },
                     selected = correctAnswerType == answer, leadingIcon = null,
-                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = colorAcomodatedToLightOrDarkMode(color = SuccessGreen())),
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = colorAcomodatedToLightOrDarkMode(color = SuccessGreen())
+                    ),
                     border = FilterChipDefaults.filterChipBorder(
                         selectedBorderColor = MaterialTheme.colorScheme.primary,
                         selectedBorderWidth = 2.dp

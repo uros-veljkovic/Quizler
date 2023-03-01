@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.quizler.R
-import com.example.quizler.ui.model.DropdownItem
+import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.spaceM
 import com.example.quizler.ui.theme.spaceXS
@@ -40,9 +40,9 @@ fun BasicDropdownMenu(
     modifier: Modifier = Modifier,
     isExpanded: Boolean,
     onExpandDropdown: (Boolean) -> Unit,
-    chosenItem: DropdownItem.Content,
-    items: List<DropdownItem>,
-    onItemClick: (DropdownItem.Content) -> Unit,
+    chosenItem: ChosableItem.Content,
+    items: List<ChosableItem>,
+    onItemClick: (ChosableItem.Content) -> Unit,
 ) {
     Column {
         BasicDropdownChosenItem(
@@ -61,7 +61,7 @@ fun BasicDropdownMenu(
             ) {
                 items.forEachIndexed { index, item ->
                     when (item) {
-                        is DropdownItem.Title -> {
+                        is ChosableItem.Title -> {
                             if (index != 0) {
                                 Divider(modifier = Modifier.padding(spaceM))
                             }
@@ -73,7 +73,7 @@ fun BasicDropdownMenu(
                             )
                         }
 
-                        is DropdownItem.Content -> {
+                        is ChosableItem.Content -> {
                             DropdownMenuItem(text = {
                                 Text(
                                     text = item.text,
@@ -103,7 +103,7 @@ private fun BasicDropdownChosenItem(
     modifier: Modifier = Modifier,
     onExpandDropdown: (Boolean) -> Unit,
     isExpanded: Boolean,
-    chosenItem: DropdownItem.Content
+    chosenItem: ChosableItem.Content
 ) {
     Button(
         modifier = modifier.heightIn(70.dp),
@@ -134,44 +134,44 @@ fun PreviewBasicMenuDropdown() {
     QuizlerTheme {
         Surface {
             BasicDropdownMenu(
-                chosenItem = DropdownItem.Content(
+                chosenItem = ChosableItem.Content(
                     itemId = "", icon = R.drawable.ic_mode_music, text = "Muzika"
                 ),
                 items = listOf(
-                    DropdownItem.Title(value = R.string.tab_category),
-                    DropdownItem.Content(
+                    ChosableItem.Title(value = R.string.tab_category),
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_sport, text = "Sport"
                     ),
-                    DropdownItem.Content(
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_music, text = "Muzika"
                     ),
-                    DropdownItem.Content(
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_movie, text = "Film"
                     ),
-                    DropdownItem.Content(
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_geography, text = "Geografija"
                     ),
-                    DropdownItem.Content(
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_history, text = "Istorija"
                     ),
-                    DropdownItem.Title(value = R.string.tab_difficulty),
-                    DropdownItem.Content(
+                    ChosableItem.Title(value = R.string.tab_difficulty),
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_easy, text = "Lako"
                     ),
-                    DropdownItem.Content(
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_medium, text = "Srednje"
                     ),
-                    DropdownItem.Content(
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_hard, text = "Tesko"
                     ),
-                    DropdownItem.Title(value = R.string.tab_length),
-                    DropdownItem.Content(
+                    ChosableItem.Title(value = R.string.tab_length),
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_zen, text = "Kratko"
                     ),
-                    DropdownItem.Content(
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_exam, text = "Srednje"
                     ),
-                    DropdownItem.Content(
+                    ChosableItem.Content(
                         itemId = "", icon = R.drawable.ic_mode_marathon, text = "Dugacko"
                     )
                 ),

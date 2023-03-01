@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quizler.R
 import com.example.quizler.domain.data.local.INetworkRepository
-import com.example.quizler.domain.usecase.GetModeDropdownItemsUseCase
+import com.example.quizler.domain.usecase.GetChosableModeItemsUseCase
 import com.example.quizler.domain.usecase.GetScoresUseCase
-import com.example.quizler.ui.model.DropdownItem
+import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScoreViewModel @Inject constructor(
-    getModesUseCase: GetModeDropdownItemsUseCase,
+    getModesUseCase: GetChosableModeItemsUseCase,
     private val getScoresUseCase: GetScoresUseCase,
     repository: INetworkRepository
 ) : ViewModel() {
@@ -44,7 +44,7 @@ class ScoreViewModel @Inject constructor(
         initialValue = ScoreScreenState()
     )
 
-    fun setChosenMode(item: DropdownItem.Content) {
+    fun setChosenMode(item: ChosableItem.Content) {
         _state.update { it.copy(chosenMode = item) }
     }
 

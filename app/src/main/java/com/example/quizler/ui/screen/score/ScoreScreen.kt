@@ -27,7 +27,7 @@ import com.example.quizler.R
 import com.example.quizler.ui.components.BasicDropdownMenu
 import com.example.quizler.ui.components.InfoBanner
 import com.example.quizler.ui.components.ScoreList
-import com.example.quizler.ui.model.DropdownItem
+import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.model.Score
 import com.example.quizler.ui.screen.home.plus
 import com.example.quizler.ui.theme.QuizlerTheme
@@ -86,9 +86,9 @@ fun ScoreScreenContent(
     isDropdownExpanded: Boolean,
     isLoading: Boolean,
     onExpandDropdown: (Boolean) -> Unit,
-    modes: List<DropdownItem>,
-    chosenMode: DropdownItem.Content? = null,
-    onSetChosenMode: (DropdownItem.Content) -> Unit,
+    modes: List<ChosableItem>,
+    chosenMode: ChosableItem.Content? = null,
+    onSetChosenMode: (ChosableItem.Content) -> Unit,
     scores: List<Score>,
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -133,10 +133,10 @@ fun PreviewScoreScreenContent() {
                 isDropdownExpanded = false,
                 isLoading = true,
                 onExpandDropdown = { },
-                chosenMode = DropdownItem.Content(
+                chosenMode = ChosableItem.Content(
                     itemId = "b", icon = R.drawable.ic_mode_music, text = "Muzika"
                 ),
-                modes = dropdownItems,
+                modes = chosableItems,
                 onSetChosenMode = {},
                 scores = mutableListOf<Score>().apply {
                     repeat(10) {
@@ -156,41 +156,41 @@ fun PreviewScoreScreenContent() {
     }
 }
 
-private val dropdownItems = listOf(
-    DropdownItem.Title(value = R.string.tab_category),
-    DropdownItem.Content(
+private val chosableItems = listOf(
+    ChosableItem.Title(value = R.string.tab_category),
+    ChosableItem.Content(
         itemId = "a", icon = R.drawable.ic_mode_sport, text = "Sport"
     ),
-    DropdownItem.Content(
+    ChosableItem.Content(
         itemId = "b", icon = R.drawable.ic_mode_music, text = "Muzika"
     ),
-    DropdownItem.Content(
+    ChosableItem.Content(
         itemId = "c", icon = R.drawable.ic_mode_movie, text = "Film"
     ),
-    DropdownItem.Content(
+    ChosableItem.Content(
         itemId = "d", icon = R.drawable.ic_mode_geography, text = "Geografija"
     ),
-    DropdownItem.Content(
+    ChosableItem.Content(
         itemId = "e", icon = R.drawable.ic_mode_history, text = "Istorija"
     ),
-    DropdownItem.Title(value = R.string.tab_difficulty),
-    DropdownItem.Content(
+    ChosableItem.Title(value = R.string.tab_difficulty),
+    ChosableItem.Content(
         itemId = "f", icon = R.drawable.ic_mode_easy, text = "Lako"
     ),
-    DropdownItem.Content(
+    ChosableItem.Content(
         itemId = "g", icon = R.drawable.ic_mode_medium, text = "Srednje"
     ),
-    DropdownItem.Content(
+    ChosableItem.Content(
         itemId = "h", icon = R.drawable.ic_mode_hard, text = "Tesko"
     ),
-    DropdownItem.Title(value = R.string.tab_length),
-    DropdownItem.Content(
+    ChosableItem.Title(value = R.string.tab_length),
+    ChosableItem.Content(
         itemId = "i", icon = R.drawable.ic_mode_zen, text = "Kratko"
     ),
-    DropdownItem.Content(
+    ChosableItem.Content(
         itemId = "j", icon = R.drawable.ic_mode_exam, text = "Srednje"
     ),
-    DropdownItem.Content(
+    ChosableItem.Content(
         itemId = "k", icon = R.drawable.ic_mode_marathon, text = "Dugacko"
     )
 )

@@ -119,6 +119,9 @@
     <string name="answer">Unesi odgovor pod %1$s</string>
     <string name="save_question">Sacuvaj pitanje</string>
     <string name="create_question">Kreiraj pitanje</string>
+    <string name="choose_correct_answer">Izaberi tacan odgovor</string>
+    <string name="wohoo">Hvala !</string>
+    <string name="wohoo_description">Uspesno si kreirao/la pitanje! Hvala što doprinosiš da Kvizler poraste !</string>
 
 
 </resources>

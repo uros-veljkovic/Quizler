@@ -4,18 +4,18 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.example.quizler.R
 
-sealed class DropdownItem {
+sealed class ChosableItem {
     data class Title(
         @StringRes val value: Int
-    ) : DropdownItem()
+    ) : ChosableItem()
 
     data class Content(
         val itemId: String,
         @DrawableRes val icon: Int,
         val text: String
-    ) : DropdownItem()
+    ) : ChosableItem()
 
     companion object {
-        fun dummyContent(): DropdownItem.Content = DropdownItem.Content("", R.drawable.app_logo, "")
+        fun dummyContent(): ChosableItem.Content = ChosableItem.Content("", R.drawable.app_logo, "")
     }
 }

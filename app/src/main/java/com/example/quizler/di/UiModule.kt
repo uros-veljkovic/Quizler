@@ -25,10 +25,13 @@ import com.example.quizler.domain.usecase.GetQuestionsUseCase
 import com.example.quizler.domain.usecase.GetReportTypesUseCase
 import com.example.quizler.domain.usecase.GetUsernameUseCase
 import com.example.quizler.domain.usecase.SendInvalidQuestionReportUseCase
-import com.example.quizler.ui.model.DropdownItem
+import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.model.ReportType
 import com.example.quizler.ui.model.Score
 import com.example.quizler.ui.screen.home.mapper.QuizModeMapper
+import com.example.quizler.ui.screen.newquestion.CreateNewQuestionDto
+import com.example.quizler.ui.screen.newquestion.CreateNewQuestionDtoMapper
+import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreenState
 import com.example.quizler.ui.screen.quiz.IQuizResultStateGenerator
 import com.example.quizler.ui.screen.quiz.QuestionBundle
 import com.example.quizler.ui.screen.quiz.QuizResultStateGenerator
@@ -117,7 +120,7 @@ class UiModuleSingleton {
     fun provideQuizModeDropdownItemMapper(
         iconProvider: AbstractResourceProvider<Drawable>,
         @QQuizModeTitleProvider titleProvider: AbstractResourceProvider<String>
-    ): DataMapper<BaseQuizModeEntity, DropdownItem.Content> {
+    ): DataMapper<BaseQuizModeEntity, ChosableItem.Content> {
         return QuizModeDropdownItemMapper(iconProvider, titleProvider)
     }
 
@@ -131,6 +134,12 @@ class UiModuleSingleton {
     @Provides
     fun provideReportedQuestionMapper(): DataMapper<InvalidQuestionReport, InvalidQuestionReportEntity> {
         return ReportedQuestionMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCreateNewQuestionDtoMapper(): DataMapper<CreateNewQuestionScreenState, CreateNewQuestionDto> {
+        return CreateNewQuestionDtoMapper()
     }
 }
 

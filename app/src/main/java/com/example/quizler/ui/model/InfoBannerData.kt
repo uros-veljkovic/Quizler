@@ -45,4 +45,11 @@ sealed class InfoBannerData(
         title = title,
         color = Color(0xffaee4da)
     )
+
+    object SuccessfullyCreatedNewQuestion : InfoBannerData(
+        icon = R.drawable.ic_in_love,
+        title = R.string.wohoo,
+        description = R.string.wohoo_description,
+        color = Color(0xffaee4da)
+    )
 }

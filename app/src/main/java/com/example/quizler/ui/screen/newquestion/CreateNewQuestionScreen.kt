@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -99,7 +101,8 @@ fun CreateNewQuestionScreen(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
                         textColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         placeholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f)
-                    )
+                    ),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
                 )
                 if (state.isLoading) {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())

@@ -24,9 +24,9 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateNewQuestionViewModel @Inject constructor(
     private val getChoosableCategoryItemsUseCase: GetChoosableCategoryItemsUseCase,
-    private val createNewQuestionUseCase: CreateNewQuestionUseCase,
-
+    private val createNewQuestionUseCase: CreateNewQuestionUseCase
 ) : ViewModel() {
+
     private val _screenState = MutableStateFlow(CreateNewQuestionScreenState())
     val screenState = _screenState.stateIn(
         viewModelScope,

@@ -57,4 +57,8 @@ data class CreateNewQuestionScreenState(
     fun copyWithSwitchedLoading(): CreateNewQuestionScreenState {
         return copy(isLoading = isLoading.not())
     }
+
+    fun hasAnyError(): Boolean {
+        return question.errorMessage.isNullOrEmpty().not() || answers.any { it.errorMessage.isNullOrEmpty().not() }
+    }
 }

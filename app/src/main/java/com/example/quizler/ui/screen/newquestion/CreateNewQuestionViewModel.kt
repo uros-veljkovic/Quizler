@@ -21,11 +21,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+class NewQuestionValidator {
+    fun validate(state: CreateNewQuestionScreenState): Boolean {
+        return state.question.text.isEmpty() || state.answers.any { it.text.isEmpty() }
+    }
+}
+
 @HiltViewModel
 class CreateNewQuestionViewModel @Inject constructor(
     private val getChoosableCategoryItemsUseCase: GetChoosableCategoryItemsUseCase,
     private val createNewQuestionUseCase: CreateNewQuestionUseCase
 ) : ViewModel() {
+
+    val validator = NewQuestionValidator()
 
     private val _screenState = MutableStateFlow(CreateNewQuestionScreenState())
     val screenState = _screenState.stateIn(
@@ -77,6 +85,12 @@ class CreateNewQuestionViewModel @Inject constructor(
 
     fun onSaveQuestion() {
         viewModelScope.launch(Dispatchers.IO) {
+            val state = _screenState.value
+            if (state.question.text.isEmpty() || state.answers.any { it.text.isEmpty() }) {
+                showInfoBanner(InfoBannerData.InvalidQuestionFields)
+                return@launch
+            }
+
             createNewQuestionUseCase(_screenState.value).collect { createNewQuestionState ->
                 when (createNewQuestionState) {
                     is State.Error -> {
@@ -84,6 +98,7 @@ class CreateNewQuestionViewModel @Inject constructor(
                         handleError()
                         return@collect
                     }
+
                     is State.Loading -> switchLoading()
                     is State.Success -> {
                         switchLoading()

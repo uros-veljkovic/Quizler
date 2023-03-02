@@ -46,6 +46,13 @@ sealed class InfoBannerData(
         color = Color(0xffaee4da)
     )
 
+    object InvalidQuestionFields : InfoBannerData(
+        icon = R.mipmap.ic_error_foreground,
+        title = R.string.banner_error_creating_question_title,
+        description = R.string.banner_error_creating_question_description,
+        color = Color(0xffef9a9a)
+    )
+
     object SuccessfullyCreatedNewQuestion : InfoBannerData(
         icon = R.drawable.ic_in_love,
         title = R.string.wohoo,

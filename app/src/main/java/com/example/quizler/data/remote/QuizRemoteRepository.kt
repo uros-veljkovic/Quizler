@@ -2,6 +2,7 @@ package com.example.quizler.data.remote
 
 import com.example.quizler.data.remote.dto.AnswerRecordDto
 import com.example.quizler.data.remote.dto.CategoryModesDto
+import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import com.example.quizler.data.remote.dto.DifficultyModesDto
 import com.example.quizler.data.remote.dto.LengthModesDto
 import com.example.quizler.data.remote.dto.QuestionDto
@@ -12,7 +13,6 @@ import com.example.quizler.data.remote.dto.ScoreDto
 import com.example.quizler.data.remote.service.quizmode.QuizService
 import com.example.quizler.domain.data.RepositoryResponse
 import com.example.quizler.domain.data.remote.IQuizRemoteRepository
-import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import com.example.quizler.util.INetworkActionHandler
 import javax.inject.Qualifier
 

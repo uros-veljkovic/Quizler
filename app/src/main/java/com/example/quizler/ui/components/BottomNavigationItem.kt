@@ -1,11 +1,6 @@
 package com.example.quizler.ui.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.quizler.R
 import com.example.quizler.ui.screen.Screen
 

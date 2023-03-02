@@ -11,8 +11,10 @@ import com.example.quizler.data.local.entity.ReportTypeEntity
 import com.example.quizler.data.local.entity.ResultRecordEntity
 import com.example.quizler.data.local.entity.ScoreEntity
 import com.example.quizler.data.remote.dto.AnswerRecordDto
+import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.data.remote.dto.mapper.AnswerRecordDtoMapper
+import com.example.quizler.data.remote.dto.mapper.CreateNewQuestionDtoMapper
 import com.example.quizler.data.remote.dto.mapper.ResultRecordDtoMapper
 import com.example.quizler.domain.mapper.QuizModeDropdownItemMapper
 import com.example.quizler.domain.mapper.ReportedQuestionMapper
@@ -29,8 +31,6 @@ import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.model.ReportType
 import com.example.quizler.ui.model.Score
 import com.example.quizler.ui.screen.home.mapper.QuizModeMapper
-import com.example.quizler.data.remote.dto.CreateNewQuestionDto
-import com.example.quizler.data.remote.dto.mapper.CreateNewQuestionDtoMapper
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreenState
 import com.example.quizler.ui.screen.quiz.IQuizResultStateGenerator
 import com.example.quizler.ui.screen.quiz.QuestionBundle

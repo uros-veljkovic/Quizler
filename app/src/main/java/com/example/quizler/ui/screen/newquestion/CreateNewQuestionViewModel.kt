@@ -2,7 +2,6 @@ package com.example.quizler.ui.screen.newquestion
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.domain.usecase.CreateNewQuestionUseCase
 import com.example.quizler.domain.usecase.GetChoosableCategoryItemsUseCase
@@ -10,7 +9,6 @@ import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.screen.score.ScoreViewModel
 import com.example.quizler.util.State
-import com.example.quizler.util.mapper.DataMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -28,7 +26,7 @@ class CreateNewQuestionViewModel @Inject constructor(
     private val getChoosableCategoryItemsUseCase: GetChoosableCategoryItemsUseCase,
     private val createNewQuestionUseCase: CreateNewQuestionUseCase,
 
-    ) : ViewModel() {
+) : ViewModel() {
     private val _screenState = MutableStateFlow(CreateNewQuestionScreenState())
     val screenState = _screenState.stateIn(
         viewModelScope,
@@ -93,9 +91,7 @@ class CreateNewQuestionViewModel @Inject constructor(
                         return@collect
                     }
                 }
-
             }
-
         }
     }
 
@@ -141,4 +137,3 @@ class CreateNewQuestionViewModel @Inject constructor(
         }
     }
 }
-

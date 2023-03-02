@@ -2,6 +2,7 @@ package com.example.quizler.data.remote.service.quizmode
 
 import com.example.quizler.data.remote.dto.AnswerRecordDto
 import com.example.quizler.data.remote.dto.CategoryModesDto
+import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import com.example.quizler.data.remote.dto.DifficultyModesDto
 import com.example.quizler.data.remote.dto.LengthModesDto
 import com.example.quizler.data.remote.dto.QuestionDto
@@ -9,7 +10,6 @@ import com.example.quizler.data.remote.dto.ReportQuestionDto
 import com.example.quizler.data.remote.dto.ReportTypeDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.data.remote.dto.ScoreDto
-import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

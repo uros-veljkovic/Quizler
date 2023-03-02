@@ -10,9 +10,9 @@ data class CreateNewQuestionDto(
             Text: $text
             Category ID: $categoryId
             Answers: ${
-            answers.map { answer ->
-                answer.text + ", Is correct: " + answer.isCorrect
-            }
+        answers.map { answer ->
+            answer.text + ", Is correct: " + answer.isCorrect
+        }
         }
         """.trimIndent()
     }

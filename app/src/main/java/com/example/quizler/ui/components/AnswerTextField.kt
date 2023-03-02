@@ -1,9 +1,6 @@
 package com.example.quizler.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -73,7 +70,8 @@ fun AnswerTextField(
         Row(
             modifier = Modifier
                 .padding(spaceS)
-                .fillMaxHeight(), verticalAlignment = Alignment.CenterVertically
+                .fillMaxHeight(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             AnswerCharComponent(
                 modifier = Modifier

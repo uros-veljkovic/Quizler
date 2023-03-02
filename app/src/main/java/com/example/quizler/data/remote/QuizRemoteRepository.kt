@@ -12,6 +12,7 @@ import com.example.quizler.data.remote.dto.ScoreDto
 import com.example.quizler.data.remote.service.quizmode.QuizService
 import com.example.quizler.domain.data.RepositoryResponse
 import com.example.quizler.domain.data.remote.IQuizRemoteRepository
+import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import com.example.quizler.util.INetworkActionHandler
 import javax.inject.Qualifier
 
@@ -74,7 +75,7 @@ class QuizRemoteRepository(
             service.reportQuestion(dto)
         }
 
-    override suspend fun create(question: QuestionDto): RepositoryResponse<Unit> =
+    override suspend fun create(question: CreateNewQuestionDto): RepositoryResponse<Unit> =
         networkActionHandler.executeNetworkAction {
             service.create(question)
         }

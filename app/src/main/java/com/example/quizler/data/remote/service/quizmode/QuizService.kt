@@ -9,6 +9,7 @@ import com.example.quizler.data.remote.dto.ReportQuestionDto
 import com.example.quizler.data.remote.dto.ReportTypeDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.data.remote.dto.ScoreDto
+import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -47,6 +48,6 @@ interface QuizService {
     @POST("invalid-question")
     suspend fun reportQuestion(@Body dto: ReportQuestionDto): Response<Unit>
 
-    @POST("questions")
-    suspend fun create(@Body dto: QuestionDto): Response<Unit>
+    @POST("questions/create")
+    suspend fun create(@Body dto: CreateNewQuestionDto): Response<Unit>
 }

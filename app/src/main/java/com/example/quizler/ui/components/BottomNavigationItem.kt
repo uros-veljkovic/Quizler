@@ -4,24 +4,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.quizler.R
 import com.example.quizler.ui.screen.Screen
 
-enum class BottomNavigationItem(val route: String, val icon: ImageVector, val titleResId: Int) {
+enum class BottomNavigationItem(val route: String, val icon: Int, val titleResId: Int) {
     Home(
         route = Screen.Home.route,
-        icon = Icons.Default.Home,
+        icon = R.drawable.ic_home,
         titleResId = R.string.home
     ),
     NewQuestion(
         route = Screen.NewQuestion.route,
-        icon = Icons.Default.Add,
+        icon = R.drawable.ic_add,
         titleResId = R.string.new_question
     ),
     Scoreboard(
         route = Screen.Scoreboard.route,
-        icon = Icons.Default.List,
+        icon = R.drawable.ic_scoreboard,
         titleResId = R.string.scoreboard
     )
 }

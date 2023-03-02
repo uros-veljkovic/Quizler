@@ -29,8 +29,8 @@ import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.model.ReportType
 import com.example.quizler.ui.model.Score
 import com.example.quizler.ui.screen.home.mapper.QuizModeMapper
-import com.example.quizler.ui.screen.newquestion.CreateNewQuestionDto
-import com.example.quizler.ui.screen.newquestion.CreateNewQuestionDtoMapper
+import com.example.quizler.data.remote.dto.CreateNewQuestionDto
+import com.example.quizler.data.remote.dto.mapper.CreateNewQuestionDtoMapper
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreenState
 import com.example.quizler.ui.screen.quiz.IQuizResultStateGenerator
 import com.example.quizler.ui.screen.quiz.QuestionBundle

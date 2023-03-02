@@ -69,8 +69,8 @@
     <string name="answer_b">B)</string>
     <string name="answer_c">C)</string>
     <string name="answer_d">D)</string>
-    <string name="save">Sacuvaj</string>
-    <string name="reset_fields">Resetuj polja</string>
+    <string name="save">Sačuvaj</string>
+    <string name="reset_fields">Obriši</string>
 
     <string name="lorem">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna

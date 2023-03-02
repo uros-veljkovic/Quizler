@@ -6,14 +6,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -98,6 +101,9 @@ fun CreateNewQuestionScreen(
                         placeholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f)
                     )
                 )
+                if (state.isLoading) {
+                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                }
                 HorizontalChipPicker(
                     items = state.categories,
                     isDropdownExpanded = state.isCategoriesDropdownExpanded,
@@ -134,9 +140,10 @@ fun CreateNewQuestionScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(painter = painterResource(id = R.drawable.ic_save), contentDescription = null)
-                            Text(text = stringResource(id = R.string.save_question))
+                            Text(text = stringResource(id = R.string.save))
                         }
                     }
+                    Spacer(modifier = Modifier.size(spaceS))
                     OutlinedButton(
                         modifier = Modifier.weight(1f),
                         onClick = viewModel::onDeleteAll

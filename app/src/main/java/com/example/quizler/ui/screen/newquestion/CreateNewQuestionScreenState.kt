@@ -16,6 +16,7 @@ data class CreateNewQuestionScreenState(
     val categories: List<ChosableItem.Content> = fakeCategoryChips,
     val isCategoriesDropdownExpanded: Boolean = false,
     val chosenCategory: ChosableItem.Content? = null,
+    val isLoading: Boolean = false,
 ) {
     fun copyWithUpdatedAnswer(
         type: AnswerType,
@@ -47,5 +48,13 @@ data class CreateNewQuestionScreenState(
 
     fun copyWithUpdatedCategories(categories: List<ChosableItem.Content>): CreateNewQuestionScreenState {
         return copy(categories = categories, chosenCategory = categories.firstOrNull())
+    }
+
+    fun copyWithSuccessfulNewQuestionCreation(): CreateNewQuestionScreenState {
+        return CreateNewQuestionScreenState()
+    }
+
+    fun copyWithSwitchedLoading(): CreateNewQuestionScreenState {
+        return copy(isLoading = isLoading.not())
     }
 }

@@ -11,6 +11,7 @@ import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.data.remote.dto.ScoreDto
 import com.example.quizler.domain.data.RepositoryResponse
 import com.example.quizler.domain.data.remote.IQuizRemoteRepository
+import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +56,7 @@ class FakeQuizRemoteRepository : IQuizRemoteRepository {
     }
 
     override suspend fun getReportTypes(): RepositoryResponse<List<ReportTypeDto>> {
-        TODO("Add file with report types as JSON")
+        return RepositoryResponse.Success(emptyList())
     }
 
     override suspend fun getScores(): RepositoryResponse<List<ScoreDto>> {
@@ -83,7 +84,7 @@ class FakeQuizRemoteRepository : IQuizRemoteRepository {
         return RepositoryResponse.Success(Unit)
     }
 
-    override suspend fun create(question: QuestionDto): RepositoryResponse<Unit> {
-        TODO("Not yet implemented")
+    override suspend fun create(question: CreateNewQuestionDto): RepositoryResponse<Unit> {
+        return RepositoryResponse.Success(Unit)
     }
 }

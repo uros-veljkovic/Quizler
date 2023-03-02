@@ -57,24 +57,24 @@ fun AnswerTextField(
 
     var textFieldHeight by remember { mutableStateOf(Dp.Unspecified) }
 
-    val animationTime = 500
-    val animatedButtonColor = animateColorAsState(
-        targetValue = colorAcomodatedToLightOrDarkMode(color = color),
-        animationSpec = tween(animationTime, 0, LinearEasing)
-    )
+    val buttonColor = colorAcomodatedToLightOrDarkMode(color = color)
     val localDensity = LocalDensity.current
 
     ElevatedCard(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            contentColor = contentColorFor(animatedButtonColor.value),
-            containerColor = animatedButtonColor.value,
-            disabledContentColor = contentColorFor(animatedButtonColor.value),
-            disabledContainerColor = animatedButtonColor.value,
+            contentColor = contentColorFor(buttonColor),
+            containerColor = buttonColor,
+            disabledContentColor = contentColorFor(buttonColor),
+            disabledContainerColor = buttonColor,
         )
     ) {
-        Row(modifier = Modifier.padding(spaceS).fillMaxHeight(), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier
+                .padding(spaceS)
+                .fillMaxHeight(), verticalAlignment = Alignment.CenterVertically
+        ) {
             AnswerCharComponent(
                 modifier = Modifier
                     .height(textFieldHeight)

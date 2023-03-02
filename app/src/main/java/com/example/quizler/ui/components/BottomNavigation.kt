@@ -6,6 +6,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -23,7 +24,7 @@ fun BottomNavigation(
     NavigationBar {
         BottomNavigationItem.values().forEach { item ->
             NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = "") },
+                icon = { Icon(painter = painterResource(id = item.icon), contentDescription = "") },
                 label = { Text(text = stringResource(id = item.titleResId)) },
                 selected = currentRoute == item.route,
                 onClick = {

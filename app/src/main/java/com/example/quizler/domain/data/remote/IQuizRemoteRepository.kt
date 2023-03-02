@@ -10,6 +10,7 @@ import com.example.quizler.data.remote.dto.ReportTypeDto
 import com.example.quizler.data.remote.dto.ResultRecordDto
 import com.example.quizler.data.remote.dto.ScoreDto
 import com.example.quizler.domain.data.RepositoryResponse
+import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 
 interface IQuizRemoteRepository {
 
@@ -23,5 +24,5 @@ interface IQuizRemoteRepository {
     suspend fun record(resultRecordDto: ResultRecordDto): RepositoryResponse<Unit>
     suspend fun report(questionId: String): RepositoryResponse<Unit>
     suspend fun report(dto: ReportQuestionDto): RepositoryResponse<Unit>
-    suspend fun create(question: QuestionDto): RepositoryResponse<Unit>
+    suspend fun create(question: CreateNewQuestionDto): RepositoryResponse<Unit>
 }

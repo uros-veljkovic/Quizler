@@ -2,13 +2,17 @@ package com.example.quizler.ui.screen.newquestion
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.quizler.data.remote.dto.CreateNewQuestionDto
 import com.example.quizler.domain.model.AnswerType
+import com.example.quizler.domain.usecase.CreateNewQuestionUseCase
 import com.example.quizler.domain.usecase.GetChoosableCategoryItemsUseCase
 import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.screen.score.ScoreViewModel
+import com.example.quizler.util.State
 import com.example.quizler.util.mapper.DataMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,14 +21,14 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateNewQuestionViewModel @Inject constructor(
     private val getChoosableCategoryItemsUseCase: GetChoosableCategoryItemsUseCase,
-    private val mapper: DataMapper<CreateNewQuestionScreenState, CreateNewQuestionDto>
-) : ViewModel() {
+    private val createNewQuestionUseCase: CreateNewQuestionUseCase,
+
+    ) : ViewModel() {
     private val _screenState = MutableStateFlow(CreateNewQuestionScreenState())
     val screenState = _screenState.stateIn(
         viewModelScope,
@@ -74,11 +78,56 @@ class CreateNewQuestionViewModel @Inject constructor(
     }
 
     fun onSaveQuestion() {
-        println(mapper.map(_screenState.value).toString())
+        viewModelScope.launch(Dispatchers.IO) {
+            createNewQuestionUseCase(_screenState.value).collect { createNewQuestionState ->
+                when (createNewQuestionState) {
+                    is State.Error -> {
+                        switchLoading()
+                        handleError()
+                        return@collect
+                    }
+                    is State.Loading -> switchLoading()
+                    is State.Success -> {
+                        switchLoading()
+                        handleSuccess()
+                        return@collect
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    private fun handleError() {
         viewModelScope.launch {
-            _infoBannerData.emit(InfoBannerData.SuccessfullyCreatedNewQuestion)
-            delay(ScoreViewModel.DELAY_BEFORE_ERROR_DISAPPEAR)
-            _infoBannerData.emit(null)
+            showInfoBanner(InfoBannerData.ErrorLoadingContent)
+            resetMainState()
+        }
+    }
+
+    private fun handleSuccess() {
+        viewModelScope.launch {
+            showInfoBanner(InfoBannerData.SuccessfullyCreatedNewQuestion)
+            resetMainState()
+        }
+    }
+
+    private suspend fun showInfoBanner(data: InfoBannerData) {
+        _infoBannerData.emit(data)
+        delay(ScoreViewModel.DELAY_BEFORE_ERROR_DISAPPEAR)
+        _infoBannerData.emit(null)
+    }
+
+    private fun resetMainState() {
+        _screenState.update {
+            it.copyWithSuccessfulNewQuestionCreation()
+        }
+    }
+
+    private fun switchLoading() {
+        _screenState.update {
+            it.copyWithSwitchedLoading()
         }
     }
 
@@ -93,40 +142,3 @@ class CreateNewQuestionViewModel @Inject constructor(
     }
 }
 
-class CreateNewQuestionDtoMapper : DataMapper<CreateNewQuestionScreenState, CreateNewQuestionDto> {
-    override fun map(input: CreateNewQuestionScreenState): CreateNewQuestionDto {
-        return CreateNewQuestionDto(
-            text = input.question.text,
-            categoryId = input.chosenCategory?.itemId ?: throw Exception("No category has been chosen !"),
-            answers = input.answers.map {
-                CreateNewQuestionAnswerDto(
-                    text = it.text,
-                    isCorrect = it.type == input.chosenCorrectAnswer
-                )
-            }
-        )
-    }
-}
-
-data class CreateNewQuestionDto(
-    private val text: String,
-    private val categoryId: String,
-    private val answers: List<CreateNewQuestionAnswerDto>
-) {
-    override fun toString(): String {
-        return """
-            Text: $text
-            Category ID: $categoryId
-            Answers: ${
-        answers.map { answer ->
-            answer.text + ", Is correct: " + answer.isCorrect
-        }
-        }
-        """.trimIndent()
-    }
-}
-
-data class CreateNewQuestionAnswerDto(
-    val text: String,
-    val isCorrect: Boolean,
-)

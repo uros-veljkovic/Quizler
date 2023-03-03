@@ -8,10 +8,9 @@ import com.example.quizler.data.local.entity.LengthModeEntity
 import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.util.mapper.DataMapper
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetChosableModeItemsUseCase @Inject constructor(
+class GetChoosableModeItemsUseCase @Inject constructor(
     private val getModesLengthUseCase: GetModesLengthUseCase,
     private val getModesDifficultyUseCase: GetModesDifficultyUseCase,
     private val getModesCategoryUseCase: GetModesCategoryUseCase,
@@ -46,11 +45,4 @@ class GetChosableModeItemsUseCase @Inject constructor(
             }
         ).flatten()
     }
-}
-
-class GetChoosableCategoryItemsUseCase @Inject constructor(
-    private val getModesCategoryUseCase: GetModesCategoryUseCase,
-    private val mapper: DataMapper<BaseQuizModeEntity, ChosableItem.Content>,
-) {
-    operator fun invoke() = getModesCategoryUseCase().map { mapper.map(it) }
 }

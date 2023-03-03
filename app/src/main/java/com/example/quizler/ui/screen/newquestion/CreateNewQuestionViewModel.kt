@@ -2,7 +2,6 @@ package com.example.quizler.ui.screen.newquestion
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.util.StringUtil
 import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.domain.usecase.CreateNewQuestionUseCase
 import com.example.quizler.domain.usecase.GetChoosableCategoryItemsUseCase
@@ -22,19 +21,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NewQuestionValidator {
-    fun validate(state: CreateNewQuestionScreenState): Boolean {
-        return state.question.text.isEmpty() || state.answers.any { it.text.isEmpty() }
-    }
-}
-
 @HiltViewModel
 class CreateNewQuestionViewModel @Inject constructor(
     private val getChoosableCategoryItemsUseCase: GetChoosableCategoryItemsUseCase,
     private val createNewQuestionUseCase: CreateNewQuestionUseCase
 ) : ViewModel() {
-
-    val validator = NewQuestionValidator()
 
     private val _screenState = MutableStateFlow(CreateNewQuestionScreenState())
     val screenState = _screenState.stateIn(
@@ -43,8 +34,8 @@ class CreateNewQuestionViewModel @Inject constructor(
         CreateNewQuestionScreenState()
     )
 
-    private val _infoBannerData: MutableSharedFlow<InfoBannerData?> = MutableSharedFlow()
-    val infoBannerData = _infoBannerData.asSharedFlow()
+    private val _infoBanner: MutableSharedFlow<InfoBannerData?> = MutableSharedFlow()
+    val infoBanner = _infoBanner.asSharedFlow()
 
     init {
         observeCategoryItems()
@@ -87,7 +78,7 @@ class CreateNewQuestionViewModel @Inject constructor(
     fun onSaveQuestion() {
         viewModelScope.launch(Dispatchers.IO) {
             val state = _screenState.value
-            if (state.question.text.isEmpty() || state.answers.any { it.text.isEmpty() }) {
+            if (state.hasAnyEmptyField()) {
                 showInfoBanner(InfoBannerData.InvalidQuestionFields)
                 return@launch
             }
@@ -126,9 +117,9 @@ class CreateNewQuestionViewModel @Inject constructor(
     }
 
     private suspend fun showInfoBanner(data: InfoBannerData) {
-        _infoBannerData.emit(data)
+        _infoBanner.emit(data)
         delay(ScoreViewModel.DELAY_BEFORE_ERROR_DISAPPEAR)
-        _infoBannerData.emit(null)
+        _infoBanner.emit(null)
     }
 
     private fun resetMainState() {
@@ -144,7 +135,9 @@ class CreateNewQuestionViewModel @Inject constructor(
     }
 
     fun onExpandDropdown() {
-        _screenState.update { it.copyWithCategoryDropdownStateAltered() }
+        _screenState.update {
+            it.copyWithCategoryDropdownStateAltered()
+        }
     }
 
     fun onDeleteAll() {

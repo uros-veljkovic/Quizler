@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quizler.R
 import com.example.quizler.domain.data.local.INetworkRepository
-import com.example.quizler.domain.usecase.GetChosableModeItemsUseCase
+import com.example.quizler.domain.usecase.GetChoosableModeItemsUseCase
 import com.example.quizler.domain.usecase.GetScoresUseCase
 import com.example.quizler.ui.model.ChosableItem
 import com.example.quizler.ui.model.InfoBannerData
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScoreViewModel @Inject constructor(
-    getModesUseCase: GetChosableModeItemsUseCase,
+    getModesUseCase: GetChoosableModeItemsUseCase,
     private val getScoresUseCase: GetScoresUseCase,
     repository: INetworkRepository
 ) : ViewModel() {

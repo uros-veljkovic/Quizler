@@ -56,7 +56,7 @@ fun CreateNewQuestionScreen(
     paddingValues: PaddingValues
 ) {
     val state by viewModel.screenState.collectAsState()
-    val infoBannerData by viewModel.infoBannerData.collectAsState(initial = null)
+    val infoBannerData by viewModel.infoBanner.collectAsState(initial = null)
     val scrollState = rememberScrollState()
     Scaffold(
         modifier = Modifier.padding(paddingValues),

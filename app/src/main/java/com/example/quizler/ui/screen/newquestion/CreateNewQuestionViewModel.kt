@@ -2,6 +2,7 @@ package com.example.quizler.ui.screen.newquestion
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.util.StringUtil
 import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.domain.usecase.CreateNewQuestionUseCase
 import com.example.quizler.domain.usecase.GetChoosableCategoryItemsUseCase

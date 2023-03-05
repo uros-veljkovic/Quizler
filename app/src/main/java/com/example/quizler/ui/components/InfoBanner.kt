@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +20,6 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -39,8 +37,6 @@ fun InfoBanner(
     isActionButtonVisible: Boolean? = true,
     onActionButtonClick: (() -> Unit)? = null,
 ) {
-
-    val buttonColor = data.color.manipulateColor(.4f)
 
     Card(
         modifier = modifier
@@ -87,9 +83,6 @@ fun InfoBanner(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = isActionButtonEnabled ?: true,
                     onClick = { onActionButtonClick?.invoke() },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = buttonColor
-                    )
                 ) {
                     Text(
                         text = stringResource(id = data.actionButtonText),
@@ -100,10 +93,6 @@ fun InfoBanner(
     }
 }
 
-fun Color.manipulateColor(factor: Float): Color {
-    return Color(red = red * factor, blue = blue * factor, green = green * factor)
-}
-
 @Preview(device = Devices.PIXEL_3, showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Preview(device = Devices.PIXEL_3, showBackground = true)
 @Composable
@@ -111,7 +100,7 @@ fun PreviewInfoBanner() {
     QuizlerTheme {
         Surface {
             Column(Modifier.padding(spaceM)) {
-                InfoBanner(data = InfoBannerData.NoNetwork)
+                InfoBanner(data = InfoBannerData.NoNetwork, isActionButtonEnabled = false)
                 Spacer(modifier = Modifier.size(spaceM))
                 InfoBanner(data = InfoBannerData.ErrorLoadingContent)
                 Spacer(modifier = Modifier.size(spaceM))

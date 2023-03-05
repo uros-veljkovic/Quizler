@@ -3,7 +3,6 @@ package com.example.quizler.ui.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.example.quizler.ui.components.manipulateColor
 
 val md_theme_light_primary = Color(0xFF825500)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
@@ -84,6 +83,10 @@ val RandomColors = listOf(
     Color(0xFFEF6C00),
     Color(0xFFFF5722)
 )
+
+fun Color.manipulateColor(factor: Float): Color {
+    return Color(red = red * factor, blue = blue * factor, green = green * factor)
+}
 
 @Composable
 fun colorAcomodatedToLightOrDarkMode(color: Color) = if (isSystemInDarkTheme()) color.manipulateColor(.6f) else color

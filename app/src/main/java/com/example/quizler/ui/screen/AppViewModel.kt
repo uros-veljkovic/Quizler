@@ -1,18 +1,25 @@
 package com.example.quizler.ui.screen
 
 import androidx.lifecycle.ViewModel
-import com.example.quizler.ui.components.BottomNavigationItem
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class AppViewModel @Inject constructor() : ViewModel() {
-    val state = MutableStateFlow(AppScreenState())
+    private val _state = MutableStateFlow(AppScreenState())
+    val state = _state.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        AppScreenState()
+    )
 
     fun setBottomNavVisible(visible: Boolean) {
-        state.update {
+        _state.update {
             it.copy(
                 bottomNavigationConfig = it.bottomNavigationConfig.copy(
                     isBottomNavVisible = visible
@@ -21,26 +28,12 @@ class AppViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun setBottomNavItem(item: BottomNavigationItem) {
-        val screen = when (item) {
-            BottomNavigationItem.Home -> Screen.Home
-            BottomNavigationItem.Scoreboard -> Screen.Scoreboard
-            BottomNavigationItem.NewQuestion -> Screen.NewQuestion
-        }
-        state.update {
-            it.copy(
-                bottomNavigationConfig = it.bottomNavigationConfig.copy(itemSelected = item),
-                navigate = screen
-            )
-        }
-    }
-
     fun closeApp() {
-        state.update { it.copy(shouldCloseApp = true) }
+        _state.update { it.copy(shouldCloseApp = true) }
     }
 
     fun handleBack() {
-        state.update {
+        _state.update {
             it.copy(
                 isExitDialogVisible = true,
                 bottomNavigationConfig = it.bottomNavigationConfig.copy(isBottomNavVisible = false)
@@ -49,7 +42,7 @@ class AppViewModel @Inject constructor() : ViewModel() {
     }
 
     fun handleExitDialogDecline() {
-        state.update {
+        _state.update {
             it.copy(
                 isExitDialogVisible = false,
                 bottomNavigationConfig = it.bottomNavigationConfig.copy(isBottomNavVisible = true)

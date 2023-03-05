@@ -4,7 +4,6 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,13 +52,11 @@ import com.example.quizler.ui.theme.spaceS
 @Composable
 fun CreateNewQuestionScreen(
     viewModel: CreateNewQuestionViewModel = hiltViewModel(),
-    paddingValues: PaddingValues
 ) {
     val state by viewModel.screenState.collectAsState()
     val infoBannerData by viewModel.infoBanner.collectAsState(initial = null)
     val scrollState = rememberScrollState()
     Scaffold(
-        modifier = Modifier.padding(paddingValues),
         snackbarHost = {
             AnimatedVisibility(visible = infoBannerData != null) {
                 infoBannerData?.let {
@@ -171,7 +168,7 @@ fun CreateNewQuestionScreen(
 fun PreviewCreateNewQuestionScreen() {
     QuizlerTheme {
         Surface {
-            CreateNewQuestionScreen(paddingValues = PaddingValues(spaceS))
+            CreateNewQuestionScreen()
         }
     }
 }

@@ -1,9 +1,8 @@
-package com.example.quizler.ui.components
+package com.example.quizler.ui.components.quiz
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,9 +26,6 @@ import com.example.quizler.domain.model.Answer
 import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.domain.model.Difficulty
 import com.example.quizler.domain.model.Question
-import com.example.quizler.ui.components.quiz.AnswerButton
-import com.example.quizler.ui.components.quiz.QuestionTextComponent
-import com.example.quizler.ui.screen.home.plus
 import com.example.quizler.ui.screen.quiz.QuestionBundle
 import com.example.quizler.ui.screen.quiz.QuizScreenState
 import com.example.quizler.ui.theme.QuizlerTheme
@@ -37,7 +33,6 @@ import com.example.quizler.ui.theme.spaceS
 
 @Composable
 fun QuestionScreenContent(
-    padding: PaddingValues,
     state: QuizScreenState,
     onQuestionAnswered: (AnswerType) -> Unit,
     onReportQuestion: (String) -> Unit
@@ -45,7 +40,7 @@ fun QuestionScreenContent(
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding + spaceS),
+            .padding(spaceS),
         constraintSet = quizScreenConstraintSet
     ) {
         QuestionTextComponent(
@@ -111,7 +106,6 @@ fun PreviewQuestionScreenContent() {
     QuizlerTheme() {
         Surface {
             QuestionScreenContent(
-                padding = PaddingValues(),
                 state = QuizScreenState(
                     question = QuestionBundle(
                         time = 20,

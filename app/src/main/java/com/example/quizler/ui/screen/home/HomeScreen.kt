@@ -27,7 +27,6 @@ import com.example.quizler.ui.utils.navigate
 
 @Composable
 fun HomeScreen(
-    padding: PaddingValues,
     navController: NavController = rememberNavController(),
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -36,7 +35,7 @@ fun HomeScreen(
 
     Column(
         modifier = Modifier
-            .padding(padding.plus(spaceM))
+            .padding(spaceM)
             .verticalScroll(rememberScrollState())
     ) {
         QuizModes(

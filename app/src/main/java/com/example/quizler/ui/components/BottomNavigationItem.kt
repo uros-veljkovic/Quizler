@@ -1,6 +1,5 @@
 package com.example.quizler.ui.components
 
-import androidx.compose.material.icons.filled.Home
 import com.example.quizler.R
 import com.example.quizler.ui.screen.Screen
 

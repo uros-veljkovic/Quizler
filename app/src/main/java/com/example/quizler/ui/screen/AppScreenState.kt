@@ -7,7 +7,6 @@ import androidx.compose.runtime.Stable
 @Stable
 data class AppScreenState(
     val bottomNavigationConfig: BottomNavigationConfig = BottomNavigationConfig(),
-    val navigate: Screen? = null,
     val shouldCloseApp: Boolean = false,
     val isExitDialogVisible: Boolean = false
 )

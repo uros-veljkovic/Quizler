@@ -78,6 +78,7 @@ android {
     }
     buildFeatures {
         compose true
+        viewBinding true
     }
     composeOptions {
         kotlinCompilerExtensionVersion "$version_compose_compiler"
@@ -110,6 +111,10 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:$version_room"
     implementation 'androidx.core:core-ktx:1.7.10'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter'
     annotationProcessor "androidx.room:room-compiler:$version_room"

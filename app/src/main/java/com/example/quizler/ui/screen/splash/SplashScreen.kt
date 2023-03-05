@@ -44,7 +44,11 @@ fun SplashScreen(
     LaunchedEffect(key1 = state.isGoToHomeScreen) {
         if (state.isGoToHomeScreen) {
             delay(200L)
-            navController.navigate(Screen.Splash, Screen.Home)
+            navController.navigate(Screen.Home.route) {
+                popUpTo(Screen.Home.route) {
+                    inclusive = true
+                }
+            }
         }
     }
     Box(modifier = Modifier.fillMaxSize()) {

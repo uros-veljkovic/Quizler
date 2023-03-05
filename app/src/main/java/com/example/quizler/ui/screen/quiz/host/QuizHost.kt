@@ -66,7 +66,7 @@ class QuizHost @Inject constructor(
     }
 
     private suspend fun tickOrTimeOut(scope: CoroutineScope) {
-        val allDialogsInvisible = state.value.isExitDialogVisible.not() && state.value.isReportQuestionDialogVisible.not()
+        val allDialogsInvisible = state.value.isReportQuestionDialogVisible.not()
         if (allDialogsInvisible) {
             state.value.question?.time?.let { time ->
                 delay(1000)

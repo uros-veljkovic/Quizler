@@ -7,7 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -22,8 +22,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.quizler.ui.components.BottomNavigation
 import com.example.quizler.ui.components.ExitDialog
+import com.example.quizler.ui.components.SimpleBottomNavigation
 import com.example.quizler.ui.screen.home.HomeScreen
 import com.example.quizler.ui.screen.home.HomeViewModel
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreen
@@ -59,41 +59,35 @@ fun App(
     Scaffold(
         modifier = Modifier.disableSplitMotionEvents(),
         bottomBar = {
-            AnimatedVisibility(visible = state.bottomNavigationConfig.isBottomNavVisible) {
-                BottomNavigation(navController = navController)
-            }
+            SimpleBottomNavigation(navController = navController)
         }
     ) { padding ->
-        Box {
-            NavHost(
-                modifier = Modifier.background(Color.Transparent),
-                navController = navController,
-                startDestination = Screen.Splash.route
-            ) {
-                composable(Screen.Splash.route) {
-                    SplashScreen(navController = navController)
-                }
-                composable(Screen.Home.route) {
-                    viewModel.setBottomNavVisible(true)
-                    HomeScreen(padding = padding, navController = navController, viewModel = homeViewModel)
-                }
-                composable(Screen.Scoreboard.route) {
-                    viewModel.setBottomNavVisible(true)
-                    ScoreScreen(paddingValues = padding, viewModel = scoreViewModel)
-                }
-                composable(Screen.NewQuestion.route) {
-                    viewModel.setBottomNavVisible(true)
-                    CreateNewQuestionScreen(paddingValues = padding, viewModel = newQuestionViewModel)
-                }
-                composable(Screen.Quiz().route) {
-                    viewModel.setBottomNavVisible(false)
-                    it.arguments?.getString("modeId")?.let { modeId ->
-                        QuizScreen(
-                            padding = padding,
-                            navController = navController,
-                            modeId = modeId
-                        )
-                    }
+        NavHost(
+            modifier = Modifier
+                .background(Color.Transparent)
+                .padding(padding),
+            navController = navController,
+            startDestination = Screen.Splash.route
+        ) {
+            composable(Screen.Splash.route) {
+                SplashScreen(navController = navController)
+            }
+            composable(Screen.Home.route) {
+                viewModel.setBottomNavVisible(true)
+                HomeScreen(navController = navController, viewModel = homeViewModel)
+            }
+            composable(Screen.Scoreboard.route) {
+                viewModel.setBottomNavVisible(true)
+                ScoreScreen(viewModel = scoreViewModel)
+            }
+            composable(Screen.NewQuestion.route) {
+                viewModel.setBottomNavVisible(true)
+                CreateNewQuestionScreen(viewModel = newQuestionViewModel)
+            }
+            composable(Screen.Quiz().route) {
+                viewModel.setBottomNavVisible(false)
+                it.arguments?.getString("modeId")?.let { modeId ->
+                    QuizScreen(navController = navController, modeId = modeId)
                 }
             }
         }

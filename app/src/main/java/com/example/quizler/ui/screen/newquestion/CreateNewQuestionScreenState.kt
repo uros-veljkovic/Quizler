@@ -4,7 +4,7 @@ import com.example.quizler.domain.model.AnswerType
 import com.example.quizler.ui.components.fakeCategoryChips
 import com.example.quizler.ui.model.ChosableItem
 
-data class CreateNewQuestionScreenState (
+data class CreateNewQuestionScreenState(
     val question: QuestionFieldState = QuestionFieldState(),
     val answers: List<AnswerFieldState> = listOf(
         AnswerFieldState(AnswerType.A),

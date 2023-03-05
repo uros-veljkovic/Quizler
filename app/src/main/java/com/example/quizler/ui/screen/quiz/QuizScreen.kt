@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -19,15 +18,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.quizler.R
 import com.example.quizler.ui.components.BasicDialog
 import com.example.quizler.ui.components.OptionsPickerDialog
-import com.example.quizler.ui.components.QuestionScreenContent
 import com.example.quizler.ui.components.ResultInfoDialog
+import com.example.quizler.ui.components.quiz.QuestionScreenContent
 import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.screen.Screen
 import com.example.quizler.ui.utils.navigate
 
 @Composable
 fun QuizScreen(
-    padding: PaddingValues,
     navController: NavController = rememberNavController(),
     viewModel: QuizViewModel = hiltViewModel(),
     modeId: String
@@ -56,7 +54,6 @@ fun QuizScreen(
     ) {
         state.question?.let {
             QuestionScreenContent(
-                padding,
                 state,
                 viewModel::answered,
                 viewModel::reportQuestion

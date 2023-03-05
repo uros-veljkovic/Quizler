@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FilterChip
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,7 +35,7 @@ data class QuestionNumberSpan(
     val totalQuestions: Int = 0,
 )
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionTextComponent(
     modifier: Modifier = Modifier,
@@ -69,8 +70,7 @@ fun QuestionTextComponent(
                 .layoutId(idChipQuestinNumberSpan)
                 .padding(start = spaceS),
             selected = true,
-            onClick = { }
-        ) {
+            onClick = { }, label = {
             Text(
                 modifier = Modifier.padding(top = 2.dp),
                 text = "Pitanje " + span.currentQuestion.toString() + " / " + span.totalQuestions,
@@ -79,12 +79,13 @@ fun QuestionTextComponent(
                 color = Color.Black
             )
         }
+        )
         FilterChip(
             modifier = Modifier
                 .layoutId(idChipPoints)
                 .wrapContentSize()
                 .padding(end = spaceS),
-            content = {
+            label = {
                 Text(
                     modifier = Modifier.padding(top = 2.dp),
                     text = points.toString(),

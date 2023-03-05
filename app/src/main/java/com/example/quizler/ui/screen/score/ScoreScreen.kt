@@ -37,14 +37,12 @@ import com.example.quizler.ui.theme.spaceS
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScoreScreen(
-    paddingValues: PaddingValues,
     viewModel: ScoreViewModel = hiltViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()
 
     Scaffold(
-        modifier = Modifier.padding(paddingValues),
         containerColor = Color.Transparent,
         floatingActionButton = {
             FloatingActionButton(onClick = viewModel::refreshScoreboard) {

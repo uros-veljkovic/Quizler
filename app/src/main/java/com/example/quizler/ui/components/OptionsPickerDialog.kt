@@ -33,6 +33,7 @@ import com.example.quizler.ui.model.IChoosableOptionItem
 import com.example.quizler.ui.model.InfoBannerData
 import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.colorAcomodatedToLightOrDarkMode
+import com.example.quizler.ui.theme.manipulateColor
 import com.example.quizler.ui.theme.spaceL
 import com.example.quizler.ui.theme.spaceM
 import com.example.quizler.ui.theme.spaceXL

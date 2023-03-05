@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.example.quizler.R
 import com.example.quizler.ui.model.Score
 import com.example.quizler.ui.theme.QuizlerTheme
+import com.example.quizler.ui.theme.manipulateColor
 import com.example.quizler.ui.theme.spaceL
 import com.example.quizler.ui.theme.spaceM
 import com.example.quizler.ui.theme.spaceS

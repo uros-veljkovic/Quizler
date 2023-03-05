@@ -59,7 +59,9 @@ fun App(
     Scaffold(
         modifier = Modifier.disableSplitMotionEvents(),
         bottomBar = {
-            SimpleBottomNavigation(navController = navController)
+            AnimatedVisibility(visible = state.bottomNavigationConfig.isBottomNavVisible) {
+                SimpleBottomNavigation(navController = navController)
+            }
         }
     ) { padding ->
         NavHost(

@@ -133,6 +133,7 @@ fun CreateNewQuestionScreen(
                 ) {
                     Button(
                         modifier = Modifier.weight(1f),
+                        enabled = state.isLoading.not(),
                         onClick = viewModel::onSaveQuestion
                     ) {
                         Row(
@@ -146,6 +147,7 @@ fun CreateNewQuestionScreen(
                     Spacer(modifier = Modifier.size(spaceS))
                     OutlinedButton(
                         modifier = Modifier.weight(1f),
+                        enabled = state.isLoading.not(),
                         onClick = viewModel::onDeleteAll
                     ) {
                         Row(

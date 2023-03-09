@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.quizler.R
@@ -46,10 +49,12 @@ fun HorizontalChipPicker(
     val scrollState = rememberLazyListState()
     Column(modifier = modifier) {
         Row(
-            modifier = Modifier.clickable {
-                onExpandDropdown()
-            },
-            horizontalArrangement = Arrangement.spacedBy(spaceM),
+            modifier = Modifier
+                .clickable {
+                    onExpandDropdown()
+                }
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Disclaimer(
@@ -58,21 +63,24 @@ fun HorizontalChipPicker(
                 text = "Izabrana kategorija: ",
                 color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.weight(1f))
-            chosenItem?.icon?.let {
-                Image(
-                    modifier = Modifier.size(20.dp),
-                    painter = painterResource(id = it),
+            Row {
+                chosenItem?.icon?.let {
+                    Image(
+                        modifier = Modifier.size(20.dp),
+                        painter = painterResource(id = it),
+                        contentDescription = null
+                    )
+                }
+                Spacer(modifier = Modifier.size(spaceS))
+                chosenItem?.text?.let {
+                    val cutText = if (it.count() > 15) it.take(15) + "..." else it
+                    Text(text = cutText, overflow = TextOverflow.Ellipsis, maxLines = 1)
+                }
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
                     contentDescription = null
                 )
             }
-            chosenItem?.text?.let {
-                Text(text = it)
-            }
-            Icon(
-                imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = null
-            )
         }
         AnimatedVisibility(visible = isDropdownExpanded) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(spaceS), state = scrollState) {
@@ -118,7 +126,12 @@ fun PreviewHorizontaChipPicker() {
     }
 }
 
-val fakeCategoryChips = listOf(
+private val fakeCategoryChips = listOf(
+    ChosableItem.Content(
+        text = "Opsta Informisanost",
+        icon = R.drawable.ic_mode_general_knowledge,
+        itemId = 6.toString()
+    ),
     ChosableItem.Content(text = "Muzika", icon = R.drawable.ic_mode_music, itemId = 1.toString()),
     ChosableItem.Content(text = "Film", icon = R.drawable.ic_mode_movie, itemId = 2.toString()),
     ChosableItem.Content(text = "Sport", icon = R.drawable.ic_mode_sport, itemId = 3.toString()),
@@ -127,10 +140,5 @@ val fakeCategoryChips = listOf(
         text = "Geografija",
         icon = R.drawable.ic_mode_geography,
         itemId = 5.toString()
-    ),
-    ChosableItem.Content(
-        text = "Opsta info.",
-        icon = R.drawable.ic_mode_general_knowledge,
-        itemId = 6.toString()
     )
 )

@@ -1,7 +1,6 @@
 package com.example.quizler.ui.screen.newquestion
 
 import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.ui.components.fakeCategoryChips
 import com.example.quizler.ui.model.ChosableItem
 
 data class CreateNewQuestionScreenState(
@@ -13,7 +12,7 @@ data class CreateNewQuestionScreenState(
         AnswerFieldState(AnswerType.D),
     ),
     val chosenCorrectAnswer: AnswerType = AnswerType.A,
-    val categories: List<ChosableItem.Content> = fakeCategoryChips,
+    val categories: List<ChosableItem.Content> = emptyList(),
     val isCategoriesDropdownExpanded: Boolean = false,
     val chosenCategory: ChosableItem.Content? = null,
     val isLoading: Boolean = false,

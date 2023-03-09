@@ -13,7 +13,7 @@ class CreateNewQuestionDtoMapper : DataMapper<CreateNewQuestionScreenState, Crea
             categoryId = input.chosenCategory?.itemId ?: throw Exception("No category has been chosen !"),
             answers = input.answers.map {
                 CreateNewQuestionAnswerDto(
-                    text = it.text,
+                    text = it.text.trim(),
                     isCorrect = it.type == input.chosenCorrectAnswer
                 )
             }

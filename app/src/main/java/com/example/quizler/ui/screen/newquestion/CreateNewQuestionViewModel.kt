@@ -111,8 +111,8 @@ class CreateNewQuestionViewModel @Inject constructor(
 
     private fun handleSuccess() {
         viewModelScope.launch {
-            showInfoBanner(InfoBannerData.SuccessfullyCreatedNewQuestion)
             resetMainState()
+            showInfoBanner(InfoBannerData.SuccessfullyCreatedNewQuestion)
         }
     }
 
@@ -142,7 +142,7 @@ class CreateNewQuestionViewModel @Inject constructor(
 
     fun onDeleteAll() {
         _screenState.update {
-            CreateNewQuestionScreenState()
+            it.copyWithResetedFields()
         }
     }
 }

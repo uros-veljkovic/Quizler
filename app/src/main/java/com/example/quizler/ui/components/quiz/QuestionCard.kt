@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SelectableChipColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -70,15 +72,14 @@ fun QuestionTextComponent(
                 .layoutId(idChipQuestinNumberSpan)
                 .padding(start = spaceS),
             selected = true,
-            onClick = { }, label = {
-            Text(
-                modifier = Modifier.padding(top = 2.dp),
-                text = "Pitanje " + span.currentQuestion.toString() + " / " + span.totalQuestions,
-                style = MaterialTheme.typography.labelLarge,
-                // TODO: Adapt
-                color = Color.Black
-            )
-        }
+            onClick = { },
+            label = {
+                Text(
+                    modifier = Modifier.padding(top = 2.dp),
+                    text = "Pitanje " + span.currentQuestion.toString() + " / " + span.totalQuestions,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
         )
         FilterChip(
             modifier = Modifier
@@ -91,15 +92,13 @@ fun QuestionTextComponent(
                     text = points.toString(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.labelLarge,
-                    // TODO: Adapt
-                    color = Color.Black
                 )
             }, trailingIcon = {
-            Image(
-                painter = painterResource(id = R.drawable.ic_coin),
-                contentDescription = null
-            )
-        }, selected = true, onClick = {}
+                Image(
+                    painter = painterResource(id = R.drawable.ic_coin),
+                    contentDescription = null
+                )
+            }, selected = true, onClick = {}
         )
 
         TimerComponent(

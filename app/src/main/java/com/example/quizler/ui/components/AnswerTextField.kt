@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
@@ -103,7 +104,9 @@ fun AnswerTextField(
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    placeholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f)
+                    placeholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f),
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent
                 ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(
@@ -123,7 +126,7 @@ fun PreviewAnswerTextField() {
     QuizlerTheme() {
         AnswerTextField(
             type = AnswerType.B,
-            isCorrect = true,
+            isCorrect = false,
             text = ""
         )
     }

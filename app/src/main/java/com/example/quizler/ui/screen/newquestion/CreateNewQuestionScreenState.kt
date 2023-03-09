@@ -51,7 +51,11 @@ data class CreateNewQuestionScreenState(
     }
 
     fun copyWithSuccessfulNewQuestionCreation(): CreateNewQuestionScreenState {
-        return CreateNewQuestionScreenState()
+        return CreateNewQuestionScreenState(categories = categories, chosenCategory = chosenCategory)
+    }
+
+    fun copyWithResetedFields(): CreateNewQuestionScreenState {
+        return CreateNewQuestionScreenState(categories = categories, chosenCategory = chosenCategory)
     }
 
     fun copyWithSwitchedLoading(): CreateNewQuestionScreenState {

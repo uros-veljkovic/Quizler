@@ -4,13 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.quizler.data.local.db.dao.AnswerDao
-import com.example.quizler.data.local.db.dao.QuestionDao
-import com.example.quizler.data.local.db.dao.QuestionWithAnswersDao
-import com.example.quizler.data.local.db.dao.QuizlerDatabase
-import com.example.quizler.data.local.entity.AnswerEntity
-import com.example.quizler.data.local.entity.QuestionEntity
-import com.example.quizler.domain.model.Difficulty
+import com.example.data.model.Difficulty
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -23,12 +17,12 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class QuestionWithAnswersDaoTest {
 
-    private lateinit var db: QuizlerDatabase
-    private lateinit var questionDao: QuestionDao
-    private lateinit var answerDao: AnswerDao
-    private lateinit var sut: QuestionWithAnswersDao
+    private lateinit var db: com.example.data.local.db.dao.QuizlerDatabase
+    private lateinit var questionDao: com.example.data.local.db.dao.QuestionDao
+    private lateinit var answerDao: com.example.data.local.db.dao.AnswerDao
+    private lateinit var sut: com.example.data.local.db.dao.QuestionWithAnswersDao
 
-    private val questionEntity = QuestionEntity(
+    private val questionEntity = com.example.data.local.entity.QuestionEntity(
         id = "name",
         text = QUESTION_ID_1,
         difficulty = Difficulty.Easy,
@@ -36,15 +30,30 @@ class QuestionWithAnswersDaoTest {
         isApproved = true
     )
     private val answers = listOf(
-        AnswerEntity(answerId = "1", questionId = QUESTION_ID_1, text = "Answer 1", isCorrect = true),
-        AnswerEntity(answerId = "2", questionId = QUESTION_ID_1, text = "Answer 2", isCorrect = false),
-        AnswerEntity(answerId = "3", questionId = QUESTION_ID_2, text = "Answer 3", isCorrect = false)
+        com.example.data.local.entity.AnswerEntity(
+            answerId = "1",
+            questionId = QUESTION_ID_1,
+            text = "Answer 1",
+            isCorrect = true
+        ),
+        com.example.data.local.entity.AnswerEntity(
+            answerId = "2",
+            questionId = QUESTION_ID_1,
+            text = "Answer 2",
+            isCorrect = false
+        ),
+        com.example.data.local.entity.AnswerEntity(
+            answerId = "3",
+            questionId = QUESTION_ID_2,
+            text = "Answer 3",
+            isCorrect = false
+        )
     )
 
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, QuizlerDatabase::class.java).build()
+        db = Room.inMemoryDatabaseBuilder(context, com.example.data.local.db.dao.QuizlerDatabase::class.java).build()
         questionDao = db.daoQuestion()
         answerDao = db.daoAnswer()
         sut = db.daoQuestionsWithAnswers()

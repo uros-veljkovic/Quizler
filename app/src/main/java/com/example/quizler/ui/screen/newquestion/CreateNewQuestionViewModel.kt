@@ -2,14 +2,15 @@ package com.example.quizler.ui.screen.newquestion
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.domain.usecase.CreateNewQuestionUseCase
-import com.example.quizler.domain.usecase.GetChoosableCategoryItemsUseCase
-import com.example.quizler.ui.model.ChosableItem
-import com.example.quizler.ui.model.InfoBannerData
+import com.example.domain.State
+import com.example.domain.model.AnswerType
+import com.example.domain.model.CreateNewQuestionAnswer
+import com.example.domain.model.CreateNewQuestionBundle
+import com.example.domain.usecase.ICreateNewQuestionUseCase
+import com.example.quizler.InfoBannerDataMapper
+import com.example.quizler.model.ChosableItem
+import com.example.quizler.model.InfoBannerData
 import com.example.quizler.ui.screen.score.ScoreViewModel
-import com.example.quizler.util.State
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,19 +20,16 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class CreateNewQuestionViewModel @Inject constructor(
-    private val getChoosableCategoryItemsUseCase: GetChoosableCategoryItemsUseCase,
-    private val createNewQuestionUseCase: CreateNewQuestionUseCase
+class CreateNewQuestionViewModel(
+    private val choosableCategoryItemsProvider: ChoosableCategoryItemsProvider,
+    private val createNewQuestionUseCase: ICreateNewQuestionUseCase,
+    private val infoBannerDataMapper: InfoBannerDataMapper
 ) : ViewModel() {
 
     private val _screenState = MutableStateFlow(CreateNewQuestionScreenState())
     val screenState = _screenState.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        CreateNewQuestionScreenState()
+        viewModelScope, SharingStarted.Lazily, CreateNewQuestionScreenState()
     )
 
     private val _infoBanner: MutableSharedFlow<InfoBannerData?> = MutableSharedFlow()
@@ -43,7 +41,7 @@ class CreateNewQuestionViewModel @Inject constructor(
 
     private fun observeCategoryItems() {
         viewModelScope.launch {
-            getChoosableCategoryItemsUseCase().collect { categories ->
+            choosableCategoryItemsProvider().collect { categories ->
                 _screenState.update {
                     it.copyWithUpdatedCategories(categories)
                 }
@@ -82,12 +80,12 @@ class CreateNewQuestionViewModel @Inject constructor(
                 showInfoBanner(InfoBannerData.InvalidQuestionFields)
                 return@launch
             }
-
-            createNewQuestionUseCase(_screenState.value).collect { createNewQuestionState ->
+            val bundle = createDomainModel(_screenState.value)
+            createNewQuestionUseCase(bundle).collect { createNewQuestionState ->
                 when (createNewQuestionState) {
                     is State.Error -> {
                         switchLoading()
-                        handleError()
+                        createNewQuestionState.error?.let { handleError(it) }
                         return@collect
                     }
 
@@ -102,10 +100,19 @@ class CreateNewQuestionViewModel @Inject constructor(
         }
     }
 
-    private fun handleError() {
+    private fun createDomainModel(state: CreateNewQuestionScreenState): CreateNewQuestionBundle {
+        return CreateNewQuestionBundle(
+            question = state.question.text,
+            categoryId = state.chosenCategory?.text ?: "",
+            answers = state.answers.map {
+                CreateNewQuestionAnswer(text = it.text, isCorrect = it.type == state.chosenCorrectAnswer)
+            }
+        )
+    }
+
+    private fun handleError(throwable: Throwable) {
         viewModelScope.launch {
-            showInfoBanner(InfoBannerData.ErrorLoadingContent)
-            resetMainState()
+            showInfoBanner(infoBannerDataMapper.map(throwable))
         }
     }
 

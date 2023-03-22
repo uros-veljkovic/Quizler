@@ -1,17 +1,12 @@
 package com.example.quizler.ui.screen.quiz
 
-import androidx.annotation.DrawableRes
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
-import com.example.quizler.domain.model.Answer
-import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.domain.model.Difficulty
-import com.example.quizler.domain.model.Question
-import com.example.quizler.ui.components.quiz.QuestionNumberSpan
-import com.example.quizler.ui.model.ReportType
+import com.example.domain.model.QuestionWithAnswers
+import com.example.domain.model.ReportType
+import com.example.quizler.components.quiz.QuestionNumberSpan
+import com.example.quizler.model.ResultInfo
 
 data class QuizScreenState(
-    val question: QuestionBundle? = null,
+    val question: QuestionWithAnswers? = null,
     val result: ResultInfo? = null,
     val questionNumberSpan: QuestionNumberSpan = QuestionNumberSpan(),
     val points: Int = 0,
@@ -27,9 +22,9 @@ data class QuizScreenState(
     val questionReportCount: Int = 0,
 ) {
 
-    fun copyWithNewQuestion(questionBundle: QuestionBundle): QuizScreenState {
+    fun copyWithNewQuestion(questionWithAnswers: QuestionWithAnswers): QuizScreenState {
         return copy(
-            question = questionBundle,
+            question = questionWithAnswers,
             isReportQuestionButtonVisible = true,
             isAnyAnswerChosen = null,
             questionNumberSpan = questionNumberSpan.copy(currentQuestion = questionNumberSpan.currentQuestion + 1)
@@ -54,44 +49,3 @@ data class QuizScreenState(
 
     fun isInvalidQuestionReportButtonVisible() = questionReportCount <= 3 && isReportQuestionButtonVisible
 }
-
-@Immutable
-@Stable
-data class QuestionBundle(
-    val time: Int,
-    val question: Question,
-    val answers: List<Answer>,
-    val difficulty: Difficulty,
-) {
-    fun answeredWith(type: AnswerType): QuestionBundle {
-        return copy(
-            answers = answers.map { answer ->
-                if (answer.type == type)
-                    answer.copy(isChosen = true)
-                else
-                    answer
-            },
-        )
-    }
-
-    fun hasAnsweredCorrectly(type: AnswerType): Boolean {
-        return when (type) {
-            AnswerType.A -> answers.getOrNull(0)?.isCorrect ?: false
-            AnswerType.B -> answers.getOrNull(1)?.isCorrect ?: false
-            AnswerType.C -> answers.getOrNull(2)?.isCorrect ?: false
-            AnswerType.D -> answers.getOrNull(3)?.isCorrect ?: false
-        }
-    }
-
-    fun copyWithOneSecondLess(): QuestionBundle {
-        return copy(time = time - 1)
-    }
-}
-
-@Immutable
-@Stable
-data class ResultInfo(
-    @DrawableRes val icon: Int,
-    val title: String,
-    val description: String,
-)

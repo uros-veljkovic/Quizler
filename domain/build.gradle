@@ -1,0 +1,95 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id "io.gitlab.arturbosch.detekt" version "$version_detekt_tool"
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.example.domain'
+    compileSdk 33
+
+    compileSdkPreview = "UpsideDownCake"
+    defaultConfig {
+        minSdk 24
+        multiDexEnabled true
+
+        signingConfig signingConfigs.debug
+    }
+    configurations {
+        ktlint
+    }
+    testOptions {
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging true
+            }
+        }
+    }
+    sourceSets {
+        main { java.srcDirs = ['src/main/java'] }
+        test { java.srcDirs = ['src/test/java'] }
+        androidTest { java.srcDirs = ['src/androidTest/java'] }
+    }
+    detekt {
+        toolVersion = "$version_detekt_tool"
+        config = files("/Users/urosveljkovic/AndroidStudioProjects/Quizler/config/detekt/detekt.yml")
+        buildUponDefaultConfig = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+
+        }
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation project(":data")
+
+    // Ktlint
+    ktlint "com.pinterest:ktlint:$version_ktlint"
+
+    // Timber
+    api "com.jakewharton.timber:timber:$version_timber"
+
+    // Retrofit
+    api "com.squareup.retrofit2:retrofit:$version_retrofit"
+    api "com.squareup.retrofit2:converter-gson:$version_retrofit"
+
+    // Core CTX
+    api "androidx.core:core-ktx:$version_core_ctx"
+
+    // Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutines"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutines"
+
+    // Koin
+    api 'io.insert-koin:koin-android:3.4.0'
+}
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    args "src/**/*.kt"
+}
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    args "-F", "src/**/*.kt"
+    jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
+}

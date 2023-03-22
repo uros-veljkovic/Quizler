@@ -2,11 +2,11 @@ package com.example.quizler.ui.screen.quiz
 
 import android.content.Context
 import com.example.quizler.R
+import com.example.quizler.model.ResultInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
-class QuizResultStateGenerator @Inject constructor(
+class QuizResultStateGenerator(
     private val context: Context,
 ) : IQuizResultStateGenerator {
 
@@ -14,7 +14,8 @@ class QuizResultStateGenerator @Inject constructor(
 
     override fun getResultInfo(): ResultInfo {
         val sessionData = getSessionData()
-        val description = context.getString(R.string.result, sessionData.totalCorrectAnswers, sessionData.totalNumberOfQuestions)
+        val description =
+            context.getString(R.string.result, sessionData.totalCorrectAnswers, sessionData.totalNumberOfQuestions)
         return when (sessionData.totalCorrectAnswers.toDouble() / sessionData.totalNumberOfQuestions) {
             in 0.0..0.33 -> {
                 ResultInfo(

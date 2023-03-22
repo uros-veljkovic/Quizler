@@ -46,14 +46,14 @@
     <string name="mode_title_exam">Test</string>
     <string name="mode_title_marathon">Maraton</string>
     <string name="mode_description_zen">Iskuliraj, popij pivo.</string>
-    <string name="mode_description_exam">...sad smo već ozbiljniji, a?</string>
-    <string name="mode_description_marathon">...okej, ti mora da si štreber...</string>
+    <string name="mode_description_exam">…sad smo već ozbiljniji, a?</string>
+    <string name="mode_description_marathon">…okej, ti mora da si štreber…</string>
     <string name="mode_title_easy">Lako</string>
     <string name="mode_title_medium">Srednje</string>
     <string name="mode_title_hard">Tesko</string>
-    <string name="mode_description_easy">Bukvalno ne znaš nista...</string>
+    <string name="mode_description_easy">Bukvalno ne znaš nista…</string>
     <string name="mode_description_medium">Zagrevanje mozgića</string>
-    <string name="mode_description_hard">...okej, ti mora da si štreber...</string>
+    <string name="mode_description_hard">…okej, ti mora da si štreber…</string>
     <string name="mode_title_sport">Sport</string>
     <string name="mode_title_general_knowledge">Opšta Informisanost</string>
     <string name="mode_title_music">Muzika</string>
@@ -88,7 +88,7 @@
     <string name="wow">Vau! Odličan rezultat!</string>
     <string name="not_bad">Nije loše!</string>
     <string name="better_next_time">Biće bolje idući put!</string>
-    <string name="result">"Dao/la si tačan odgovor na %1$d od %2$d pitanja. "</string>
+    <string name="result">"Dao/la si tačan odgovor na %1$d od %2$d pitanja."</string>
     <string name="no_internet_connection">Nema internet konekcije</string>
     <string name="no_internet_connection_description">Potrebna je internet konekcija radi osvežavanja podataka.</string>
     <string name="try_again">Pokušaj ponovo</string>

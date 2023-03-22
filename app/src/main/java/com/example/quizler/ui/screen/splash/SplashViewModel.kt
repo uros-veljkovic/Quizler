@@ -2,10 +2,10 @@ package com.example.quizler.ui.screen.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quizler.domain.data.local.INetworkRepository
-import com.example.quizler.domain.usecase.HandleStartupDataUseCase
-import com.example.quizler.util.State
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.domain.State
+import com.example.domain.usecase.IGetHasInternetConnectionUseCase
+import com.example.domain.usecase.IHandleStartupDataUseCase
+import com.example.quizler.InfoBannerDataMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,16 +13,15 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SplashViewModel @Inject constructor(
-    networkRepository: INetworkRepository,
-    private val handleStartupDataUseCase: HandleStartupDataUseCase
+class SplashViewModel(
+    getHasInternetConnectionUseCase: IGetHasInternetConnectionUseCase,
+    private val handleStartupDataUseCase: IHandleStartupDataUseCase,
+    private val infoBannerDataMapper: InfoBannerDataMapper
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<SplashScreenState> = MutableStateFlow(SplashScreenState())
-    val state = _state.combine(networkRepository.getHasInternetConnectionFlow()) { state, connectivity ->
+    val state = _state.combine(getHasInternetConnectionUseCase.invoke()) { state, connectivity ->
         connectivity?.let {
             state.copy(hasConnection = connectivity)
         } ?: state
@@ -52,6 +51,7 @@ class SplashViewModel @Inject constructor(
                     handleError(newState)
                     return@collect
                 }
+
                 else -> handleProgress(newState.data ?: 0f, newState is State.Success)
             }
         }
@@ -71,7 +71,7 @@ class SplashViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isProgressVisible = false,
-                infoBannerData = progress.getInfoBanner(),
+                infoBannerData = progress.error?.let { throwable -> infoBannerDataMapper.map(throwable) },
                 isDataFetchInProgress = false
             )
         }

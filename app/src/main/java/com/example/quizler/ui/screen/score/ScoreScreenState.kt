@@ -1,12 +1,10 @@
 package com.example.quizler.ui.screen.score
 
 import androidx.compose.runtime.Stable
-import com.example.quizler.ui.model.ChosableItem
-import com.example.quizler.ui.model.InfoBannerData
-import com.example.quizler.ui.model.Score
-import javax.annotation.concurrent.Immutable
+import com.example.quizler.model.ChosableItem
+import com.example.quizler.model.InfoBannerData
+import com.example.quizler.model.Score
 
-@Immutable
 @Stable
 data class ScoreScreenState(
     private val chosenMode: ChosableItem.Content? = null,
@@ -15,7 +13,6 @@ data class ScoreScreenState(
     private val scores: List<Score> = emptyList(),
     val isLoading: Boolean = false,
     val isDataRefreshed: Boolean = false,
-    val hasNetwork: Boolean = true,
     val infoBannerData: InfoBannerData? = null,
 ) {
     fun getFilteredScores(): List<Score> {
@@ -24,14 +21,5 @@ data class ScoreScreenState(
 
     fun getChosenMode(): ChosableItem.Content? {
         return chosenMode ?: modes.firstOrNull { item -> item is ChosableItem.Content } as? ChosableItem.Content
-    }
-
-    // TODO: Handle when network connection handled properly
-    fun copyWithError(): ScoreScreenState {
-        return copy(infoBannerData = InfoBannerData.NoNetwork, isLoading = false)
-    }
-
-    fun copyWithNoError(): ScoreScreenState {
-        return copy(infoBannerData = null, isLoading = false)
     }
 }

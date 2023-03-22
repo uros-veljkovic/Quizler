@@ -1,22 +1,19 @@
 package com.example.quizler.ui.screen.home.mapper
 
-import android.graphics.drawable.Drawable
-import com.example.quizler.data.local.entity.BaseQuizModeEntity
-import com.example.quizler.domain.model.QuizMode
-import com.example.quizler.util.mapper.DataMapper
-import com.example.quizler.util.provider.AbstractResourceProvider
-import com.example.quizler.util.provider.QQuizModeTitleProvider
-import javax.inject.Inject
+import com.example.domain.model.mode.BaseMode
+import com.example.domain.provider.AbstractResourceProvider
+import com.example.quizler.model.QuizMode
+import com.example.util.mapper.DataMapper
 
-class QuizModeMapper @Inject constructor(
-    @QQuizModeTitleProvider private val titleProvider: AbstractResourceProvider<String>,
-    private val drawableProvider: AbstractResourceProvider<Drawable>,
-) : DataMapper<BaseQuizModeEntity, QuizMode> {
+class QuizModeMapper(
+    private val titleProvider: AbstractResourceProvider<String>,
+    private val drawableProvider: AbstractResourceProvider<Int>,
+) : DataMapper<BaseMode, QuizMode> {
 
     private val titleMap = mutableMapOf<String, Int>()
     private val iconMap = mutableMapOf<String, Int>()
 
-    override fun map(input: BaseQuizModeEntity): QuizMode {
+    override fun map(input: BaseMode): QuizMode {
         var title = titleMap[input.name]
         if (title == null) {
             title = titleProvider.getResId(input.name)

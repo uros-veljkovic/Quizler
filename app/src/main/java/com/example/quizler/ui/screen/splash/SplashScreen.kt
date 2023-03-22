@@ -1,6 +1,9 @@
 package com.example.quizler.ui.screen.splash
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,25 +24,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.quizler.R
-import com.example.quizler.ui.components.InfoBanner
-import com.example.quizler.ui.components.Logo
-import com.example.quizler.ui.model.InfoBannerData
-import com.example.quizler.ui.screen.Screen
-import com.example.quizler.ui.theme.QuizlerTheme
-import com.example.quizler.ui.theme.spaceXL
-import com.example.quizler.ui.utils.navigate
+import com.example.quizler.Screen
+import com.example.quizler.components.InfoBanner
+import com.example.quizler.components.Logo
+import com.example.quizler.model.InfoBannerData
+import com.example.quizler.theme.QuizlerTheme
+import com.example.quizler.theme.spaceXL
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    viewModel: SplashViewModel = hiltViewModel(),
+    viewModel: SplashViewModel,
     navController: NavController = rememberNavController(),
 ) {
     val state by viewModel.state.collectAsState()
+    val progressAnimation by animateFloatAsState(
+        targetValue = state.progress,
+        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing),
+        label = "Loading"
+    )
 
     LaunchedEffect(key1 = state.isGoToHomeScreen) {
         if (state.isGoToHomeScreen) {
@@ -66,7 +72,7 @@ fun SplashScreen(
             constraintSet = constraintSet,
         ) {
             Logo(modifier = Modifier.layoutId("logo"))
-            LinearProgressIndicator(modifier = Modifier.layoutId("progress"), progress = state.progress)
+            LinearProgressIndicator(modifier = Modifier.layoutId("progress"), progress = progressAnimation)
             state.infoBannerData?.let {
                 InfoBanner(
                     modifier = Modifier.layoutId("banner"),

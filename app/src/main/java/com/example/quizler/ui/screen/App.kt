@@ -8,22 +8,22 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.quizler.ui.components.ExitDialog
-import com.example.quizler.ui.components.SimpleBottomNavigation
+import com.example.quizler.Screen
+import com.example.quizler.components.ExitDialog
+import com.example.quizler.components.SimpleBottomNavigation
+import com.example.quizler.extensions.disableSplitMotionEvents
 import com.example.quizler.ui.screen.home.HomeScreen
 import com.example.quizler.ui.screen.home.HomeViewModel
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreen
@@ -32,20 +32,21 @@ import com.example.quizler.ui.screen.quiz.QuizScreen
 import com.example.quizler.ui.screen.score.ScoreScreen
 import com.example.quizler.ui.screen.score.ScoreViewModel
 import com.example.quizler.ui.screen.splash.SplashScreen
-import com.example.quizler.ui.utils.disableSplitMotionEvents
+import com.example.quizler.ui.screen.splash.SplashViewModel
+import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
     navController: NavHostController = rememberNavController(),
-    viewModel: AppViewModel = hiltViewModel(),
-    homeViewModel: HomeViewModel = hiltViewModel(),
-    scoreViewModel: ScoreViewModel = hiltViewModel(),
-    newQuestionViewModel: CreateNewQuestionViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = koinViewModel(),
+    splashViewModel: SplashViewModel = koinViewModel(),
+    viewModel: AppViewModel = koinViewModel(),
+    scoreViewModel: ScoreViewModel = koinViewModel(),
+    newQuestionViewModel: CreateNewQuestionViewModel = koinViewModel()
 ) {
     // TODO: Add in-app review
     val activity = LocalContext.current as? Activity
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     BackHandler(enabled = true) {
         viewModel.handleBack()
@@ -55,7 +56,6 @@ fun App(
             activity?.finish()
         }
     }
-
     Scaffold(
         modifier = Modifier.disableSplitMotionEvents(),
         bottomBar = {
@@ -72,7 +72,7 @@ fun App(
             startDestination = Screen.Splash.route
         ) {
             composable(Screen.Splash.route) {
-                SplashScreen(navController = navController)
+                SplashScreen(navController = navController, viewModel = splashViewModel)
             }
             composable(Screen.Home.route) {
                 viewModel.setBottomNavVisible(true)

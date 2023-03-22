@@ -4,9 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.quizler.data.local.db.dao.QuizlerDatabase
-import com.example.quizler.data.local.db.dao.ResultRecordDao
-import com.example.quizler.data.local.entity.ResultRecordEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -19,9 +16,9 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ResultRecordDaoTest {
 
-    private lateinit var db: QuizlerDatabase
-    private lateinit var sut: ResultRecordDao
-    private val entity = ResultRecordEntity(
+    private lateinit var db: com.example.data.local.db.dao.QuizlerDatabase
+    private lateinit var sut: com.example.data.local.db.dao.ResultRecordDao
+    private val entity = com.example.data.local.entity.ResultRecordEntity(
         username = "urkeev14",
         points = 32,
         modeId = "modeId"
@@ -30,7 +27,7 @@ class ResultRecordDaoTest {
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, QuizlerDatabase::class.java).build()
+        db = Room.inMemoryDatabaseBuilder(context, com.example.data.local.db.dao.QuizlerDatabase::class.java).build()
         sut = db.daoResultRecord()
     }
 

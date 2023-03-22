@@ -2,26 +2,21 @@ package com.example.quizler.ui.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quizler.data.local.entity.BaseQuizModeEntity
-import com.example.quizler.domain.model.QuizMode
-import com.example.quizler.domain.usecase.GetModesCategoryUseCase
-import com.example.quizler.domain.usecase.GetModesDifficultyUseCase
-import com.example.quizler.domain.usecase.GetModesLengthUseCase
-import com.example.quizler.util.mapper.DataMapper
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.domain.usecase.IGetModesCategoryUseCase
+import com.example.domain.usecase.IGetModesDifficultyUseCase
+import com.example.domain.usecase.IGetModesLengthUseCase
+import com.example.quizler.ui.screen.home.mapper.QuizModeMapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val getModesCategory: GetModesCategoryUseCase,
-    private val getModesLength: GetModesLengthUseCase,
-    private val getModesDifficulty: GetModesDifficultyUseCase,
-    private val mapper: DataMapper<BaseQuizModeEntity, QuizMode>,
+class HomeViewModel(
+    private val getModesCategory: IGetModesCategoryUseCase,
+    private val getModesLength: IGetModesLengthUseCase,
+    private val getModesDifficulty: IGetModesDifficultyUseCase,
+    private val mapper: QuizModeMapper,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeScreenState())

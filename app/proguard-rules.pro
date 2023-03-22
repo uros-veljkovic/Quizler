@@ -11,9 +11,12 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keep class com.example.quizler.data.local.entity.** {*;}
--keep class com.example.quizler.data.remote.dto.** {*;}
--keep class com.example.quizler.data.remote.service.quizmode.QuizService
+ # Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
+
+ # With R8 full mode generic signatures are stripped for classes that are not
+ # kept. Suspend functions are wrapped in continuations where the type argument
+ # is used.
+ -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.

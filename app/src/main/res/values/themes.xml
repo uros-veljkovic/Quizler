@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Quizler" parent="Theme.AppCompat.DayNight">
         <item name="android:windowEnableSplitTouch">false</item>

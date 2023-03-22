@@ -7,27 +7,26 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.quizler.R
-import com.example.quizler.ui.components.BasicDialog
-import com.example.quizler.ui.components.OptionsPickerDialog
+import com.example.quizler.Screen
+import com.example.quizler.components.BasicDialog
+import com.example.quizler.components.OptionsPickerDialog
+import com.example.quizler.model.InfoBannerData
 import com.example.quizler.ui.components.ResultInfoDialog
-import com.example.quizler.ui.components.quiz.QuestionScreenContent
-import com.example.quizler.ui.model.InfoBannerData
-import com.example.quizler.ui.screen.Screen
-import com.example.quizler.ui.utils.navigate
+import com.example.quizler.utils.extensions.navigate
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun QuizScreen(
     navController: NavController = rememberNavController(),
-    viewModel: QuizViewModel = hiltViewModel(),
+    viewModel: QuizViewModel = getViewModel(),
     modeId: String
 ) {
 
@@ -36,7 +35,7 @@ fun QuizScreen(
     }
 
     val mode by remember { mutableStateOf(modeId) }
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = true) {
         viewModel.startQuiz(mode)

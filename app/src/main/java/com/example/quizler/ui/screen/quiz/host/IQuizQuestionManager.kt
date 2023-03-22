@@ -1,11 +1,11 @@
 package com.example.quizler.ui.screen.quiz.host
 
-import com.example.quizler.ui.screen.quiz.QuestionBundle
+import com.example.domain.model.QuestionWithAnswers
 
 interface IQuizQuestionManager {
     suspend fun getQuestions(
         modeId: String
-    ): List<QuestionBundle>
+    ): List<QuestionWithAnswers>
 
     fun getTime(modeId: String): Int
 }

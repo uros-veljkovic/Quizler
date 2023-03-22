@@ -1,16 +1,16 @@
 package com.example.quizler.ui.screen.quiz.host
 
-import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.domain.model.InvalidQuestionReport
-import com.example.quizler.domain.usecase.GetReportTypesUseCase
-import com.example.quizler.domain.usecase.GetUsernameUseCase
-import com.example.quizler.domain.usecase.SendInvalidQuestionReportUseCase
-import com.example.quizler.ui.model.IChoosableOptionItem
+import com.example.domain.model.AnswerType
+import com.example.domain.model.IChoosableOptionItem
+import com.example.domain.model.InvalidQuestionReport
+import com.example.domain.model.QuestionWithAnswers
+import com.example.domain.usecase.IGetReportTypesUseCase
+import com.example.domain.usecase.IGetUsernameUseCase
+import com.example.domain.usecase.ISendInvalidQuestionReportUseCase
+import com.example.quizler.model.ResultInfo
 import com.example.quizler.ui.screen.quiz.IQuizResultStateGenerator
-import com.example.quizler.ui.screen.quiz.QuestionBundle
 import com.example.quizler.ui.screen.quiz.QuizScreenState
 import com.example.quizler.ui.screen.quiz.QuizSessionData
-import com.example.quizler.ui.screen.quiz.ResultInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -26,19 +26,18 @@ import kotlinx.coroutines.yield
 import timber.log.Timber
 import java.util.EmptyStackException
 import java.util.Stack
-import javax.inject.Inject
 
-class QuizHost @Inject constructor(
+class QuizHost(
     private val coroutineScope: CoroutineScope,
     private val resultGenerator: IQuizResultStateGenerator,
     private val questionFilterManager: IQuizQuestionManager,
-    private val getResultTypesUseCase: GetReportTypesUseCase,
-    private val getUsernameUseCase: GetUsernameUseCase,
-    private val sendInvalidQuestionReportUseCase: SendInvalidQuestionReportUseCase
+    private val getResultTypesUseCase: IGetReportTypesUseCase,
+    private val getUsernameUseCase: IGetUsernameUseCase,
+    private val sendInvalidQuestionReportUseCase: ISendInvalidQuestionReportUseCase
 ) : IQuizHost {
 
     private var modeId: String = ""
-    private var questionBundles = Stack<QuestionBundle>()
+    private var questionWithAnswers = Stack<QuestionWithAnswers>()
 
     private var timer: Job? = null
 
@@ -47,7 +46,12 @@ class QuizHost @Inject constructor(
     override fun startQuiz(modeId: String) {
         this.modeId = modeId
         coroutineScope.launch(Dispatchers.IO) {
-            state.update { it.copy(reportTypes = getResultTypesUseCase().first(), username = getUsernameUseCase().first()) }
+            state.update {
+                it.copy(
+                    reportTypes = getResultTypesUseCase().first(),
+                    username = getUsernameUseCase().first()
+                )
+            }
             populateQuestions(modeId)
             setNewQuestion()
             initTimer()
@@ -108,7 +112,7 @@ class QuizHost @Inject constructor(
         state.update {
             it.copy(
                 isReportQuestionDialogVisible = it.isReportQuestionDialogVisible.not(),
-                reportTypes = it.reportTypes.map { it.copy(isSelected = false) }
+                reportTypes = it.reportTypes.map { reportType -> reportType.copy(isSelected = false) }
             )
         }
     }
@@ -150,12 +154,12 @@ class QuizHost @Inject constructor(
         Timber.tag("QuizHost").d("Question count: ${questions.count()}")
         resultGenerator.initSession(questions.count())
         state.update { it.copyWithTotalQuestionNumber(questions.count()) }
-        questionBundles.addAll(questions)
+        questionWithAnswers.addAll(questions)
     }
 
     private fun setNewQuestion() {
         try {
-            state.update { it.copyWithNewQuestion(questionBundles.pop()) }
+            state.update { it.copyWithNewQuestion(questionWithAnswers.pop()) }
         } catch (e: EmptyStackException) {
             stopTimer()
             showResult()
@@ -231,7 +235,7 @@ class QuizHost @Inject constructor(
 
     override fun exitQuiz() {
         stopTimer()
-        questionBundles = Stack()
+        questionWithAnswers = Stack()
         resultGenerator.terminateCurrentSession()
         state.update { QuizScreenState(shouldExitQuiz = true) }
     }

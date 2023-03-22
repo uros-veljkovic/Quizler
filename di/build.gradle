@@ -1,0 +1,77 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.example.di'
+    compileSdk 33
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    compileSdkPreview = "UpsideDownCake"
+    defaultConfig {
+        Properties properties = loadLocalProperties()
+
+        buildConfigField "String", "SERVER_URL", properties.getProperty('QUIZLER_SERVER_URL', '"192.168.1.113:2000"')
+    }
+    configurations {
+        ktlint
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+
+        }
+    }
+}
+
+private Properties loadLocalProperties() {
+    Properties properties = new Properties()
+    if (project.rootProject.file('local.properties').canRead()) {
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+    } else {
+        throw new GradleException("Could not read local.properties from " + project.rootProject.path)
+    }
+    properties
+}
+
+dependencies {
+    implementation project(":domain")
+    implementation project(":data")
+
+    // Ktlint
+    ktlint "com.pinterest:ktlint:$version_ktlint"
+
+    // Koin
+    implementation 'io.insert-koin:koin-android:3.4.0'
+}
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    args "src/**/*.kt"
+}
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    args "-F", "src/**/*.kt"
+    jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
+}

@@ -2,35 +2,32 @@ package com.example.quizler.ui.screen.quiz
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quizler.data.remote.dto.AnswerRecordDto
-import com.example.quizler.data.remote.dto.ResultRecordDto
-import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.domain.usecase.SaveAnswerRecordUseCase
-import com.example.quizler.domain.usecase.SaveResultRecordUseCase
-import com.example.quizler.domain.usecase.SaveUsernameUseCase
-import com.example.quizler.ui.model.IChoosableOptionItem
+import com.example.domain.model.AnswerRecord
+import com.example.domain.model.AnswerType
+import com.example.domain.model.IChoosableOptionItem
+import com.example.domain.model.ResultRecord
+import com.example.domain.usecase.ISaveAnswerRecordUseCase
+import com.example.domain.usecase.ISaveResultRecordUseCase
+import com.example.domain.usecase.ISaveUsernameUseCase
 import com.example.quizler.ui.screen.quiz.host.IQuizHost
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class QuizViewModel @Inject constructor(
+class QuizViewModel(
     private val quizHost: IQuizHost,
-    private val saveUsernameUseCase: SaveUsernameUseCase,
-    private val saveAnswerRecordUseCase: SaveAnswerRecordUseCase,
-    private val saveResultRecordUseCase: SaveResultRecordUseCase,
+    private val saveUsernameUseCase: ISaveUsernameUseCase,
+    private val saveAnswerRecordUseCase: ISaveAnswerRecordUseCase,
+    private val saveResultRecordUseCase: ISaveResultRecordUseCase,
 ) : ViewModel() {
 
     val state = quizHost.state
 
-    var modeId: String = ""
+    private var modeId: String = ""
 
     fun answered(type: AnswerType) {
         viewModelScope.launch {
             state.value.question?.question?.id?.let { questionId ->
                 val isCorrectAnswer = quizHost.answered(type)
-                saveAnswerRecordUseCase(AnswerRecordDto(questionId, isCorrectAnswer))
+                saveAnswerRecordUseCase(AnswerRecord(questionId, isCorrectAnswer))
             }
         }
     }
@@ -61,7 +58,7 @@ class QuizViewModel @Inject constructor(
         quizHost.setSaveUsername(shouldSave)
     }
 
-    fun reportQuestion(questionId: String) {
+    fun reportQuestion() {
         viewModelScope.launch {
             quizHost.onReportQuestion()
         }
@@ -84,7 +81,7 @@ class QuizViewModel @Inject constructor(
     private suspend fun saveResult() {
         val sessionData = quizHost.getSessionData()
         val username = state.value.username
-        saveResultRecordUseCase(ResultRecordDto(username, modeId, sessionData.totalPoints))
+        saveResultRecordUseCase(ResultRecord(username, modeId, sessionData.totalPoints))
     }
 
     private suspend fun saveUsername() {

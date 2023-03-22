@@ -2,14 +2,11 @@ package com.example.quizler.ui.screen.score
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.State
+import com.example.domain.usecase.IGetScoresUseCase
 import com.example.quizler.R
-import com.example.quizler.domain.data.local.INetworkRepository
-import com.example.quizler.domain.usecase.GetChoosableModeItemsUseCase
-import com.example.quizler.domain.usecase.GetScoresUseCase
-import com.example.quizler.ui.model.ChosableItem
-import com.example.quizler.ui.model.InfoBannerData
-import com.example.quizler.util.State
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.quizler.model.ChosableItem
+import com.example.quizler.model.InfoBannerData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,26 +14,22 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ScoreViewModel @Inject constructor(
-    getModesUseCase: GetChoosableModeItemsUseCase,
-    private val getScoresUseCase: GetScoresUseCase,
-    repository: INetworkRepository
+class ScoreViewModel(
+    choosableModeItemsProvider: ChoosableModeItemsProvider,
+    private val getScoresUseCase: IGetScoresUseCase,
+    private val scoreMapper: ScoresUiMapper,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ScoreScreenState())
     val state = combine(
         _state,
-        getModesUseCase(),
+        choosableModeItemsProvider(),
         getScoresUseCase(),
-        repository.getHasInternetConnectionFlow()
-    ) { state, modes, scores, connection ->
+    ) { state, modes, scores ->
         state.copy(
-            scores = scores,
+            scores = scoreMapper.map(scores),
             modes = modes,
-            hasNetwork = connection ?: true,
         )
     }.stateIn(
         scope = viewModelScope,

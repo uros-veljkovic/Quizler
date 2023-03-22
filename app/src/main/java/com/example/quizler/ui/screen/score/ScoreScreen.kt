@@ -10,37 +10,34 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.quizler.R
-import com.example.quizler.ui.components.BasicDropdownMenu
-import com.example.quizler.ui.components.InfoBanner
-import com.example.quizler.ui.components.ScoreList
-import com.example.quizler.ui.model.ChosableItem
-import com.example.quizler.ui.model.Score
+import com.example.quizler.components.BasicDropdownMenu
+import com.example.quizler.components.InfoBanner
+import com.example.quizler.components.ScoreList
+import com.example.quizler.model.ChosableItem
+import com.example.quizler.model.Score
+import com.example.quizler.theme.QuizlerTheme
+import com.example.quizler.theme.spaceM
+import com.example.quizler.theme.spaceS
 import com.example.quizler.ui.screen.home.plus
-import com.example.quizler.ui.theme.QuizlerTheme
-import com.example.quizler.ui.theme.spaceM
-import com.example.quizler.ui.theme.spaceS
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScoreScreen(
-    viewModel: ScoreViewModel = hiltViewModel()
+    viewModel: ScoreViewModel
 ) {
 
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     Scaffold(
         containerColor = Color.Transparent,
@@ -116,7 +113,6 @@ fun ScoreScreenContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewScoreScreenContent() {

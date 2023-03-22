@@ -1,7 +1,7 @@
 package com.example.quizler.ui.screen.newquestion
 
-import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.ui.model.ChosableItem
+import com.example.domain.model.AnswerType
+import com.example.quizler.model.ChosableItem
 
 data class CreateNewQuestionScreenState(
     val question: QuestionFieldState = QuestionFieldState(),

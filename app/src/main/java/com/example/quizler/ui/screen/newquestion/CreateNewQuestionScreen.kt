@@ -14,17 +14,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,23 +36,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.quizler.R
-import com.example.quizler.ui.components.AnswerTextField
-import com.example.quizler.ui.components.CorrectAnswerPicker
-import com.example.quizler.ui.components.HorizontalChipPicker
-import com.example.quizler.ui.components.InfoBanner
+import com.example.quizler.components.AnswerTextField
+import com.example.quizler.components.CorrectAnswerPicker
+import com.example.quizler.components.HorizontalChipPicker
+import com.example.quizler.components.InfoBanner
+import com.example.quizler.theme.QuizlerTheme
+import com.example.quizler.theme.spaceM
+import com.example.quizler.theme.spaceS
 import com.example.quizler.ui.screen.home.plus
-import com.example.quizler.ui.theme.QuizlerTheme
-import com.example.quizler.ui.theme.spaceM
-import com.example.quizler.ui.theme.spaceS
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateNewQuestionScreen(
-    viewModel: CreateNewQuestionViewModel = hiltViewModel(),
+    viewModel: CreateNewQuestionViewModel,
 ) {
-    val state by viewModel.screenState.collectAsState()
+    val state by viewModel.screenState.collectAsStateWithLifecycle()
     val infoBannerData by viewModel.infoBanner.collectAsState(initial = null)
     val scrollState = rememberScrollState()
     Scaffold(
@@ -94,10 +92,11 @@ fun CreateNewQuestionScreen(
                             textAlign = TextAlign.Center
                         )
                     },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        placeholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f)
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f)
                     ),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
                 )
@@ -170,7 +169,7 @@ fun CreateNewQuestionScreen(
 fun PreviewCreateNewQuestionScreen() {
     QuizlerTheme {
         Surface {
-            CreateNewQuestionScreen()
+//            CreateNewQuestionScreen()
         }
     }
 }

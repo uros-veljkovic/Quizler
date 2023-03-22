@@ -1,70 +1,39 @@
 package com.example.quizler.di
 
-import android.content.Context
-import android.graphics.drawable.Drawable
-import com.example.quizler.util.provider.AbstractResourceProvider
-import com.example.quizler.util.provider.QQuizModeDescriptionProvider
-import com.example.quizler.util.provider.QQuizModeTitleProvider
-import com.example.quizler.util.provider.QuizModeDescriptionProvider
-import com.example.quizler.util.provider.QuizModeIconProvider
-import com.example.quizler.util.provider.QuizModeTitleProvider
-import com.example.quizler.util.provider.ReportTypeTitleResourceProvider
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import javax.inject.Qualifier
-import javax.inject.Singleton
+import com.example.domain.NetworkConnectivityWatcher
+import com.example.quizler.InfoBannerDataMapper
+import com.example.quizler.ui.screen.AppViewModel
+import com.example.quizler.ui.screen.home.HomeViewModel
+import com.example.quizler.ui.screen.newquestion.ChoosableCategoryItemsProvider
+import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
+import com.example.quizler.ui.screen.quiz.QuizViewModel
+import com.example.quizler.ui.screen.score.ChoosableModeItemsProvider
+import com.example.quizler.ui.screen.score.ScoreViewModel
+import com.example.quizler.ui.screen.score.ScoresUiMapper
+import com.example.quizler.ui.screen.splash.SplashViewModel
+import com.example.quizler.util.SendDataToServerWorkerFactory
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class QCoroutineScopeIo
+val appModule = module {
 
-@Module
-@InstallIn(SingletonComponent::class)
-class AppModule {
+    // Data mapper
+    single { InfoBannerDataMapper() }
+    single { ScoresUiMapper() }
 
-    @QCoroutineScopeIo
-    @Singleton
-    @Provides
-    fun provideIoCoroutineScope(): CoroutineScope {
-        return CoroutineScope(Dispatchers.IO)
-    }
+    // Worker
+    single { SendDataToServerWorkerFactory(getKoin()) }
 
-    @Singleton
-    @Provides
-    @QQuizModeTitleProvider
-    fun provideQuizModeTitleProvider(
-        @ApplicationContext context: Context
-    ): AbstractResourceProvider<String> {
-        return QuizModeTitleProvider(context)
-    }
+    // Connectivity
+    single { NetworkConnectivityWatcher(get()) }
 
-    @Singleton
-    @Provides
-    @QQuizModeDescriptionProvider
-    fun provideQuizModeDescriptionProvider(
-        @ApplicationContext context: Context
-    ): AbstractResourceProvider<String> {
-        return QuizModeDescriptionProvider(context)
-    }
+    single { ChoosableModeItemsProvider(get(), get(), get(), get()) }
+    single { ChoosableCategoryItemsProvider(get(), get()) }
 
-    @Singleton
-    @Provides
-    fun provideQuizModeIconProvider(
-        @ApplicationContext context: Context
-    ): AbstractResourceProvider<Drawable> {
-        return QuizModeIconProvider(context)
-    }
-
-    @Singleton
-    @Provides
-    fun provideReportTypeTitleResourceProvider(
-        @ApplicationContext context: Context
-    ): AbstractResourceProvider<String> {
-        return ReportTypeTitleResourceProvider(context)
-    }
+    viewModel { AppViewModel() }
+    viewModel { SplashViewModel(get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { CreateNewQuestionViewModel(get(), get(), get()) }
+    viewModel { QuizViewModel(get(), get(), get(), get()) }
+    viewModel { ScoreViewModel(get(), get(), get()) }
 }

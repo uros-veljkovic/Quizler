@@ -1,10 +1,10 @@
 package com.example.quizler.ui.screen.quiz.host
 
-import com.example.quizler.domain.model.AnswerType
-import com.example.quizler.ui.model.IChoosableOptionItem
+import com.example.domain.model.AnswerType
+import com.example.domain.model.IChoosableOptionItem
+import com.example.quizler.model.ResultInfo
 import com.example.quizler.ui.screen.quiz.QuizScreenState
 import com.example.quizler.ui.screen.quiz.QuizSessionData
-import com.example.quizler.ui.screen.quiz.ResultInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 
 interface IQuizHost {

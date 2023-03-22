@@ -1,6 +1,6 @@
 package com.example.quizler.ui.screen.newquestion
 
-import com.example.quizler.domain.model.AnswerType
+import com.example.domain.model.AnswerType
 import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test

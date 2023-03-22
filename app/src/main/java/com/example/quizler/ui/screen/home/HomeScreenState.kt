@@ -1,9 +1,9 @@
 package com.example.quizler.ui.screen.home
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import com.example.quizler.domain.model.QuizMode
-import com.example.quizler.ui.screen.info.InfoScreenVariants
-import javax.annotation.concurrent.Immutable
+import com.example.quizler.components.info.InfoScreenVariants
+import com.example.quizler.model.QuizMode
 
 @Immutable
 @Stable
@@ -24,10 +24,6 @@ data class HomeScreenState(
 
     fun copyWithLengthModes(list: List<QuizMode>): HomeScreenState {
         return copy(length = list)
-    }
-
-    fun copyWithLoading(isLoading: Boolean): HomeScreenState {
-        return copy(isLoading = isLoading)
     }
 
     fun copyHasError(hasError: Boolean): HomeScreenState {

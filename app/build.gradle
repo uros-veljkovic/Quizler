@@ -17,8 +17,8 @@ android {
         applicationId "com.wombatech.quizler"
         minSdk 24
         targetSdk 33
-        versionCode 22
-        versionName "1.1.1"
+        versionCode 25
+        versionName "1.1.21"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -95,6 +95,10 @@ dependencies {
     // AppCompat
     implementation "androidx.appcompat:appcompat:$version_appcompat"
     implementation "androidx.appcompat:appcompat-resources:$version_appcompat"
+
+    // Play In-App Update
+    implementation "com.google.android.play:app-update:$version_in_app_update"
+    implementation "com.google.android.play:app-update-ktx:$version_in_app_update"
 
     // Timber
     implementation "com.jakewharton.timber:timber:$version_timber"

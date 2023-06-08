@@ -28,11 +28,13 @@ import com.example.quizler.ui.screen.home.HomeScreen
 import com.example.quizler.ui.screen.home.HomeViewModel
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreen
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
+import com.example.quizler.ui.screen.onboarding.OnboardingScreen
+import com.example.quizler.ui.screen.onboarding.OnboardingViewModel
+import com.example.quizler.ui.screen.onboarding.splash.SplashScreen
+import com.example.quizler.ui.screen.onboarding.splash.SplashViewModel
 import com.example.quizler.ui.screen.quiz.QuizScreen
 import com.example.quizler.ui.screen.score.ScoreScreen
 import com.example.quizler.ui.screen.score.ScoreViewModel
-import com.example.quizler.ui.screen.splash.SplashScreen
-import com.example.quizler.ui.screen.splash.SplashViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -40,6 +42,7 @@ fun App(
     navController: NavHostController = rememberNavController(),
     homeViewModel: HomeViewModel = koinViewModel(),
     splashViewModel: SplashViewModel = koinViewModel(),
+    onboardingViewModel: OnboardingViewModel = koinViewModel(),
     viewModel: AppViewModel = koinViewModel(),
     scoreViewModel: ScoreViewModel = koinViewModel(),
     newQuestionViewModel: CreateNewQuestionViewModel = koinViewModel()
@@ -69,10 +72,13 @@ fun App(
                 .background(Color.Transparent)
                 .padding(padding),
             navController = navController,
-            startDestination = Screen.Splash.route
+            startDestination = Screen.Onboarding.route
         ) {
             composable(Screen.Splash.route) {
                 SplashScreen(navController = navController, viewModel = splashViewModel)
+            }
+            composable(Screen.Onboarding.route) {
+                OnboardingScreen(navController = navController, viewModel = onboardingViewModel)
             }
             composable(Screen.Home.route) {
                 viewModel.setBottomNavVisible(true)

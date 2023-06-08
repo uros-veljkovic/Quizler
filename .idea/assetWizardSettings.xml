@@ -79,8 +79,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="$USER_HOME$/Downloads/cancel.png" />
-                                                <entry key="scalingPercent" value="57" />
+                                                <entry key="imagePath" value="$USER_HOME$/Downloads/facebook-2.png" />
+                                                <entry key="scalingPercent" value="67" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -114,7 +114,11 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="ffffff" />
-                                      <entry key="outputName" value="ic_error" />
+                                      <entry key="generateLegacyIcon" value="false" />
+                                      <entry key="generatePlayStoreIcon" value="false" />
+                                      <entry key="generateRoundIcon" value="false" />
+                                      <entry key="generateWebpIcons" value="false" />
+                                      <entry key="outputName" value="ic_facebook" />
                                     </map>
                                   </option>
                                 </PersistentState>

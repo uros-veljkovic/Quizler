@@ -1,4 +1,4 @@
-package com.example.quizler.ui.screen.splash
+package com.example.quizler.ui.screen.onboarding.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,10 +30,6 @@ class SplashViewModel(
         started = SharingStarted.Lazily,
         initialValue = SplashScreenState()
     )
-
-    init {
-        fetchData()
-    }
 
     fun fetchData() {
         _state.update { it.copy(isDataFetchInProgress = true) }

@@ -1,9 +1,12 @@
-package com.example.quizler.data
+package com.example.data
 
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.data.local.db.dao.CategoryModeDao
+import com.example.data.local.db.dao.QuizlerDatabase
+import com.example.data.local.entity.CategoryModeEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -14,20 +17,19 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ReportedQuestionDaoTest {
+class CategoryModeDaoTest {
 
-    private lateinit var db: com.example.data.local.db.dao.QuizlerDatabase
-    private lateinit var sut: com.example.data.local.db.dao.ReportedQuestionDao
-    private val entity = com.example.data.local.entity.InvalidQuestionReportEntity(
-        questionId = "questionId",
-        reportTypeId = "reportTypeId"
+    private lateinit var db: QuizlerDatabase
+    private lateinit var sut: CategoryModeDao
+    private val entity = CategoryModeEntity(
+        id = "id", name = "name", numberOfHints = 0, numberOfQuestions = 0, timePerQuestion = 0
     )
 
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, com.example.data.local.db.dao.QuizlerDatabase::class.java).build()
-        sut = db.daoReportedQuestion()
+        db = Room.inMemoryDatabaseBuilder(context, QuizlerDatabase::class.java).build()
+        sut = db.daoCategory()
     }
 
     @After
@@ -42,7 +44,7 @@ class ReportedQuestionDaoTest {
             sut.insert(entity)
         }
         val list = sut.readAll().first()
-        assertTrue(list.count { it.questionId == entity.questionId } == 1)
+        assertTrue(list.count { it.id == entity.id } == 1)
     }
 
     @Test

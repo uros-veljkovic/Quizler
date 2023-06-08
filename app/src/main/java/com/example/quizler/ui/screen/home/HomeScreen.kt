@@ -21,8 +21,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.quizler.R
 import com.example.quizler.Screen
 import com.example.quizler.components.QuizModes
+import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.theme.spaceM
-import com.example.quizler.utils.extensions.navigate
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -42,21 +42,21 @@ fun HomeScreen(
             cardDescription = stringResource(id = R.string.mode_category_description),
             cardTitle = stringResource(id = R.string.tab_category),
             state = state.categories,
-            onModeSelected = { navController.navigate(Screen.Home, Screen.Quiz(it.id)) }
+            onModeSelected = { navController.navigateAndForget(Screen.Quiz(it.id).route) }
         )
         Spacer(modifier = Modifier.size(spaceM))
         QuizModes(
             cardDescription = stringResource(id = R.string.modes_difficulty_description),
             cardTitle = stringResource(id = R.string.tab_difficulty),
             state = state.difficulties,
-            onModeSelected = { navController.navigate(Screen.Home, Screen.Quiz(it.id)) }
+            onModeSelected = { navController.navigateAndForget(Screen.Quiz(it.id).route) }
         )
         Spacer(modifier = Modifier.size(spaceM))
         QuizModes(
             cardDescription = stringResource(id = R.string.modes_length_description),
             cardTitle = stringResource(id = R.string.tab_length),
             state = state.length,
-            onModeSelected = { navController.navigate(Screen.Home, Screen.Quiz(it.id)) }
+            onModeSelected = { navController.navigateAndForget(Screen.Quiz(it.id).route) }
         )
     }
 }

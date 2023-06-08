@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.model.BottomNavigationItem
 import com.example.quizler.theme.QuizlerTheme
 
@@ -31,13 +32,7 @@ fun SimpleBottomNavigation(
                 label = { Text(text = stringResource(id = item.titleResId)) },
                 selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(POP_UP_ALL) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigateAndForget(item.route)
                 }
             )
         }

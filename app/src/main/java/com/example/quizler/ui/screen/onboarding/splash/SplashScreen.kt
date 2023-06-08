@@ -1,4 +1,4 @@
-package com.example.quizler.ui.screen.splash
+package com.example.quizler.ui.screen.onboarding.splash
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -30,14 +30,16 @@ import com.example.quizler.R
 import com.example.quizler.Screen
 import com.example.quizler.components.InfoBanner
 import com.example.quizler.components.Logo
+import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.model.InfoBannerData
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceXL
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SplashScreen(
-    viewModel: SplashViewModel,
+    viewModel: SplashViewModel = koinViewModel(),
     navController: NavController = rememberNavController(),
 ) {
     val state by viewModel.state.collectAsState()
@@ -47,14 +49,14 @@ fun SplashScreen(
         label = "Loading"
     )
 
+    LaunchedEffect(key1 = Unit) {
+        viewModel.fetchData()
+    }
+
     LaunchedEffect(key1 = state.isGoToHomeScreen) {
         if (state.isGoToHomeScreen) {
             delay(200L)
-            navController.navigate(Screen.Home.route) {
-                popUpTo(Screen.Home.route) {
-                    inclusive = true
-                }
-            }
+            navController.navigateAndForget(Screen.Home.route)
         }
     }
     Box(modifier = Modifier.fillMaxSize()) {

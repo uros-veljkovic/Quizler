@@ -1,4 +1,4 @@
-package com.example.quizler.ui.screen.splash
+package com.example.quizler.ui.screen.onboarding.splash
 
 import com.example.quizler.model.InfoBannerData
 

@@ -1,35 +1,11 @@
-package com.example.quizler.utils.extensions
+package com.example.quizler.extensions
 
 import androidx.navigation.NavController
-import com.example.quizler.Screen
-import com.example.quizler.UnsupportedNavigationRoutingException
 
-fun NavController.navigate(origin: Screen, destination: Screen) {
-    when (destination) {
-        is Screen.Home -> {
-            navigate(destination.route) {
-                popUpTo(origin.route) {
-                    inclusive = true
-                }
-            }
+fun NavController.navigateAndForget(route: String) {
+    navigate(route) {
+        popUpTo(0) {
+            inclusive = true
         }
-
-        is Screen.Quiz -> {
-            navigate(destination.route) {
-                popUpTo(origin.route) {
-                    inclusive = true
-                }
-            }
-        }
-
-        Screen.Scoreboard -> {
-            navigate(destination.route) {
-                popUpTo(origin.route) {
-                    inclusive = true
-                }
-            }
-        }
-
-        else -> throw UnsupportedNavigationRoutingException(origin, destination)
     }
 }

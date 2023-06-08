@@ -69,6 +69,13 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-library:$version_hamcrest"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutines"
     testImplementation 'io.kotlintest:kotlintest-runner-junit5:3.1.9'
+
+
+    // Android test
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
+    androidTestImplementation "io.mockk:mockk-android:$version_mockk"
+    androidTestImplementation "androidx.test.ext:junit:$version_junit_extensions"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso_core"
 }
 
 task ktlint(type: JavaExec, group: "verification") {

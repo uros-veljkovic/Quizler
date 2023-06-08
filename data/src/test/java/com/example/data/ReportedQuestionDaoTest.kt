@@ -1,4 +1,4 @@
-package com.example.quizler.data
+package com.example.data
 
 import android.content.Context
 import androidx.room.Room
@@ -14,19 +14,20 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ScoresDaoTest {
+class ReportedQuestionDaoTest {
 
     private lateinit var db: com.example.data.local.db.dao.QuizlerDatabase
-    private lateinit var sut: com.example.data.local.db.dao.ScoresDao
-    private val entity = com.example.data.local.entity.ScoreEntity(
-        _id = "id", username = "urkeev14", score = 32, mode = "mode", ranking = 22
+    private lateinit var sut: com.example.data.local.db.dao.ReportedQuestionDao
+    private val entity = com.example.data.local.entity.InvalidQuestionReportEntity(
+        questionId = "questionId",
+        reportTypeId = "reportTypeId"
     )
 
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(context, com.example.data.local.db.dao.QuizlerDatabase::class.java).build()
-        sut = db.daoScores()
+        sut = db.daoReportedQuestion()
     }
 
     @After
@@ -41,7 +42,7 @@ class ScoresDaoTest {
             sut.insert(entity)
         }
         val list = sut.readAll().first()
-        assertTrue(list.count() == 1)
+        assertTrue(list.count { it.questionId == entity.questionId } == 1)
     }
 
     @Test

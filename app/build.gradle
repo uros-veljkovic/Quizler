@@ -96,6 +96,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$version_appcompat"
     implementation "androidx.appcompat:appcompat-resources:$version_appcompat"
 
+    // Gogole Sign-in
+    implementation "com.google.android.gms:play-services-auth:$version_google_sign_in"
+
     // Play In-App Update
     implementation "com.google.android.play:app-update:$version_in_app_update"
     implementation "com.google.android.play:app-update-ktx:$version_in_app_update"

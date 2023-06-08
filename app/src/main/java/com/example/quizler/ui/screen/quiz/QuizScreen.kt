@@ -18,9 +18,9 @@ import com.example.quizler.R
 import com.example.quizler.Screen
 import com.example.quizler.components.BasicDialog
 import com.example.quizler.components.OptionsPickerDialog
+import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.model.InfoBannerData
 import com.example.quizler.ui.components.ResultInfoDialog
-import com.example.quizler.utils.extensions.navigate
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -42,7 +42,7 @@ fun QuizScreen(
     }
     LaunchedEffect(key1 = state.shouldExitQuiz) {
         if (state.shouldExitQuiz) {
-            navController.navigate(Screen.Quiz(), Screen.Home)
+            navController.navigateAndForget(Screen.Home.route)
         }
     }
 

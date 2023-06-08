@@ -1,26 +1,37 @@
 package com.example.quizler.utils.signin.manager
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import androidx.activity.result.contract.ActivityResultContract
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import com.google.android.gms.tasks.Task
 
-class GoogleSignInManager : ISignInManager {
+class GoogleSignInManager : ActivityResultContract<Int, Task<GoogleSignInAccount>?>() {
 
-    private val signInState: MutableSharedFlow<SignInState> = MutableSharedFlow()
-
-    override fun startSignIn(context: Context) {
-
+    override fun createIntent(context: Context, input: Int): Intent {
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
 
-        GoogleSignIn.getClient(context, signInOptions)
+        val intent = GoogleSignIn.getClient(context, signInOptions)
+        return intent.signInIntent
     }
 
-    override fun getSignInState(): SharedFlow<SignInState> {
-        return signInState.asSharedFlow()
+    override fun parseResult(resultCode: Int, intent: Intent?): Task<GoogleSignInAccount>? {
+        return when (resultCode) {
+            Activity.RESULT_OK -> {
+                GoogleSignIn.getSignedInAccountFromIntent(intent)
+            }
+
+            else -> null
+        }
+    }
+
+    companion object {
+        const val NO_INPUT = 0
+        const val RequestCode = 12345
     }
 }

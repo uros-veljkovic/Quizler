@@ -27,6 +27,11 @@ android {
         multiDexEnabled true
         signingConfig signingConfigs.debug
     }
+    defaultConfig {
+        Properties properties = loadLocalProperties()
+
+        buildConfigField "String", "GOOGLE_SIGN_IN_CLIENT_ID", properties.getProperty('GOOGLE_SIGN_IN_CLIENT_ID', '"192.168.1.113:2000"')
+    }
     testOptions {
         packagingOptions {
             jniLibs {
@@ -171,6 +176,17 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:$version_compose")
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
 }
+
+private Properties loadLocalProperties() {
+    Properties properties = new Properties()
+    if (project.rootProject.file('local.properties').canRead()) {
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+    } else {
+        throw new GradleException("Could not read local.properties from " + project.rootProject.path)
+    }
+    properties
+}
+
 kapt {
     correctErrorTypes true
 }

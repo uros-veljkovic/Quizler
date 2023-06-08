@@ -1,14 +1,15 @@
 package com.example.quizler.ui.screen.onboarding.signin
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.example.quizler.utils.signin.manager.ISignInManager
+import timber.log.Timber
 
-class SignInViewModel(
-    private val googleSignInManager: ISignInManager
-) : ViewModel() {
+class SignInViewModel : ViewModel() {
 
-    fun onGoogleSignInButtonClick(context: Context) {
-        googleSignInManager.startSignIn(context)
+    fun onSignInSuccessful(email: String) {
+        Timber.d("Log in successful! Email: $email")
+    }
+
+    fun onSignInFailed(reason: String) {
+        Timber.d("Log in failed. Reason: $reason")
     }
 }

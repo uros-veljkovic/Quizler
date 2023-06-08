@@ -1,6 +1,7 @@
 package com.example.quizler.ui.screen.onboarding.signin
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,12 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.layoutId
 import androidx.navigation.NavController
 import com.example.quizler.R
 import com.example.quizler.Screen
@@ -36,13 +35,25 @@ import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceS
 import com.example.quizler.theme.spaceXL
+import com.example.quizler.utils.signin.manager.GoogleSignInManager
+import com.google.android.gms.common.api.ApiException
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koinViewModel()) {
-    val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(contract = GoogleSignInManager()) { task ->
+        try {
+            task?.getResult(ApiException::class.java)?.email?.let { email ->
+                viewModel.onSignInSuccessful(email)
+            } ?: viewModel.onSignInFailed("No message received")
+        } catch (e: ApiException) {
+            viewModel.onSignInFailed(e.message.toString())
+        }
+    }
+
     SignInScreenContent(onGoogleSignInButtonClick = {
-        viewModel.onGoogleSignInButtonClick(context)
+        launcher.launch(GoogleSignInManager.RequestCode)
     }, onContinueAsGuestButtonClick = {
         navController.navigateAndForget(Screen.Splash.route)
     })
@@ -75,9 +86,8 @@ private fun SignInScreenContent(
             ) {
                 Logo(modifier = Modifier.size(100.dp))
                 Text(
-                    modifier = Modifier.layoutId("logInText"),
                     text = stringResource(R.string.text_log_in),
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.titleLarge,
                 )
                 Button(
                     modifier = Modifier

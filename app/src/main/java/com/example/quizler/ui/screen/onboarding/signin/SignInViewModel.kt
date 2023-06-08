@@ -11,5 +11,4 @@ class SignInViewModel(
     fun onGoogleSignInButtonClick(context: Context) {
         googleSignInManager.startSignIn(context)
     }
-
 }

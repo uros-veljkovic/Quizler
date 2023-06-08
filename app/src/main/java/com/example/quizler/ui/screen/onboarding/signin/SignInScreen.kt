@@ -46,7 +46,6 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koin
     }, onContinueAsGuestButtonClick = {
         navController.navigateAndForget(Screen.Splash.route)
     })
-
 }
 
 @Composable
@@ -117,7 +116,6 @@ private fun SignInScreenContent(
     }
 }
 
-
 @Preview
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
@@ -128,4 +126,3 @@ fun PreviewSignInScreen() {
         }
     }
 }
-

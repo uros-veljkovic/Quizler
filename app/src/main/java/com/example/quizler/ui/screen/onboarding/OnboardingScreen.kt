@@ -44,4 +44,3 @@ fun OnboardingScreen(navController: NavController, viewModel: OnboardingViewMode
         OnboardingNavigation.CreateProfileDetails -> TODO("Not implemented")
     }
 }
-

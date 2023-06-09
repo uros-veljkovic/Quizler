@@ -1,7 +1,6 @@
 package com.example.quizler.ui.screen.newquestion
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,17 +55,7 @@ fun CreateNewQuestionScreen(
     val scrollState = rememberScrollState()
     Scaffold(
         snackbarHost = {
-            AnimatedVisibility(visible = infoBannerData != null) {
-                infoBannerData?.let {
-                    Column(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(start = spaceM, end = spaceM)
-                    ) {
-                        InfoBanner(data = it, isActionButtonVisible = false)
-                    }
-                }
-            }
+            InfoBanner(data = infoBannerData, isActionButtonVisible = false)
         },
         content = { innerPadding ->
             Column(

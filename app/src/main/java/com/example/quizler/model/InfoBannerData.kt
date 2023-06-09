@@ -5,13 +5,21 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import com.example.quizler.R
 
-sealed class InfoBannerData(
+open class InfoBannerData(
     @DrawableRes val icon: Int,
     @StringRes val title: Int,
     @StringRes val description: Int? = null,
     val color: Color,
     @StringRes val actionButtonText: Int? = null,
 ) {
+
+    object SignInFailed : InfoBannerData(
+        icon = R.mipmap.ic_sign_in_failed_foreground,
+        title = R.string.sign_in_failed_title,
+        description = R.string.sign_in_failed_desc,
+        color = Color(0xffef9a9a)
+    )
+
     object NoNetwork : InfoBannerData(
         icon = R.drawable.ic_no_wifi,
         title = R.string.no_internet_connection,

@@ -1,6 +1,7 @@
 package com.example.quizler.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,61 +33,65 @@ import com.example.quizler.theme.spaceM
 @Composable
 fun InfoBanner(
     modifier: Modifier = Modifier,
-    data: InfoBannerData,
+    data: InfoBannerData?,
     isActionButtonEnabled: Boolean? = true,
     isActionButtonVisible: Boolean? = true,
     onActionButtonClick: (() -> Unit)? = null,
 ) {
-
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        colors = CardDefaults.cardColors(
-            containerColor = data.color,
-            contentColor = contentColorFor(backgroundColor = MaterialTheme.colorScheme.onSurface)
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(spaceM),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                modifier = Modifier,
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = data.icon),
-                    contentDescription = null
+    AnimatedVisibility(visible = data != null) {
+        data?.let {
+            Card(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(start = spaceM, end = spaceM, bottom = spaceM),
+                colors = CardDefaults.cardColors(
+                    containerColor = data.color,
+                    contentColor = contentColorFor(backgroundColor = MaterialTheme.colorScheme.onSurface)
                 )
-                Spacer(modifier = Modifier.size(spaceL))
-                Column {
-                    Text(
-                        text = stringResource(id = data.title),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = contentColorFor(backgroundColor = data.color)
-                    )
-                    data.description?.let {
-                        Text(
-                            text = stringResource(id = it),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = contentColorFor(backgroundColor = data.color)
-                        )
-                    }
-                }
-            }
-            if (isActionButtonVisible == true && data.actionButtonText != null) {
-                Spacer(modifier = Modifier.size(spaceM))
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = isActionButtonEnabled ?: true,
-                    onClick = { onActionButtonClick?.invoke() },
+            ) {
+                Column(
+                    modifier = Modifier.padding(spaceM),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = stringResource(id = data.actionButtonText),
-                    )
+                    Row(
+                        modifier = Modifier,
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = data.icon),
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.size(spaceL))
+                        Column {
+                            Text(
+                                text = stringResource(id = data.title),
+                                style = MaterialTheme.typography.titleLarge,
+                                color = contentColorFor(backgroundColor = data.color)
+                            )
+                            data.description?.let {
+                                Text(
+                                    text = stringResource(id = it),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = contentColorFor(backgroundColor = data.color)
+                                )
+                            }
+                        }
+                    }
+                    if (isActionButtonVisible == true && data.actionButtonText != null) {
+                        Spacer(modifier = Modifier.size(spaceM))
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = isActionButtonEnabled ?: true,
+                            onClick = { onActionButtonClick?.invoke() },
+                        ) {
+                            Text(
+                                text = stringResource(id = data.actionButtonText),
+                            )
+                        }
+                    }
                 }
             }
         }

@@ -16,9 +16,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,9 +29,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.quizler.R
 import com.example.quizler.Screen
+import com.example.quizler.components.InfoBanner
 import com.example.quizler.components.Logo
 import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.theme.QuizlerTheme
@@ -41,7 +45,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koinViewModel()) {
-
+    val state by viewModel.state.collectAsStateWithLifecycle(initialValue = SignInState())
     val launcher = rememberLauncherForActivityResult(contract = GoogleSignInManager()) { task ->
         try {
             task?.getResult(ApiException::class.java)?.email?.let { email ->
@@ -51,20 +55,31 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koin
             viewModel.onSignInFailed(e.message.toString())
         }
     }
-
-    SignInScreenContent(onGoogleSignInButtonClick = {
-        launcher.launch(GoogleSignInManager.RequestCode)
-    }, onContinueAsGuestButtonClick = {
-        navController.navigateAndForget(Screen.Splash.route)
-    })
+    Scaffold(
+        snackbarHost = {
+            InfoBanner(data = state.infoBannerData, isActionButtonVisible = false)
+        },
+        content = { padding ->
+            SignInScreenContent(
+                modifier = Modifier.padding(padding),
+                onGoogleSignInButtonClick = {
+                    launcher.launch(GoogleSignInManager.RequestCode)
+                },
+                onContinueAsGuestButtonClick = {
+                    navController.navigateAndForget(Screen.Splash.route)
+                }
+            )
+        }
+    )
 }
 
 @Composable
 private fun SignInScreenContent(
+    modifier: Modifier = Modifier,
     onGoogleSignInButtonClick: () -> Unit = {},
     onContinueAsGuestButtonClick: () -> Unit = {}
 ) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.CenterStart) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.CenterStart) {
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.default_background_pattern),
@@ -90,36 +105,28 @@ private fun SignInScreenContent(
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Button(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xffDB4437),
-                        contentColor = Color.White
+                        containerColor = Color(0xffDB4437), contentColor = Color.White
                     ),
                     onClick = onGoogleSignInButtonClick
                 ) {
-                    Text(text = stringResource(R.string.button_google), style = MaterialTheme.typography.titleMedium)
+                    Text(text = stringResource(R.string.button_google))
                 }
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xff4267B2),
-                        contentColor = Color.White
+                        containerColor = Color(0xff4267B2), contentColor = Color.White
                     ),
-                    enabled = false,
-                    onClick = { /*TODO*/ }
+                    enabled = false, onClick = { /*TODO*/ }
                 ) {
-                    Text(text = stringResource(R.string.button_facebook), style = MaterialTheme.typography.titleMedium)
+                    Text(text = stringResource(R.string.button_facebook))
                 }
-                Text(text = "Ili")
+                Text(text = "ili")
                 Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = onContinueAsGuestButtonClick
+                    modifier = Modifier.fillMaxWidth(), onClick = onContinueAsGuestButtonClick
                 ) {
-                    Text(
-                        text = stringResource(R.string.button_continue_as_guest),
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    Text(text = stringResource(R.string.button_continue_as_guest))
                 }
             }
         }

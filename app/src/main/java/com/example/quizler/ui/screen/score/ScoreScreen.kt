@@ -47,17 +47,7 @@ fun ScoreScreen(
             }
         },
         snackbarHost = {
-            AnimatedVisibility(visible = state.infoBannerData != null) {
-                state.infoBannerData?.let {
-                    Column(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(start = spaceM, end = spaceM)
-                    ) {
-                        InfoBanner(data = it, isActionButtonVisible = false)
-                    }
-                }
-            }
+            InfoBanner(data = state.infoBannerData, isActionButtonVisible = false)
         }
     ) {
         ScoreScreenContent(

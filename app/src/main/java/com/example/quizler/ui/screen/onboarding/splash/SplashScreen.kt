@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,6 +35,7 @@ import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.model.InfoBannerData
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceXL
+import com.example.quizler.ui.screen.home.plus
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
@@ -59,38 +61,40 @@ fun SplashScreen(
             navController.navigateAndForget(Screen.Home.route)
         }
     }
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.default_background_pattern),
-            contentScale = ContentScale.FillBounds,
-            alpha = 0.2f,
-            contentDescription = null
-        )
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(spaceXL),
-            constraintSet = constraintSet,
-        ) {
-            Logo(modifier = Modifier.layoutId("logo"))
-            LinearProgressIndicator(modifier = Modifier.layoutId("progress"), progress = progressAnimation)
-            state.infoBannerData?.let {
-                InfoBanner(
-                    modifier = Modifier.layoutId("banner"),
-                    isActionButtonEnabled = state.hasConnection && state.isDataFetchInProgress.not(),
-                    data = it,
-                    onActionButtonClick = viewModel::fetchData
-                )
+
+    Scaffold(
+        snackbarHost = {
+            InfoBanner(
+                isActionButtonEnabled = state.hasConnection && state.isDataFetchInProgress.not(),
+                data = state.infoBannerData,
+                onActionButtonClick = viewModel::fetchData
+            )
+        }, content = { padding ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(id = R.drawable.default_background_pattern),
+                contentScale = ContentScale.FillBounds,
+                alpha = 0.2f,
+                contentDescription = null
+            )
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding + spaceXL),
+                constraintSet = constraintSet,
+            ) {
+                Logo(modifier = Modifier.layoutId("logo"))
+                LinearProgressIndicator(modifier = Modifier.layoutId("progress"), progress = progressAnimation)
             }
         }
     }
+    )
 }
 
 val constraintSet = ConstraintSet {
     val logo = createRefFor("logo")
     val progress = createRefFor("progress")
-    val banner = createRefFor("banner")
 
     constrain(logo) {
         centerHorizontallyTo(parent)
@@ -99,10 +103,6 @@ val constraintSet = ConstraintSet {
     constrain(progress) {
         centerHorizontallyTo(logo)
         top.linkTo(logo.bottom)
-    }
-    constrain(banner) {
-        centerHorizontallyTo(parent)
-        bottom.linkTo(parent.bottom)
     }
 }
 

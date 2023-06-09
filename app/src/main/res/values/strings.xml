@@ -159,6 +159,8 @@
     <string name="button_facebook">Facebook (uskoro)</string>
     <string name="button_google">Google</string>
     <string name="button_continue_as_guest">Nastavi kao gost</string>
+    <string name="sign_in_failed_title">Neuspesna prijava</string>
+    <string name="sign_in_failed_desc">Proverite internet konekciju i pokusajte ponovo.</string>
 
 
 </resources>

@@ -24,11 +24,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun OnboardingScreen(navController: NavController, viewModel: OnboardingViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    LaunchedEffect(key1 = Unit) {
-        viewModel.gotoSplashScreen.collect {
-            navController.navigate(Screen.Splash.route) {
-                popUpTo(Screen.Splash.route)
-            }
+    LaunchedEffect(key1 = viewModel.gotoSplashScreen) {
+        navController.navigate(Screen.Splash.route) {
+            popUpTo(Screen.Splash.route)
         }
     }
 

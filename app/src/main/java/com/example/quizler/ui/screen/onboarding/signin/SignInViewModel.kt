@@ -10,10 +10,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-data class SignInState(
-    val infoBannerData: InfoBannerData? = null,
-)
-
 class SignInViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(SignInState())

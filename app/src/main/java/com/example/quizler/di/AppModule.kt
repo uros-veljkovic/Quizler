@@ -9,12 +9,15 @@ import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
 import com.example.quizler.ui.screen.onboarding.OnboardingViewModel
 import com.example.quizler.ui.screen.onboarding.signin.SignInViewModel
 import com.example.quizler.ui.screen.onboarding.splash.SplashViewModel
+import com.example.quizler.ui.screen.onboarding.util.provider.IOnboardingManager
+import com.example.quizler.ui.screen.onboarding.util.provider.OnboardingManager
 import com.example.quizler.ui.screen.quiz.QuizViewModel
 import com.example.quizler.ui.screen.score.ChoosableModeItemsProvider
 import com.example.quizler.ui.screen.score.ScoreViewModel
 import com.example.quizler.ui.screen.score.ScoresUiMapper
 import com.example.quizler.util.SendDataToServerWorkerFactory
 import com.example.quizler.utils.signin.manager.GoogleSignInManager
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -35,6 +38,7 @@ val appModule = module {
 
     // Sign in
     single { GoogleSignInManager() }
+    single<IOnboardingManager> { OnboardingManager(androidApplication()) }
 
     viewModel { AppViewModel() }
     viewModel { SplashViewModel(get(), get(), get()) }

@@ -3,7 +3,7 @@ package com.example.quizler.ui.screen.onboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.OnboardingState
-import com.example.domain.usecase.IGetOnboardingStateUseCase
+import com.example.quizler.ui.screen.onboarding.util.provider.IOnboardingManager
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class OnboardingViewModel(
-    private val getOnboardingState: IGetOnboardingStateUseCase
+    private val getOnboardingState: IOnboardingManager
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(OnboardingScreenState())

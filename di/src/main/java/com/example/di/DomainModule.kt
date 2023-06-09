@@ -39,7 +39,6 @@ import com.example.domain.usecase.GetHasInternetConnectionUseCase
 import com.example.domain.usecase.GetModesCategoryUseCase
 import com.example.domain.usecase.GetModesDifficultyUseCase
 import com.example.domain.usecase.GetModesLengthUseCase
-import com.example.domain.usecase.GetOnboardingStateUseCase
 import com.example.domain.usecase.GetQuestionsUseCase
 import com.example.domain.usecase.GetReportTypesUseCase
 import com.example.domain.usecase.GetScoresUseCase
@@ -50,7 +49,6 @@ import com.example.domain.usecase.IGetHasInternetConnectionUseCase
 import com.example.domain.usecase.IGetModesCategoryUseCase
 import com.example.domain.usecase.IGetModesDifficultyUseCase
 import com.example.domain.usecase.IGetModesLengthUseCase
-import com.example.domain.usecase.IGetOnboardingStateUseCase
 import com.example.domain.usecase.IGetQuestionsUseCase
 import com.example.domain.usecase.IGetReportTypesUseCase
 import com.example.domain.usecase.IGetScoresUseCase
@@ -142,7 +140,6 @@ val domainModule = module {
     single<ISendInvalidQuestionReportUseCase> { SendInvalidQuestionReportUseCase(get(), get(), get()) }
     single<IGetHasInternetConnectionUseCase> { GetHasInternetConnectionUseCase(get()) }
     single<ISetHasInternetConnectionUseCase> { SetHasInternetConnectionUseCase(get()) }
-    single<IGetOnboardingStateUseCase> { GetOnboardingStateUseCase() }
 
     single<IHandleStartupDataUseCase> {
         HandleStartupDataUseCase(

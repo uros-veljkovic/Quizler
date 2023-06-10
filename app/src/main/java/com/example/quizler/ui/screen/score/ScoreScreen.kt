@@ -35,18 +35,24 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ScoreScreen(
+    modifier: Modifier = Modifier,
     viewModel: ScoreViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Scaffold(containerColor = Color.Transparent, floatingActionButton = {
-        FloatingActionButton(onClick = viewModel::refreshScoreboard) {
-            Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+    Scaffold(
+        modifier = modifier,
+        containerColor = Color.Transparent,
+        floatingActionButton = {
+            FloatingActionButton(onClick = viewModel::refreshScoreboard) {
+                Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+            }
+        },
+        snackbarHost = {
+            InfoBanner(data = state.infoBannerData, isActionButtonVisible = false)
         }
-    }, snackbarHost = {
-        InfoBanner(data = state.infoBannerData, isActionButtonVisible = false)
-    }) {
+    ) {
         ScoreScreenContent(
             modifier = Modifier
                 .fillMaxSize()

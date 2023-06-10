@@ -29,6 +29,7 @@ import com.example.quizler.components.QuizModes
 import com.example.quizler.components.SimpleBottomNavigation
 import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.theme.spaceM
+import com.example.quizler.theme.spaceS
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreen
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
 import com.example.quizler.ui.screen.score.ScoreScreen
@@ -52,7 +53,7 @@ fun HomeScreen(
             NavHost(navController = navHostController, startDestination = HomeScreen.Modes.route) {
                 composable(HomeScreen.Modes.route) {
                     ModesScreen(
-                        paddingValues = padding,
+                        modifier = Modifier.padding(paddingValues = padding + spaceS),
                         viewModel = modesViewModel,
                         navController = parentNavController
                     )
@@ -64,7 +65,10 @@ fun HomeScreen(
                     )
                 }
                 composable(HomeScreen.Scoreboard.route) {
-                    ScoreScreen(viewModel = scoreViewModel)
+                    ScoreScreen(
+                        modifier = Modifier.padding(paddingValues = padding),
+                        viewModel = scoreViewModel
+                    )
                 }
             }
         }
@@ -73,15 +77,14 @@ fun HomeScreen(
 
 @Composable
 private fun ModesScreen(
-    paddingValues: PaddingValues,
+    modifier: Modifier = Modifier,
     viewModel: ModesViewModel = koinViewModel(),
     navController: NavController
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Column(
-        modifier = Modifier
-            .padding(paddingValues + spaceM)
+        modifier = modifier
             .verticalScroll(rememberScrollState())
     ) {
         QuizModes(

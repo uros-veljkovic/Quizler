@@ -6,7 +6,7 @@ import com.example.quizler.ui.screen.AppViewModel
 import com.example.quizler.ui.screen.home.HomeViewModel
 import com.example.quizler.ui.screen.newquestion.ChoosableCategoryItemsProvider
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
-import com.example.quizler.ui.screen.onboarding.OnboardingViewModel
+import com.example.quizler.ui.screen.onboarding.empty.EmptyViewModel
 import com.example.quizler.ui.screen.onboarding.signin.SignInViewModel
 import com.example.quizler.ui.screen.onboarding.splash.SplashViewModel
 import com.example.quizler.ui.screen.onboarding.util.provider.IOnboardingManager
@@ -38,11 +38,11 @@ val appModule = module {
 
     // Sign in
     single { GoogleSignInManager() }
-    single<IOnboardingManager> { OnboardingManager(androidApplication()) }
+    single<IOnboardingManager> { OnboardingManager(androidApplication(), get()) }
 
     viewModel { AppViewModel() }
+    viewModel { EmptyViewModel() }
     viewModel { SplashViewModel(get(), get(), get()) }
-    viewModel { OnboardingViewModel(get()) }
     viewModel { SignInViewModel() }
     viewModel { HomeViewModel(get(), get(), get(), get()) }
     viewModel { CreateNewQuestionViewModel(get(), get(), get()) }

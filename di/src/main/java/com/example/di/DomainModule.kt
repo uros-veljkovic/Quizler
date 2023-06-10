@@ -34,6 +34,7 @@ import com.example.domain.provider.drawable.QuizModeIconProvider
 import com.example.domain.provider.string.QuizModeDescriptionProvider
 import com.example.domain.provider.string.QuizModeTitleProvider
 import com.example.domain.provider.string.ReportTypeTitleResourceProvider
+import com.example.domain.usecase.CacheTokenUseCase
 import com.example.domain.usecase.CreateNewQuestionUseCase
 import com.example.domain.usecase.GetHasInternetConnectionUseCase
 import com.example.domain.usecase.GetModesCategoryUseCase
@@ -44,6 +45,7 @@ import com.example.domain.usecase.GetReportTypesUseCase
 import com.example.domain.usecase.GetScoresUseCase
 import com.example.domain.usecase.GetUsernameUseCase
 import com.example.domain.usecase.HandleStartupDataUseCase
+import com.example.domain.usecase.ICacheTokenUseCase
 import com.example.domain.usecase.ICreateNewQuestionUseCase
 import com.example.domain.usecase.IGetHasInternetConnectionUseCase
 import com.example.domain.usecase.IGetModesCategoryUseCase
@@ -125,6 +127,7 @@ val domainModule = module {
     single<IDataSyncCoordinator> { get<IAppPreferences>() }
 
     // Use Cases
+    single<ICacheTokenUseCase> { CacheTokenUseCase(get()) }
     single<ICreateNewQuestionUseCase> { CreateNewQuestionUseCase(get(), get()) }
     single<IGetModesCategoryUseCase> { GetModesCategoryUseCase(get(), get(), get(), get(), get()) }
     single<IGetModesDifficultyUseCase> { GetModesDifficultyUseCase(get(), get(), get(), get(), get()) }

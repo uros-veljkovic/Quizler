@@ -28,8 +28,10 @@ import com.example.quizler.ui.screen.home.HomeScreen
 import com.example.quizler.ui.screen.home.HomeViewModel
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreen
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
-import com.example.quizler.ui.screen.onboarding.OnboardingScreen
-import com.example.quizler.ui.screen.onboarding.OnboardingViewModel
+import com.example.quizler.ui.screen.onboarding.empty.EmptyScreen
+import com.example.quizler.ui.screen.onboarding.empty.EmptyViewModel
+import com.example.quizler.ui.screen.onboarding.signin.SignInScreen
+import com.example.quizler.ui.screen.onboarding.signin.SignInViewModel
 import com.example.quizler.ui.screen.onboarding.splash.SplashScreen
 import com.example.quizler.ui.screen.onboarding.splash.SplashViewModel
 import com.example.quizler.ui.screen.quiz.QuizScreen
@@ -41,8 +43,9 @@ import org.koin.androidx.compose.koinViewModel
 fun App(
     navController: NavHostController = rememberNavController(),
     homeViewModel: HomeViewModel = koinViewModel(),
+    signInViewModel: SignInViewModel = koinViewModel(),
+    emtpyViewModel: EmptyViewModel = koinViewModel(),
     splashViewModel: SplashViewModel = koinViewModel(),
-    onboardingViewModel: OnboardingViewModel = koinViewModel(),
     viewModel: AppViewModel = koinViewModel(),
     scoreViewModel: ScoreViewModel = koinViewModel(),
     newQuestionViewModel: CreateNewQuestionViewModel = koinViewModel()
@@ -72,13 +75,16 @@ fun App(
                 .background(Color.Transparent)
                 .padding(padding),
             navController = navController,
-            startDestination = Screen.Onboarding.route
+            startDestination = Screen.Empty.route
         ) {
+            composable(Screen.Empty.route) {
+                EmptyScreen(navController = navController, viewModel = emtpyViewModel)
+            }
             composable(Screen.Splash.route) {
                 SplashScreen(navController = navController, viewModel = splashViewModel)
             }
-            composable(Screen.Onboarding.route) {
-                OnboardingScreen(navController = navController, viewModel = onboardingViewModel)
+            composable(Screen.SignIn.route) {
+                SignInScreen(navController = navController, viewModel = signInViewModel)
             }
             composable(Screen.Home.route) {
                 viewModel.setBottomNavVisible(true)

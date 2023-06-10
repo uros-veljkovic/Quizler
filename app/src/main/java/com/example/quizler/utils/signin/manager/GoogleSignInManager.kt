@@ -31,7 +31,6 @@ class GoogleSignInManager : ActivityResultContract<Int, Task<GoogleSignInAccount
     }
 
     companion object {
-        const val NO_INPUT = 0
         const val RequestCode = 12345
     }
 }

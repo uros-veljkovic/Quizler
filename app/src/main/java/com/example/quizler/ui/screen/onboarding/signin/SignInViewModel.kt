@@ -2,6 +2,7 @@ package com.example.quizler.ui.screen.onboarding.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.quizler.Screen
 import com.example.quizler.model.InfoBannerData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +17,7 @@ class SignInViewModel : ViewModel() {
     val state = _state.asSharedFlow()
 
     fun onSignInSuccessful(email: String) {
+        _state.update { it.copy(nextScreen = Screen.Splash.route) }
         Timber.d("Log in successful! Email: $email")
     }
 

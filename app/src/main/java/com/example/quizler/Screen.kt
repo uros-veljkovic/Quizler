@@ -1,6 +1,8 @@
 package com.example.quizler
 
 sealed class Screen(val route: String) {
+    object Empty : Screen("empty")
+    object SignIn : Screen("signIn")
     object Splash : Screen("splash")
     object Onboarding : Screen("onboarding")
     object Home : Screen("home")

@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -23,6 +25,8 @@ import com.example.quizler.Screen
 import com.example.quizler.components.QuizModes
 import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.theme.spaceM
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -30,6 +34,12 @@ fun HomeScreen(
     navController: NavController = rememberNavController(),
     viewModel: HomeViewModel = getViewModel()
 ) {
+
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = Unit) {
+        GoogleSignIn.getClient(context, GoogleSignInOptions.Builder().build()).signOut()
+    }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 

@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +47,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle(initialValue = SignInState())
+    LaunchedEffect(key1 = state.nextScreen) {
+        state.nextScreen?.let { screen ->
+            if (screen.isNotEmpty()) navController.navigateAndForget(screen)
+        }
+    }
     val launcher = rememberLauncherForActivityResult(contract = GoogleSignInManager()) { task ->
         try {
             task?.getResult(ApiException::class.java)?.email?.let { email ->

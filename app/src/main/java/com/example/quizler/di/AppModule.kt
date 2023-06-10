@@ -3,7 +3,7 @@ package com.example.quizler.di
 import com.example.domain.NetworkConnectivityWatcher
 import com.example.quizler.InfoBannerDataMapper
 import com.example.quizler.ui.screen.AppViewModel
-import com.example.quizler.ui.screen.home.HomeViewModel
+import com.example.quizler.ui.screen.home.ModesViewModel
 import com.example.quizler.ui.screen.newquestion.ChoosableCategoryItemsProvider
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
 import com.example.quizler.ui.screen.onboarding.empty.EmptyViewModel
@@ -44,7 +44,7 @@ val appModule = module {
     viewModel { EmptyViewModel() }
     viewModel { SplashViewModel(get(), get(), get()) }
     viewModel { SignInViewModel() }
-    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { ModesViewModel(get(), get(), get(), get()) }
     viewModel { CreateNewQuestionViewModel(get(), get(), get()) }
     viewModel { QuizViewModel(get(), get(), get(), get()) }
     viewModel { ScoreViewModel(get(), get(), get()) }

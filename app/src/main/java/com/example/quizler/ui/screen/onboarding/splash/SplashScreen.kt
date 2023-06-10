@@ -27,8 +27,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.quizler.MainScreen
 import com.example.quizler.R
-import com.example.quizler.Screen
 import com.example.quizler.components.InfoBanner
 import com.example.quizler.components.Logo
 import com.example.quizler.extensions.navigateAndForget
@@ -58,7 +58,7 @@ fun SplashScreen(
     LaunchedEffect(key1 = state.isGoToHomeScreen) {
         if (state.isGoToHomeScreen) {
             delay(200L)
-            navController.navigateAndForget(Screen.Home.route)
+            navController.navigateAndForget(MainScreen.Home.route)
         }
     }
 

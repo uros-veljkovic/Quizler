@@ -14,8 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.quizler.MainScreen
 import com.example.quizler.R
-import com.example.quizler.Screen
 import com.example.quizler.components.BasicDialog
 import com.example.quizler.components.OptionsPickerDialog
 import com.example.quizler.extensions.navigateAndForget
@@ -42,7 +42,7 @@ fun QuizScreen(
     }
     LaunchedEffect(key1 = state.shouldExitQuiz) {
         if (state.shouldExitQuiz) {
-            navController.navigateAndForget(Screen.Home.route)
+            navController.navigateAndForget(MainScreen.Home.route)
         }
     }
 

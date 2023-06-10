@@ -32,8 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.quizler.MainScreen
 import com.example.quizler.R
-import com.example.quizler.Screen
 import com.example.quizler.components.InfoBanner
 import com.example.quizler.components.Logo
 import com.example.quizler.extensions.navigateAndForget
@@ -72,7 +72,7 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koin
                     launcher.launch(GoogleSignInManager.RequestCode)
                 },
                 onContinueAsGuestButtonClick = {
-                    navController.navigateAndForget(Screen.Splash.route)
+                    navController.navigateAndForget(MainScreen.Splash.route)
                 }
             )
         }

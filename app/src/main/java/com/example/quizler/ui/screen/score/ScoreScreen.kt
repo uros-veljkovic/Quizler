@@ -31,25 +31,22 @@ import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceM
 import com.example.quizler.theme.spaceS
 import com.example.quizler.ui.screen.home.plus
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ScoreScreen(
-    viewModel: ScoreViewModel
+    viewModel: ScoreViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Scaffold(
-        containerColor = Color.Transparent,
-        floatingActionButton = {
-            FloatingActionButton(onClick = viewModel::refreshScoreboard) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
-            }
-        },
-        snackbarHost = {
-            InfoBanner(data = state.infoBannerData, isActionButtonVisible = false)
+    Scaffold(containerColor = Color.Transparent, floatingActionButton = {
+        FloatingActionButton(onClick = viewModel::refreshScoreboard) {
+            Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
         }
-    ) {
+    }, snackbarHost = {
+        InfoBanner(data = state.infoBannerData, isActionButtonVisible = false)
+    }) {
         ScoreScreenContent(
             modifier = Modifier
                 .fillMaxSize()
@@ -94,9 +91,7 @@ fun ScoreScreenContent(
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 }
                 ScoreList(
-                    modifier = Modifier.fillMaxSize(),
-                    spaceBetweenItems = spaceS,
-                    list = scores
+                    modifier = Modifier.fillMaxSize(), spaceBetweenItems = spaceS, list = scores
                 )
             }
         }
@@ -126,11 +121,7 @@ fun PreviewScoreScreenContent() {
                     repeat(10) {
                         add(
                             Score(
-                                id = "$it",
-                                username = "markoni_123",
-                                mode = "a",
-                                ranking = 1,
-                                score = 12
+                                id = "$it", username = "markoni_123", mode = "a", ranking = 1, score = 12
                             )
                         )
                     }

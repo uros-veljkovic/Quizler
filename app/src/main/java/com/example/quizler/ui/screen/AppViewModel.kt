@@ -16,16 +16,6 @@ class AppViewModel : ViewModel() {
         AppScreenState()
     )
 
-    fun setBottomNavVisible(visible: Boolean) {
-        _state.update {
-            it.copy(
-                bottomNavigationConfig = it.bottomNavigationConfig.copy(
-                    isBottomNavVisible = visible
-                )
-            )
-        }
-    }
-
     fun closeApp() {
         _state.update { it.copy(shouldCloseApp = true) }
     }
@@ -34,7 +24,6 @@ class AppViewModel : ViewModel() {
         _state.update {
             it.copy(
                 isExitDialogVisible = true,
-                bottomNavigationConfig = it.bottomNavigationConfig.copy(isBottomNavVisible = false)
             )
         }
     }
@@ -43,7 +32,6 @@ class AppViewModel : ViewModel() {
         _state.update {
             it.copy(
                 isExitDialogVisible = false,
-                bottomNavigationConfig = it.bottomNavigationConfig.copy(isBottomNavVisible = true)
             )
         }
     }

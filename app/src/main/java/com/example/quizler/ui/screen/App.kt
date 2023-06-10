@@ -20,35 +20,30 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.quizler.Screen
+import com.example.quizler.MainScreen
 import com.example.quizler.components.ExitDialog
-import com.example.quizler.components.SimpleBottomNavigation
 import com.example.quizler.extensions.disableSplitMotionEvents
 import com.example.quizler.ui.screen.home.HomeScreen
-import com.example.quizler.ui.screen.home.HomeViewModel
-import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreen
+import com.example.quizler.ui.screen.home.ModesViewModel
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
 import com.example.quizler.ui.screen.onboarding.empty.EmptyScreen
-import com.example.quizler.ui.screen.onboarding.empty.EmptyViewModel
 import com.example.quizler.ui.screen.onboarding.signin.SignInScreen
 import com.example.quizler.ui.screen.onboarding.signin.SignInViewModel
 import com.example.quizler.ui.screen.onboarding.splash.SplashScreen
 import com.example.quizler.ui.screen.onboarding.splash.SplashViewModel
 import com.example.quizler.ui.screen.quiz.QuizScreen
-import com.example.quizler.ui.screen.score.ScoreScreen
 import com.example.quizler.ui.screen.score.ScoreViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun App(
     navController: NavHostController = rememberNavController(),
-    homeViewModel: HomeViewModel = koinViewModel(),
+    modesViewModel: ModesViewModel = koinViewModel(),
+    createNewQuestionViewModel: CreateNewQuestionViewModel = koinViewModel(),
+    scoreViewModel: ScoreViewModel = koinViewModel(),
     signInViewModel: SignInViewModel = koinViewModel(),
-    emtpyViewModel: EmptyViewModel = koinViewModel(),
     splashViewModel: SplashViewModel = koinViewModel(),
     viewModel: AppViewModel = koinViewModel(),
-    scoreViewModel: ScoreViewModel = koinViewModel(),
-    newQuestionViewModel: CreateNewQuestionViewModel = koinViewModel()
 ) {
     // TODO: Add in-app review
     val activity = LocalContext.current as? Activity
@@ -64,42 +59,27 @@ fun App(
     }
     Scaffold(
         modifier = Modifier.disableSplitMotionEvents(),
-        bottomBar = {
-            AnimatedVisibility(visible = state.bottomNavigationConfig.isBottomNavVisible) {
-                SimpleBottomNavigation(navController = navController)
-            }
-        }
     ) { padding ->
         NavHost(
             modifier = Modifier
                 .background(Color.Transparent)
                 .padding(padding),
             navController = navController,
-            startDestination = Screen.Empty.route
+            startDestination = MainScreen.Empty.route
         ) {
-            composable(Screen.Empty.route) {
-                EmptyScreen(navController = navController, viewModel = emtpyViewModel)
+            composable(MainScreen.Empty.route) {
+                EmptyScreen(navController = navController)
             }
-            composable(Screen.Splash.route) {
+            composable(MainScreen.Splash.route) {
                 SplashScreen(navController = navController, viewModel = splashViewModel)
             }
-            composable(Screen.SignIn.route) {
+            composable(MainScreen.SignIn.route) {
                 SignInScreen(navController = navController, viewModel = signInViewModel)
             }
-            composable(Screen.Home.route) {
-                viewModel.setBottomNavVisible(true)
-                HomeScreen(navController = navController, viewModel = homeViewModel)
+            composable(MainScreen.Home.route) {
+                HomeScreen(modesViewModel, createNewQuestionViewModel, scoreViewModel, navController)
             }
-            composable(Screen.Scoreboard.route) {
-                viewModel.setBottomNavVisible(true)
-                ScoreScreen(viewModel = scoreViewModel)
-            }
-            composable(Screen.NewQuestion.route) {
-                viewModel.setBottomNavVisible(true)
-                CreateNewQuestionScreen(viewModel = newQuestionViewModel)
-            }
-            composable(Screen.Quiz().route) {
-                viewModel.setBottomNavVisible(false)
+            composable(MainScreen.Quiz().route) {
                 it.arguments?.getString("modeId")?.let { modeId ->
                     QuizScreen(navController = navController, modeId = modeId)
                 }
@@ -107,13 +87,10 @@ fun App(
         }
     }
     AnimatedVisibility(
-        visible = state.isExitDialogVisible,
-        enter = fadeIn(tween(200)),
-        exit = fadeOut(tween(200))
+        visible = state.isExitDialogVisible, enter = fadeIn(tween(200)), exit = fadeOut(tween(200))
     ) {
         ExitDialog(
-            onConfirm = viewModel::closeApp,
-            onDecline = viewModel::handleExitDialogDecline
+            onConfirm = viewModel::closeApp, onDecline = viewModel::handleExitDialogDecline
         )
     }
 }

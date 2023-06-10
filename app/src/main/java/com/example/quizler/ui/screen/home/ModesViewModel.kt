@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
+class ModesViewModel(
     private val getModesCategory: IGetModesCategoryUseCase,
     private val getModesLength: IGetModesLengthUseCase,
     private val getModesDifficulty: IGetModesDifficultyUseCase,

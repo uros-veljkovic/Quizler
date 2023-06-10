@@ -5,7 +5,7 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class CreateNewQuestionScreenStateTest {
+class CreateNewQuestionMainScreenStateTest {
 
     private lateinit var state: CreateNewQuestionScreenState
 

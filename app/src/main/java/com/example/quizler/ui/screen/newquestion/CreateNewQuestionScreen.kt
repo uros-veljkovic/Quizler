@@ -45,15 +45,18 @@ import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceM
 import com.example.quizler.theme.spaceS
 import com.example.quizler.ui.screen.home.plus
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CreateNewQuestionScreen(
-    viewModel: CreateNewQuestionViewModel,
+    modifier: Modifier = Modifier,
+    viewModel: CreateNewQuestionViewModel = koinViewModel(),
 ) {
     val state by viewModel.screenState.collectAsStateWithLifecycle()
     val infoBannerData by viewModel.infoBanner.collectAsState(initial = null)
     val scrollState = rememberScrollState()
     Scaffold(
+        modifier = modifier,
         snackbarHost = {
             InfoBanner(data = infoBannerData, isActionButtonVisible = false)
         },

@@ -2,7 +2,7 @@ package com.example.quizler.ui.screen.onboarding.empty
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quizler.Screen
+import com.example.quizler.MainScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ class EmptyViewModel : ViewModel() {
 
     private fun gotoNextScreen() {
         viewModelScope.launch {
-            _nextScreen.emit(Screen.SignIn.route)
+            _nextScreen.emit(MainScreen.SignIn.route)
         }
     }
 }

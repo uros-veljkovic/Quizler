@@ -9,64 +9,100 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.quizler.HomeScreen
+import com.example.quizler.MainScreen
 import com.example.quizler.R
-import com.example.quizler.Screen
 import com.example.quizler.components.QuizModes
+import com.example.quizler.components.SimpleBottomNavigation
 import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.theme.spaceM
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import org.koin.androidx.compose.getViewModel
+import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreen
+import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
+import com.example.quizler.ui.screen.score.ScoreScreen
+import com.example.quizler.ui.screen.score.ScoreViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
-    navController: NavController = rememberNavController(),
-    viewModel: HomeViewModel = getViewModel()
+    modesViewModel: ModesViewModel,
+    createNewQuestionViewModel: CreateNewQuestionViewModel,
+    scoreViewModel: ScoreViewModel,
+    parentNavController: NavHostController
 ) {
+    val navHostController = rememberNavController()
 
-    val context = LocalContext.current
+    Scaffold(
+        bottomBar = {
+            SimpleBottomNavigation(navController = navHostController)
+        },
+        content = { padding ->
+            NavHost(navController = navHostController, startDestination = HomeScreen.Modes.route) {
+                composable(HomeScreen.Modes.route) {
+                    ModesScreen(
+                        paddingValues = padding,
+                        viewModel = modesViewModel,
+                        navController = parentNavController
+                    )
+                }
+                composable(HomeScreen.NewQuestion.route) {
+                    CreateNewQuestionScreen(
+                        modifier = Modifier.padding(paddingValues = padding),
+                        viewModel = createNewQuestionViewModel
+                    )
+                }
+                composable(HomeScreen.Scoreboard.route) {
+                    ScoreScreen(viewModel = scoreViewModel)
+                }
+            }
+        }
+    )
+}
 
-    LaunchedEffect(key1 = Unit) {
-        GoogleSignIn.getClient(context, GoogleSignInOptions.Builder().build()).signOut()
-    }
-
+@Composable
+private fun ModesScreen(
+    paddingValues: PaddingValues,
+    viewModel: ModesViewModel = koinViewModel(),
+    navController: NavController
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
-            .padding(spaceM)
+            .padding(paddingValues + spaceM)
             .verticalScroll(rememberScrollState())
     ) {
         QuizModes(
             cardDescription = stringResource(id = R.string.mode_category_description),
             cardTitle = stringResource(id = R.string.tab_category),
             state = state.categories,
-            onModeSelected = { navController.navigateAndForget(Screen.Quiz(it.id).route) }
+            onModeSelected = { navController.navigateAndForget(MainScreen.Quiz(it.id).route) }
         )
         Spacer(modifier = Modifier.size(spaceM))
         QuizModes(
             cardDescription = stringResource(id = R.string.modes_difficulty_description),
             cardTitle = stringResource(id = R.string.tab_difficulty),
             state = state.difficulties,
-            onModeSelected = { navController.navigateAndForget(Screen.Quiz(it.id).route) }
+            onModeSelected = { navController.navigateAndForget(MainScreen.Quiz(it.id).route) }
         )
         Spacer(modifier = Modifier.size(spaceM))
         QuizModes(
             cardDescription = stringResource(id = R.string.modes_length_description),
             cardTitle = stringResource(id = R.string.tab_length),
             state = state.length,
-            onModeSelected = { navController.navigateAndForget(Screen.Quiz(it.id).route) }
+            onModeSelected = { navController.navigateAndForget(MainScreen.Quiz(it.id).route) }
         )
     }
 }

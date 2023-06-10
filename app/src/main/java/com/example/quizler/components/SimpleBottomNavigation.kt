@@ -17,8 +17,6 @@ import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.model.BottomNavigationItem
 import com.example.quizler.theme.QuizlerTheme
 
-private const val POP_UP_ALL = 0
-
 @Composable
 fun SimpleBottomNavigation(
     navController: NavController = rememberNavController(),

@@ -2,6 +2,7 @@ package com.example.quizler.ui.screen.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.quizler.MainScreen
 import com.example.quizler.model.InfoBannerData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +11,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CreateProfileViewModel : ViewModel() {
+
+    private val _gotoNextScreen = MutableStateFlow("")
+    val gotoNextScreen = _gotoNextScreen.asStateFlow()
+
     private val _state = MutableStateFlow(CreateProfileState())
     val state = _state.asStateFlow()
 
@@ -26,6 +31,7 @@ class CreateProfileViewModel : ViewModel() {
             showErrorMessage()
             return
         }
+        _gotoNextScreen.update { MainScreen.Splash.route }
     }
 
     private fun showErrorMessage() {

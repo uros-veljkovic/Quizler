@@ -6,7 +6,7 @@ import com.example.quizler.model.InfoBannerData
 data class CreateProfileState(
     val username: String = "",
     val choosenAvatar: Avatar? = null,
-    val infoBannerData: InfoBannerData? = null
+    val infoBannerData: InfoBannerData? = null,
 ) {
     val avatarList = listOf(
         Avatar(R.mipmap.bear, name = "bear"),

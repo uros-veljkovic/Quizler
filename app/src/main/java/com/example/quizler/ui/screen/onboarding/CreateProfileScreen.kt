@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,7 +30,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +46,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.quizler.R
 import com.example.quizler.components.Disclaimer
 import com.example.quizler.components.InfoBanner
+import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceL
 import com.example.quizler.theme.spaceM
@@ -56,22 +60,24 @@ fun CreateProfileScreen(
     viewModel: CreateProfileViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val nextScreenRoute by viewModel.gotoNextScreen.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = nextScreenRoute) {
+        if (nextScreenRoute.isNotEmpty()) {
+            navController.navigateAndForget(nextScreenRoute)
+        }
+    }
 
     Scaffold(snackbarHost = {
         InfoBanner(data = state.infoBannerData)
     }) { padding ->
         Column(modifier = Modifier.padding(padding + spaceM), verticalArrangement = Arrangement.Center) {
             EnterUsernameCard(
-                username = state.username,
-                avatar = state.choosenAvatar,
-                onUsernameChange = viewModel::setUsername
+                username = state.username, avatar = state.choosenAvatar, onUsernameChange = viewModel::setUsername
             )
             Spacer(modifier = Modifier.size(spaceL))
             ChooseAvatarCard(
-                modifier = Modifier.weight(1f),
-                state.avatarList,
-                state.choosenAvatar,
-                viewModel::setAvatar
+                modifier = Modifier.weight(1f), state.avatarList, state.choosenAvatar, viewModel::setAvatar
             )
             Spacer(modifier = Modifier.size(spaceL))
             Button(
@@ -99,16 +105,13 @@ private fun EnterUsernameCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.title_enter_username),
-                style = MaterialTheme.typography.titleLarge
+                text = stringResource(R.string.title_enter_username), style = MaterialTheme.typography.titleLarge
             )
             Disclaimer(
                 dividerWidth = 3.dp, text = stringResource(R.string.disclaimer_enter_username)
             )
             TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = username,
-                leadingIcon = {
+                modifier = Modifier.fillMaxWidth(), value = username, leadingIcon = {
                     if (avatar != null) {
                         Image(
                             modifier = Modifier.size(32.dp),
@@ -118,8 +121,7 @@ private fun EnterUsernameCard(
                     } else {
                         Icon(imageVector = Icons.Default.Person, contentDescription = null)
                     }
-                },
-                onValueChange = onUsernameChange
+                }, onValueChange = onUsernameChange
             )
         }
     }
@@ -151,9 +153,7 @@ private fun ChooseAvatarCard(
             ) {
                 items(items = avatarList) {
                     AvatarIcon(
-                        avatar = it,
-                        isChoosen = chosenAvatar == it,
-                        onChooseAvatar = onChooseAvatar
+                        avatar = it, isChoosen = chosenAvatar == it, onChooseAvatar = onChooseAvatar
                     )
                 }
             }
@@ -168,11 +168,12 @@ private fun AvatarIcon(
     isChoosen: Boolean,
     onChooseAvatar: (Avatar) -> Unit = {}
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
 
     Box(
         modifier = modifier
             .size(120.dp)
-            .clickable {
+            .clickable(indication = null, interactionSource = interactionSource) {
                 onChooseAvatar(avatar)
             }
     ) {
@@ -188,8 +189,7 @@ private fun AvatarIcon(
                         .align(Alignment.Center)
                         .fillMaxSize()
                         .clip(CircleShape), // make the image circular
-                    painter = painterResource(id = avatar.icon),
-                    contentDescription = null
+                    painter = painterResource(id = avatar.icon), contentDescription = null
                 )
             }
         } else {

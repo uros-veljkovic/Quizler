@@ -6,11 +6,12 @@ import com.example.quizler.ui.screen.AppViewModel
 import com.example.quizler.ui.screen.home.ModesViewModel
 import com.example.quizler.ui.screen.newquestion.ChoosableCategoryItemsProvider
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
+import com.example.quizler.ui.screen.onboarding.CreateProfileViewModel
+import com.example.quizler.ui.screen.onboarding.IOnboardingManager
+import com.example.quizler.ui.screen.onboarding.OnboardingManager
 import com.example.quizler.ui.screen.onboarding.empty.EmptyViewModel
 import com.example.quizler.ui.screen.onboarding.signin.SignInViewModel
 import com.example.quizler.ui.screen.onboarding.splash.SplashViewModel
-import com.example.quizler.ui.screen.onboarding.util.provider.IOnboardingManager
-import com.example.quizler.ui.screen.onboarding.util.provider.OnboardingManager
 import com.example.quizler.ui.screen.quiz.QuizViewModel
 import com.example.quizler.ui.screen.score.ChoosableModeItemsProvider
 import com.example.quizler.ui.screen.score.ScoreViewModel
@@ -44,6 +45,7 @@ val appModule = module {
     viewModel { EmptyViewModel() }
     viewModel { SplashViewModel(get(), get(), get()) }
     viewModel { SignInViewModel() }
+    viewModel { CreateProfileViewModel() }
     viewModel { ModesViewModel(get(), get(), get(), get()) }
     viewModel { CreateNewQuestionViewModel(get(), get(), get()) }
     viewModel { QuizViewModel(get(), get(), get(), get()) }

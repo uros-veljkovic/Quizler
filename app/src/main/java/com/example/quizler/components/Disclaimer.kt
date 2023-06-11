@@ -31,7 +31,7 @@ import com.example.quizler.theme.spaceS
 @Composable
 fun Disclaimer(
     modifier: Modifier = Modifier,
-    dividerWidth: Dp,
+    dividerWidth: Dp = 3.dp,
     text: String,
     color: Color = MaterialTheme.colorScheme.onSurface
 ) {

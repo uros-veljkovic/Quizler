@@ -1,4 +1,4 @@
-package com.example.quizler.ui.screen.onboarding.util.provider
+package com.example.quizler.ui.screen.onboarding
 
 import android.content.Context
 import com.example.domain.model.OnboardingState

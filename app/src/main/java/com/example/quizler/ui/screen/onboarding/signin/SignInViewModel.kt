@@ -17,7 +17,7 @@ class SignInViewModel : ViewModel() {
     val state = _state.asSharedFlow()
 
     fun onSignInSuccessful(email: String) {
-        _state.update { it.copy(nextScreen = MainScreen.Splash.route) }
+        _state.update { it.copy(nextScreen = MainScreen.CreateProfile.route) }
         Timber.d("Log in successful! Email: $email")
     }
 

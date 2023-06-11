@@ -26,6 +26,7 @@ import com.example.quizler.extensions.disableSplitMotionEvents
 import com.example.quizler.ui.screen.home.HomeScreen
 import com.example.quizler.ui.screen.home.ModesViewModel
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
+import com.example.quizler.ui.screen.onboarding.CreateProfileScreen
 import com.example.quizler.ui.screen.onboarding.empty.EmptyScreen
 import com.example.quizler.ui.screen.onboarding.signin.SignInScreen
 import com.example.quizler.ui.screen.onboarding.signin.SignInViewModel
@@ -70,11 +71,14 @@ fun App(
             composable(MainScreen.Empty.route) {
                 EmptyScreen(navController = navController)
             }
-            composable(MainScreen.Splash.route) {
-                SplashScreen(navController = navController, viewModel = splashViewModel)
-            }
             composable(MainScreen.SignIn.route) {
                 SignInScreen(navController = navController, viewModel = signInViewModel)
+            }
+            composable(MainScreen.CreateProfile.route) {
+                CreateProfileScreen(navController = navController)
+            }
+            composable(MainScreen.Splash.route) {
+                SplashScreen(navController = navController, viewModel = splashViewModel)
             }
             composable(MainScreen.Home.route) {
                 HomeScreen(modesViewModel, createNewQuestionViewModel, scoreViewModel, navController)

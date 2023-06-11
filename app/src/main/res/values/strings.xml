@@ -161,6 +161,12 @@
     <string name="button_continue_as_guest">Nastavi kao gost</string>
     <string name="sign_in_failed_title">Neuspesna prijava</string>
     <string name="sign_in_failed_desc">Proverite internet konekciju i pokusajte ponovo.</string>
+    <string name="disclaimer_enter_username">Vreme je da izabereš svoje ime za igru! To ime će biti tvoj virtuelni identitet, tvoja zastava na vrhu tabele rezultata posle svake partije. Uđi u kviz sa stilom, tvoje ime te čeka!</string>
+    <string name="disclaimer_choose_avatar">Odaberi svog životinjskog avatara! Ne samo da će začiniti scoreboard, već će ti preneti deo svoje životinjske energije!</string>
+    <string name="banner_error_create_profile_title">Greska</string>
+    <string name="banner_error_create_profile_description">Ups, izgleda da postoji problem. Pre nego što pritisneš dugme za kreaciju profila, proveri da li si uneo/la korisničko ime i odabrao/la avatara</string>
+    <string name="title_enter_username">Unesi korisnicko ime</string>
+    <string name="button_confirm_create_profile">Potvrdi</string>
 
 
 </resources>

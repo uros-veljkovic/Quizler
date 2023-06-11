@@ -1,6 +1,8 @@
 package com.example.quizler.ui.screen.score
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -81,7 +83,7 @@ fun ScoreScreenContent(
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         AnimatedVisibility(
-            modifier = modifier, visible = modes.isNotEmpty()
+            modifier = modifier, visible = modes.isNotEmpty(), enter = fadeIn(), exit = fadeOut()
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(spaceS)) {
                 chosenMode?.let {

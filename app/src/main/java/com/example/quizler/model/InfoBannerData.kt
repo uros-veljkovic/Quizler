@@ -61,6 +61,13 @@ open class InfoBannerData(
         color = Color(0xffef9a9a)
     )
 
+    object CreateProfileError : InfoBannerData(
+        icon = R.mipmap.ic_error_foreground,
+        title = R.string.banner_error_create_profile_title,
+        description = R.string.banner_error_create_profile_description,
+        color = Color(0xffef9a9a)
+    )
+
     object SuccessfullyCreatedNewQuestion : InfoBannerData(
         icon = R.drawable.ic_in_love,
         title = R.string.wohoo,

@@ -3,6 +3,7 @@ package com.example.quizler
 sealed class MainScreen(val route: String) {
     object Empty : MainScreen("empty")
     object SignIn : MainScreen("signIn")
+    object CreateProfile : MainScreen("create_profile")
     object Splash : MainScreen("splash")
     object Home : MainScreen("home")
     class Quiz(modeId: String = "{modeId}") : MainScreen("quiz/$modeId")

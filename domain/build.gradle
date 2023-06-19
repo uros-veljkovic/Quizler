@@ -76,6 +76,14 @@ dependencies {
 
     // Koin
     api 'io.insert-koin:koin-android:3.4.0'
+
+    // Test
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation "junit:junit:$version_junit"
+    testImplementation "io.mockk:mockk:$version_mockk"
+    testImplementation "org.hamcrest:hamcrest-library:$version_hamcrest"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutines"
+    testImplementation 'io.kotlintest:kotlintest-runner-junit5:3.1.9'
 }
 
 task ktlint(type: JavaExec, group: "verification") {

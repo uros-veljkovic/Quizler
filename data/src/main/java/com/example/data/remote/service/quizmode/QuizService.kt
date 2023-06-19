@@ -11,14 +11,31 @@ import com.example.data.remote.dto.ReportQuestionDto
 import com.example.data.remote.dto.ReportTypeDto
 import com.example.data.remote.dto.ResultRecordDto
 import com.example.data.remote.dto.ScoreDto
+import com.example.data.remote.dto.user.UserDto
+import com.example.data.remote.dto.user.UserIdDto
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 @Keep
 interface QuizService {
+
+    @POST("users")
+    suspend fun signIn(): Response<UserDto>
+
+    @GET("users/{id}")
+    suspend fun getUserById(@Path("id") id: UserIdDto): Response<UserDto>
+
+    @PUT("users/{id}")
+    suspend fun updateUser(@Path("id") id: UserIdDto, @Body newUser: UserDto): Response<UserDto>
+
+    @DELETE("users/{id}")
+    suspend fun deleteUser(@Path("id") id: UserIdDto): Response<Unit>
 
     @GET("modes/category")
     suspend fun getCategoryModes(): Response<CategoryModesDto>

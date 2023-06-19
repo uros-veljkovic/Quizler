@@ -10,10 +10,13 @@ import com.example.data.remote.dto.ReportQuestionDto
 import com.example.data.remote.dto.ReportTypeDto
 import com.example.data.remote.dto.ResultRecordDto
 import com.example.data.remote.dto.ScoreDto
+import com.example.data.remote.dto.user.UserDto
 import com.example.util.data.RepositoryResponse
 
 interface IQuizRemoteRepository {
 
+    suspend fun signIn(): RepositoryResponse<UserDto>
+    suspend fun getUser(id: String): RepositoryResponse<UserDto>
     suspend fun getCategoryModes(): RepositoryResponse<CategoryModesDto>
     suspend fun getLengthModes(): RepositoryResponse<LengthModesDto>
     suspend fun getDifficultyModes(): RepositoryResponse<DifficultyModesDto>

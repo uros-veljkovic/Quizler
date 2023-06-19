@@ -12,6 +12,7 @@ import com.example.data.remote.IQuizRemoteRepository
 import com.example.data.remote.QuizRemoteRepository
 import com.example.data.remote.actionhandler.INetworkActionHandler
 import com.example.data.remote.actionhandler.NetworkActionHandler
+import com.example.data.remote.service.interceptor.QuizlerInterceptor
 import com.example.data.remote.service.quizmode.QuizService
 import com.example.domain.network.inspector.NetworkInspector
 import com.example.util.network.inspector.INetworkInspector
@@ -45,13 +46,15 @@ val dataModule = module {
 
     single {
         OkHttpClient().newBuilder()
+            .addInterceptor(QuizlerInterceptor(get()))
             .connectTimeout(5L, TimeUnit.SECONDS)
             .readTimeout(10L, TimeUnit.SECONDS)
             .writeTimeout(10L, TimeUnit.SECONDS)
             .build()
     }
     single {
-        Retrofit.Builder().baseUrl(BuildConfig.SERVER_URL)
+        // TODO: Revert before commit
+        Retrofit.Builder().baseUrl("http://192.168.1.113:2000")
             .addConverterFactory(GsonConverterFactory.create())
             .client(get())
             .build()

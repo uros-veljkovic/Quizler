@@ -34,7 +34,6 @@ import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreen
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
 import com.example.quizler.ui.screen.score.ScoreScreen
 import com.example.quizler.ui.screen.score.ScoreViewModel
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
@@ -78,7 +77,7 @@ fun HomeScreen(
 @Composable
 private fun ModesScreen(
     modifier: Modifier = Modifier,
-    viewModel: ModesViewModel = koinViewModel(),
+    viewModel: ModesViewModel,
     navController: NavController
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()

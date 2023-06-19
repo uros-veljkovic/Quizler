@@ -25,7 +25,7 @@ class FetchAndCacheManager(
     ): State<Unit> {
         return withContext(coroutineContext) {
             try {
-                val data = query().first()
+                val data = query().first() // localRepo.
 
                 if (shouldFetch(data)) {
                     when (val fetchResult = fetch()) {

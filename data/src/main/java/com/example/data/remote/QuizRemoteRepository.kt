@@ -11,6 +11,8 @@ import com.example.data.remote.dto.ReportQuestionDto
 import com.example.data.remote.dto.ReportTypeDto
 import com.example.data.remote.dto.ResultRecordDto
 import com.example.data.remote.dto.ScoreDto
+import com.example.data.remote.dto.user.UserDto
+import com.example.data.remote.dto.user.UserIdDto
 import com.example.data.remote.service.quizmode.QuizService
 import com.example.util.data.RepositoryResponse
 
@@ -18,6 +20,13 @@ class QuizRemoteRepository(
     private val service: QuizService,
     private val networkActionHandler: INetworkActionHandler
 ) : IQuizRemoteRepository {
+    override suspend fun signIn(): RepositoryResponse<UserDto> = networkActionHandler {
+        service.signIn()
+    }
+
+    override suspend fun getUser(id: String): RepositoryResponse<UserDto> = networkActionHandler {
+        service.getUserById(UserIdDto(id))
+    }
 
     override suspend fun getCategoryModes(): RepositoryResponse<CategoryModesDto> = networkActionHandler {
         service.getCategoryModes()

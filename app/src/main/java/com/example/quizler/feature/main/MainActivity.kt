@@ -5,20 +5,18 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.ui.screen.App
+import com.example.quizler.utils.signin.manager.token.RefreshTokenWorker
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
 import com.google.android.play.core.install.model.UpdateAvailability
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
-
-    // TODO: Think about how to handle injection without having to
-    //  mark all classes with @Inject annotation
-    //    @QSendDataToServerWorker
-    //    @Inject
-    //    lateinit var sendDataToServer: OneTimeWorkRequest
 
     private lateinit var appUpdateManager: AppUpdateManager
 
@@ -32,11 +30,21 @@ class MainActivity : ComponentActivity() {
         }
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         requestUpdateIfExists()
+        enqueueRefreshTokenWork()
 //        WorkManager.getInstance(this).enqueue(sendDataToServer)
+    }
+
+    private fun enqueueRefreshTokenWork() {
+        val refreshTokenWorkRequest = PeriodicWorkRequestBuilder<RefreshTokenWorker>(45, TimeUnit.MINUTES)
+            .setInitialDelay(30, TimeUnit.MINUTES) // Delay the start to align with your token expiration
+            .build()
+
+        WorkManager.getInstance(this).enqueue(refreshTokenWorkRequest)
     }
 
     override fun onResume() {
         super.onResume()
+        // TODO: Move to new class QuizlerAppUpdateManager
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                 // If an in-app update is already running, resume the update.

@@ -16,10 +16,13 @@ import com.example.quizler.ui.screen.quiz.QuizViewModel
 import com.example.quizler.ui.screen.score.ChoosableModeItemsProvider
 import com.example.quizler.ui.screen.score.ScoreViewModel
 import com.example.quizler.ui.screen.score.ScoresUiMapper
-import com.example.quizler.util.SendDataToServerWorkerFactory
+import com.example.quizler.util.SendDataToServerWorker
 import com.example.quizler.utils.signin.manager.GoogleSignInManager
+import com.example.quizler.utils.signin.manager.token.RefreshTokenWorker
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
 val appModule = module {
@@ -27,9 +30,6 @@ val appModule = module {
     // Data mapper
     single { InfoBannerDataMapper() }
     single { ScoresUiMapper() }
-
-    // Worker
-    single { SendDataToServerWorkerFactory(getKoin()) }
 
     // Connectivity
     single { NetworkConnectivityWatcher(get()) }
@@ -42,12 +42,20 @@ val appModule = module {
     single<IOnboardingManager> { OnboardingManager(androidApplication(), get()) }
 
     viewModel { AppViewModel() }
-    viewModel { EmptyViewModel() }
+    viewModel { EmptyViewModel(get()) }
     viewModel { SplashViewModel(get(), get(), get()) }
-    viewModel { SignInViewModel() }
+    viewModel { SignInViewModel(get(), get()) }
     viewModel { CreateProfileViewModel() }
     viewModel { ModesViewModel(get(), get(), get(), get()) }
     viewModel { CreateNewQuestionViewModel(get(), get(), get()) }
     viewModel { QuizViewModel(get(), get(), get(), get()) }
     viewModel { ScoreViewModel(get(), get(), get()) }
+
+    // Workers
+    worker {
+        RefreshTokenWorker(androidContext(), get())
+    }
+    worker {
+        SendDataToServerWorker(androidContext(), get(), get())
+    }
 }

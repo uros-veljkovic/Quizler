@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
+import com.example.quizler.BuildConfig
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -12,11 +13,7 @@ import com.google.android.gms.tasks.Task
 class GoogleSignInManager : ActivityResultContract<Int, Task<GoogleSignInAccount>?>() {
 
     override fun createIntent(context: Context, input: Int): Intent {
-        val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
-
-        val intent = GoogleSignIn.getClient(context, signInOptions)
+        val intent = GoogleSignIn.getClient(context, getSignInOptins())
         return intent.signInIntent
     }
 
@@ -31,6 +28,12 @@ class GoogleSignInManager : ActivityResultContract<Int, Task<GoogleSignInAccount
     }
 
     companion object {
+        fun getSignInOptins() = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestId()
+            .requestIdToken(BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID)
+            .requestEmail()
+            .build()
+
         const val RequestCode = 12345
     }
 }

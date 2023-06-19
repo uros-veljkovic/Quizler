@@ -2,6 +2,7 @@ package com.example.data.local.db.dao
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.data.local.UserEntity
 import com.example.data.local.entity.AnswerEntity
 import com.example.data.local.entity.AnswerRecordEntity
 import com.example.data.local.entity.CategoryModeEntity
@@ -15,6 +16,7 @@ import com.example.data.local.entity.ScoreEntity
 
 @Database(
     entities = [
+        UserEntity::class,
         CategoryModeEntity::class,
         LengthModeEntity::class,
         DifficultyModeEntity::class,
@@ -30,6 +32,7 @@ import com.example.data.local.entity.ScoreEntity
     exportSchema = false
 )
 abstract class QuizlerDatabase : RoomDatabase() {
+    abstract fun daoUser(): UserDao
     abstract fun daoCategory(): CategoryModeDao
     abstract fun daoLength(): LengthModeDao
     abstract fun daoDifficulty(): DifficultyModeDao

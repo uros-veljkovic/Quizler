@@ -130,10 +130,6 @@ dependencies {
     implementation "androidx.activity:activity-compose:$version_compose_activity"
     implementation "androidx.compose.compiler:compiler:$version_compose_compiler"
 
-    // Pager and Indicators - Accompanist
-    implementation "com.google.accompanist:accompanist-pager:$version_accompanist_pager"
-    implementation "com.google.accompanist:accompanist-pager-indicators:$version_accompanist_pager"
-
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutines"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutines"
@@ -147,6 +143,7 @@ dependencies {
 
     // Koin
     implementation "io.insert-koin:koin-android:3.4.0"
+    implementation "io.insert-koin:koin-androidx-workmanager:3.4.0"
     implementation 'io.insert-koin:koin-androidx-compose:3.4.4'
 
     // WorkManager

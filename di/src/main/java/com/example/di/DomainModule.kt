@@ -36,6 +36,7 @@ import com.example.domain.provider.string.QuizModeTitleProvider
 import com.example.domain.provider.string.ReportTypeTitleResourceProvider
 import com.example.domain.usecase.CacheTokenUseCase
 import com.example.domain.usecase.CreateNewQuestionUseCase
+import com.example.domain.usecase.DetermainNextDestinationScreenUseCase
 import com.example.domain.usecase.GetHasInternetConnectionUseCase
 import com.example.domain.usecase.GetModesCategoryUseCase
 import com.example.domain.usecase.GetModesDifficultyUseCase
@@ -47,6 +48,7 @@ import com.example.domain.usecase.GetUsernameUseCase
 import com.example.domain.usecase.HandleStartupDataUseCase
 import com.example.domain.usecase.ICacheTokenUseCase
 import com.example.domain.usecase.ICreateNewQuestionUseCase
+import com.example.domain.usecase.IDetermainNextDestinationScreenUseCase
 import com.example.domain.usecase.IGetHasInternetConnectionUseCase
 import com.example.domain.usecase.IGetModesCategoryUseCase
 import com.example.domain.usecase.IGetModesDifficultyUseCase
@@ -62,12 +64,14 @@ import com.example.domain.usecase.ISaveUsernameUseCase
 import com.example.domain.usecase.ISendInvalidQuestionReportUseCase
 import com.example.domain.usecase.ISendStoredDataToServerUseCase
 import com.example.domain.usecase.ISetHasInternetConnectionUseCase
+import com.example.domain.usecase.ISignInUseCase
 import com.example.domain.usecase.SaveAnswerRecordUseCase
 import com.example.domain.usecase.SaveResultRecordUseCase
 import com.example.domain.usecase.SaveUsernameUseCase
 import com.example.domain.usecase.SendInvalidQuestionReportUseCase
 import com.example.domain.usecase.SendStoredDataToServerUseCase
 import com.example.domain.usecase.SetHasInternetConnectionUseCase
+import com.example.domain.usecase.SignInUseCase
 import com.example.domain.wrapper.ContextWrapper
 import com.example.util.di.Named
 import kotlinx.coroutines.Dispatchers
@@ -127,6 +131,8 @@ val domainModule = module {
     single<IDataSyncCoordinator> { get<IAppPreferences>() }
 
     // Use Cases
+    single<ISignInUseCase> { SignInUseCase(get(), get(), get()) }
+    single<IDetermainNextDestinationScreenUseCase> { DetermainNextDestinationScreenUseCase(get(), get()) }
     single<ICacheTokenUseCase> { CacheTokenUseCase(get()) }
     single<ICreateNewQuestionUseCase> { CreateNewQuestionUseCase(get(), get()) }
     single<IGetModesCategoryUseCase> { GetModesCategoryUseCase(get(), get(), get(), get(), get()) }

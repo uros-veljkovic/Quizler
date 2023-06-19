@@ -2,6 +2,10 @@ package com.example.quizler.ui.screen.onboarding.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.State
+import com.example.domain.model.FirstDestination
+import com.example.domain.usecase.IDetermainNextDestinationScreenUseCase
+import com.example.domain.usecase.ISignInUseCase
 import com.example.quizler.MainScreen
 import com.example.quizler.model.InfoBannerData
 import kotlinx.coroutines.delay
@@ -11,14 +15,32 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class SignInViewModel : ViewModel() {
+class SignInViewModel(
+    private val signIn: ISignInUseCase,
+    private val determainNextDestinationScreen: IDetermainNextDestinationScreenUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(SignInState())
     val state = _state.asSharedFlow()
 
-    fun onSignInSuccessful(email: String) {
-        _state.update { it.copy(nextScreen = MainScreen.CreateProfile.route) }
-        Timber.d("Log in successful! Email: $email")
+    fun onSignInSuccessful(token: String) {
+        viewModelScope.launch {
+            val signInState = signIn(token)
+            if (signInState is State.Success) {
+                val nextDestination = when (determainNextDestinationScreen()) {
+                    FirstDestination.SignIn -> throw Exception("User preferences not stored properly")
+                    FirstDestination.CreateProfile -> MainScreen.CreateProfile.route
+                    FirstDestination.Splash -> MainScreen.Splash.route
+                }
+                goToRoute(nextDestination)
+            } else {
+                showErrorMessage()
+            }
+        }
+    }
+
+    private fun goToRoute(route: String) {
+        _state.update { it.copy(nextScreen = route) }
     }
 
     fun onSignInFailed(reason: String) {

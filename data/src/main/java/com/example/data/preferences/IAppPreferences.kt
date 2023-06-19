@@ -1,6 +1,8 @@
 package com.example.data.preferences
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 
 interface IAppPreferences : IDataSyncCoordinator
 
@@ -14,11 +16,23 @@ interface IDataSyncCoordinator {
     suspend fun setToken(token: String)
 
     /**
+     * Removes token
+     */
+    suspend fun clearToken()
+
+    /**
      * Retruns a auth token
      *
      * @return auth token, null if token does not exist
      */
     fun getToken(): Flow<String?>
+
+    /**
+     * Retruns a auth token synchronously
+     *
+     * @return auth token, null if token does not exist
+     */
+    fun getTokenSynchronously(): String? = runBlocking { getToken().firstOrNull() }
 
     /**
      * Sets time of last data syncronisation to local storage

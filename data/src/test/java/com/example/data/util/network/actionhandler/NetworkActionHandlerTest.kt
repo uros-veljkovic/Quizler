@@ -25,7 +25,7 @@ class NetworkActionHandlerTest {
     @Before
     fun setUp() {
         networkInspector = mockk()
-        sut = NetworkActionHandler(UnconfinedTestDispatcher(), networkInspector)
+        sut = NetworkActionHandler(UnconfinedTestDispatcher(), networkInspector, mockk())
     }
 
     @Test

@@ -13,7 +13,7 @@ interface IHandleStartupDataUseCase {
 }
 
 class HandleStartupDataUseCase(
-    private val useCases: List<IFetchAndCacheUseCase>,
+    private val useCases: List<IFetchAndCacheUseCase<*, *>>,
 ) : IHandleStartupDataUseCase {
 
     private val progress: AtomicReference<Float> = AtomicReference(NO_PROGRESS)

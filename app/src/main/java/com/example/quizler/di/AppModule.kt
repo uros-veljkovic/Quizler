@@ -45,7 +45,7 @@ val appModule = module {
     viewModel { EmptyViewModel(get()) }
     viewModel { SplashViewModel(get(), get(), get()) }
     viewModel { SignInViewModel(get(), get()) }
-    viewModel { CreateProfileViewModel() }
+    viewModel { CreateProfileViewModel(get()) }
     viewModel { ModesViewModel(get(), get(), get(), get()) }
     viewModel { CreateNewQuestionViewModel(get(), get(), get()) }
     viewModel { QuizViewModel(get(), get(), get(), get()) }

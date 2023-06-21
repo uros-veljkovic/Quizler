@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.util.Date
 
-interface IGetQuestionsUseCase : IFetchAndCacheUseCase {
+interface IGetQuestionsUseCase : IFetchAndCacheUseCase<Unit, List<QuestionWithAnswers>> {
     operator fun invoke(isApproved: Boolean = true): Flow<List<QuestionWithAnswers>>
 }
 
@@ -25,7 +25,7 @@ class GetQuestionsUseCase(
     private val dataSyncCoordinator: IDataSyncCoordinator,
     private val dateManager: IDateManager,
     private val dtoMapper: QuestionWithAnswersDtoMapper,
-    private val uiMapper: QuestionWithAnswersUiMapper
+    private val domainMapper: QuestionWithAnswersUiMapper
 ) : IGetQuestionsUseCase {
 
     override operator fun invoke(isApproved: Boolean): Flow<List<QuestionWithAnswers>> =
@@ -33,11 +33,11 @@ class GetQuestionsUseCase(
             list.filter {
                 it.question.isApproved == isApproved
             }.map {
-                uiMapper.map(it)
+                domainMapper.map(it)
             }
         }
 
-    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean, input: Unit?): State<List<QuestionWithAnswers>> {
         val hasPast30Days = dateManager.hasDaysPassed(dataSyncCoordinator.getDataSyncTime().first(), 30)
         return fetchAndCacheManager(
             query = { localRepository.readQuestionsWithAnswers() },
@@ -46,7 +46,8 @@ class GetQuestionsUseCase(
             cache = {
                 refreshTimeDataSynced()
                 localRepository.insertQuestionsWithAnswers(dtoMapper.map(it))
-            }
+            },
+            mapToDomainModel = { domainMapper.map(it) }
         )
     }
 

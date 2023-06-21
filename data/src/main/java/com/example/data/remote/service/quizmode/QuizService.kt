@@ -11,6 +11,7 @@ import com.example.data.remote.dto.ReportQuestionDto
 import com.example.data.remote.dto.ReportTypeDto
 import com.example.data.remote.dto.ResultRecordDto
 import com.example.data.remote.dto.ScoreDto
+import com.example.data.remote.dto.UpdateUserProfileDto
 import com.example.data.remote.dto.user.UserDto
 import com.example.data.remote.dto.user.UserIdDto
 import retrofit2.Response
@@ -31,11 +32,14 @@ interface QuizService {
     @GET("users/{id}")
     suspend fun getUserById(@Path("id") id: UserIdDto): Response<UserDto>
 
-    @PUT("users/{id}")
-    suspend fun updateUser(@Path("id") id: UserIdDto, @Body newUser: UserDto): Response<UserDto>
+    @GET("users/")
+    suspend fun getCurrentUser(): Response<UserDto>
 
-    @DELETE("users/{id}")
-    suspend fun deleteUser(@Path("id") id: UserIdDto): Response<Unit>
+    @PUT("users/")
+    suspend fun updateCurrentUser(@Body newUser: UpdateUserProfileDto): Response<UserDto>
+
+    @DELETE("users/")
+    suspend fun deleteCurrentUser(): Response<Unit>
 
     @GET("modes/category")
     suspend fun getCategoryModes(): Response<CategoryModesDto>

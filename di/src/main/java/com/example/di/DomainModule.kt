@@ -29,6 +29,7 @@ import com.example.domain.mapper.ResultRecordMapper
 import com.example.domain.mapper.ScoreDtoMapper
 import com.example.domain.mapper.UserProfileDomainMapper
 import com.example.domain.mapper.UserProfileDtoMapper
+import com.example.domain.mapper.UserProfileRequestMapper
 import com.example.domain.network.FetchAndCacheManager
 import com.example.domain.network.IFetchAndCacheManager
 import com.example.domain.provider.AbstractResourceProvider
@@ -39,6 +40,7 @@ import com.example.domain.provider.string.ReportTypeTitleResourceProvider
 import com.example.domain.usecase.CacheTokenUseCase
 import com.example.domain.usecase.CreateNewQuestionUseCase
 import com.example.domain.usecase.DetermainNextDestinationScreenUseCase
+import com.example.domain.usecase.GetCurrentUserProfileUseCase
 import com.example.domain.usecase.GetHasInternetConnectionUseCase
 import com.example.domain.usecase.GetModesCategoryUseCase
 import com.example.domain.usecase.GetModesDifficultyUseCase
@@ -46,12 +48,12 @@ import com.example.domain.usecase.GetModesLengthUseCase
 import com.example.domain.usecase.GetQuestionsUseCase
 import com.example.domain.usecase.GetReportTypesUseCase
 import com.example.domain.usecase.GetScoresUseCase
-import com.example.domain.usecase.GetUserProfileUseCase
 import com.example.domain.usecase.GetUsernameUseCase
 import com.example.domain.usecase.HandleStartupDataUseCase
 import com.example.domain.usecase.ICacheTokenUseCase
 import com.example.domain.usecase.ICreateNewQuestionUseCase
 import com.example.domain.usecase.IDetermainNextDestinationScreenUseCase
+import com.example.domain.usecase.IGetCurrentUserProfileUseCase
 import com.example.domain.usecase.IGetHasInternetConnectionUseCase
 import com.example.domain.usecase.IGetModesCategoryUseCase
 import com.example.domain.usecase.IGetModesDifficultyUseCase
@@ -59,7 +61,6 @@ import com.example.domain.usecase.IGetModesLengthUseCase
 import com.example.domain.usecase.IGetQuestionsUseCase
 import com.example.domain.usecase.IGetReportTypesUseCase
 import com.example.domain.usecase.IGetScoresUseCase
-import com.example.domain.usecase.IGetUserProfileUseCase
 import com.example.domain.usecase.IGetUsernameUseCase
 import com.example.domain.usecase.IHandleStartupDataUseCase
 import com.example.domain.usecase.ISaveAnswerRecordUseCase
@@ -69,7 +70,7 @@ import com.example.domain.usecase.ISendInvalidQuestionReportUseCase
 import com.example.domain.usecase.ISendStoredDataToServerUseCase
 import com.example.domain.usecase.ISetHasInternetConnectionUseCase
 import com.example.domain.usecase.ISignInUseCase
-import com.example.domain.usecase.IUpdateUserProfileUseCase
+import com.example.domain.usecase.IUpdateCurrentUserProfileUseCase
 import com.example.domain.usecase.SaveAnswerRecordUseCase
 import com.example.domain.usecase.SaveResultRecordUseCase
 import com.example.domain.usecase.SaveUsernameUseCase
@@ -77,7 +78,7 @@ import com.example.domain.usecase.SendInvalidQuestionReportUseCase
 import com.example.domain.usecase.SendStoredDataToServerUseCase
 import com.example.domain.usecase.SetHasInternetConnectionUseCase
 import com.example.domain.usecase.SignInUseCase
-import com.example.domain.usecase.UpdateProfileInfoUseCase
+import com.example.domain.usecase.UpdateCurrentUserProfileUseCase
 import com.example.domain.wrapper.ContextWrapper
 import com.example.util.di.Named
 import kotlinx.coroutines.Dispatchers
@@ -129,6 +130,7 @@ val domainModule = module {
     single { ScoreDtoMapper() }
     single { UserProfileDomainMapper() }
     single { UserProfileDtoMapper() }
+    single { UserProfileRequestMapper() }
     single { ReportTypeDtoMapper(get(named(Named.REPORT_TYPE_TITLE_PROVIDER.value))) }
 
     // Preferences
@@ -143,8 +145,17 @@ val domainModule = module {
     single<IDetermainNextDestinationScreenUseCase> { DetermainNextDestinationScreenUseCase(get(), get()) }
     single<ICacheTokenUseCase> { CacheTokenUseCase(get()) }
     single<ICreateNewQuestionUseCase> { CreateNewQuestionUseCase(get(), get()) }
-    single<IGetUserProfileUseCase> { GetUserProfileUseCase(get(), get(), get(), get(), get()) }
-    single<IUpdateUserProfileUseCase> { UpdateProfileInfoUseCase(get()) }
+    single<IGetCurrentUserProfileUseCase> { GetCurrentUserProfileUseCase(get(), get(), get(), get(), get()) }
+    single<IUpdateCurrentUserProfileUseCase> {
+        UpdateCurrentUserProfileUseCase(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     single<IGetModesCategoryUseCase> { GetModesCategoryUseCase(get(), get(), get(), get(), get()) }
     single<IGetModesDifficultyUseCase> { GetModesDifficultyUseCase(get(), get(), get(), get(), get()) }
     single<IGetModesLengthUseCase> { GetModesLengthUseCase(get(), get(), get(), get(), get()) }

@@ -1,6 +1,7 @@
 package com.example.domain.mapper
 
 import com.example.data.local.entity.UserProfileEntity
+import com.example.data.remote.dto.UpdateUserProfileDto
 import com.example.data.remote.dto.user.UserDto
 import com.example.domain.model.UserProfile
 import com.example.util.mapper.DataMapper
@@ -24,6 +25,16 @@ class UserProfileDomainMapper : DataMapper<UserProfileEntity, UserProfile> {
             username = input.username ?: "",
             avatar = input.avatarName ?: "",
             profileImageUrl = input.profileImageUrl ?: ""
+        )
+    }
+}
+
+class UserProfileRequestMapper : DataMapper<UserProfile, UpdateUserProfileDto> {
+    override fun map(input: UserProfile): UpdateUserProfileDto {
+        return UpdateUserProfileDto(
+            username = input.username,
+            avatar = input.avatar,
+            profileImageUrl = input.profileImageUrl
         )
     }
 }

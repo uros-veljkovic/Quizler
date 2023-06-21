@@ -44,7 +44,7 @@ class AppDataStorePreferences(
 
     companion object {
         val KEY_LAST_SYNC = longPreferencesKey("last_sync")
-        val KEY_TOKEN = stringPreferencesKey("last_sync")
+        val KEY_TOKEN = stringPreferencesKey("key_token")
 
         const val NO_VALUE = ""
     }

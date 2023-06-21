@@ -5,10 +5,11 @@ import com.example.util.data.RepositoryResponse
 import kotlinx.coroutines.flow.Flow
 
 interface IFetchAndCacheManager {
-    suspend operator fun <Entity, Dto> invoke(
+    suspend operator fun <Domain, Entity, Dto> invoke(
         shouldFetch: (Entity) -> Boolean,
         query: () -> Flow<Entity>,
         fetch: suspend () -> RepositoryResponse<Dto>,
-        cache: suspend (Dto) -> Unit
-    ): State<Unit>
+        cache: suspend (Dto) -> Unit,
+        mapToDomainModel: (Entity) -> Domain
+    ): State<Domain>
 }

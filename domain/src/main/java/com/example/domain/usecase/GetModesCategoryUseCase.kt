@@ -10,7 +10,7 @@ import com.example.domain.network.IFetchAndCacheManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-interface IGetModesCategoryUseCase : IFetchAndCacheUseCase {
+interface IGetModesCategoryUseCase : IFetchAndCacheUseCase<Unit, List<CategoryMode>> {
     operator fun invoke(): Flow<List<CategoryMode>>
 }
 
@@ -19,19 +19,20 @@ class GetModesCategoryUseCase(
     private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
     private val dtoMapper: CategoryModeDtoMapper,
-    private val uiMapper: CategoryModeMapper
+    private val domainMapper: CategoryModeMapper
 ) : IGetModesCategoryUseCase {
 
     override fun invoke(): Flow<List<CategoryMode>> = localRepository.readCategoriesModes().map {
-        uiMapper.map(it)
+        domainMapper.map(it)
     }
 
-    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean, input: Unit?): State<List<CategoryMode>> {
         return fetchAndCacheManager(
             query = { localRepository.readCategoriesModes() },
             shouldFetch = { it.isEmpty() },
             fetch = { remoteRepository.getCategoryModes() },
-            cache = { localRepository.insertCategoriesModes(dtoMapper.map(it)) }
+            cache = { localRepository.insertCategoriesModes(dtoMapper.map(it)) },
+            mapToDomainModel = { domainMapper.map(it) }
         )
     }
 }

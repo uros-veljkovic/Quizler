@@ -10,7 +10,7 @@ import com.example.domain.network.IFetchAndCacheManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-interface IGetModesDifficultyUseCase : IFetchAndCacheUseCase {
+interface IGetModesDifficultyUseCase : IFetchAndCacheUseCase<Unit, List<DifficultyMode>> {
     operator fun invoke(): Flow<List<DifficultyMode>>
 }
 
@@ -27,12 +27,13 @@ class GetModesDifficultyUseCase(
             domainMapper.map(it)
         }
 
-    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean, input: Unit?): State<List<DifficultyMode>> {
         return fetchAndCacheManager(
             query = { localRepository.readDifficultyModes() },
             shouldFetch = { it.isEmpty() },
             fetch = { remoteRepository.getDifficultyModes() },
-            cache = { localRepository.insertDifficultyModes(mapper.map(it)) }
+            cache = { localRepository.insertDifficultyModes(mapper.map(it)) },
+            mapToDomainModel = { domainMapper.map(it) }
         )
     }
 }

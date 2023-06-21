@@ -10,7 +10,7 @@ import com.example.domain.network.IFetchAndCacheManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-interface IGetReportTypesUseCase : IFetchAndCacheUseCase {
+interface IGetReportTypesUseCase : IFetchAndCacheUseCase<Unit, List<ReportType>> {
     operator fun invoke(): Flow<List<ReportType>>
 }
 
@@ -19,17 +19,20 @@ class GetReportTypesUseCase(
     private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
     private val mapper: ReportTypeDtoMapper,
-    private val uiMapper: ReportTypeUiMapper,
+    private val domainMapper: ReportTypeUiMapper,
 ) : IGetReportTypesUseCase {
 
-    override operator fun invoke(): Flow<List<ReportType>> = localRepository.readReportTypes().map { uiMapper.map(it) }
+    override operator fun invoke(): Flow<List<ReportType>> = localRepository.readReportTypes().map {
+        domainMapper.map(it)
+    }
 
-    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean, input: Unit?): State<List<ReportType>> {
         return fetchAndCacheManager(
             query = { localRepository.readReportTypes() },
             shouldFetch = { it.isEmpty() },
             fetch = { remoteRepository.getReportTypes() },
-            cache = { localRepository.insertReportTypes(mapper.map(it)) }
+            cache = { localRepository.insertReportTypes(mapper.map(it)) },
+            mapToDomainModel = { domainMapper.map(it) }
         )
     }
 }

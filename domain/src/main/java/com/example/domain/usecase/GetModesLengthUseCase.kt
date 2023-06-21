@@ -10,7 +10,7 @@ import com.example.domain.network.IFetchAndCacheManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-interface IGetModesLengthUseCase : IFetchAndCacheUseCase {
+interface IGetModesLengthUseCase : IFetchAndCacheUseCase<Unit, List<LengthMode>> {
     operator fun invoke(): Flow<List<LengthMode>>
 }
 
@@ -26,7 +26,7 @@ class GetModesLengthUseCase(
         domainMapper.map(it)
     }
 
-    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean, input: Unit?): State<List<LengthMode>> {
         return fetchAndCacheManager(
             query = { localRepository.readLengthModes() },
             shouldFetch = { it.isEmpty() },
@@ -34,7 +34,8 @@ class GetModesLengthUseCase(
             cache = {
                 val mappedData = dtoMapper.map(it)
                 localRepository.insertLengthModes(mappedData)
-            }
+            },
+            mapToDomainModel = { domainMapper.map(it) }
         )
     }
 }

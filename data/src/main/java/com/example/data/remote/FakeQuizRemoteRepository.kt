@@ -10,6 +10,7 @@ import com.example.data.remote.dto.ReportQuestionDto
 import com.example.data.remote.dto.ReportTypeDto
 import com.example.data.remote.dto.ResultRecordDto
 import com.example.data.remote.dto.ScoreDto
+import com.example.data.remote.dto.UpdateUserProfileDto
 import com.example.data.remote.dto.user.UserDto
 import com.example.util.data.RepositoryResponse
 import com.google.gson.Gson
@@ -21,6 +22,10 @@ import java.io.FileReader
 class FakeQuizRemoteRepository : IQuizRemoteRepository {
     override suspend fun signIn(): RepositoryResponse<UserDto> {
         return RepositoryResponse.Success(UserDto(id = "dflasksjdf", userId = "21331432423"))
+    }
+
+    override suspend fun getCurrentUser(): RepositoryResponse<UserDto> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun getUser(id: String): RepositoryResponse<UserDto> {
@@ -69,6 +74,10 @@ class FakeQuizRemoteRepository : IQuizRemoteRepository {
         return RepositoryResponse.Success(
             Gson().fromJson(json, object : TypeToken<List<ScoreDto>>() {}.type)
         )
+    }
+
+    override suspend fun updateCurrentUser(dto: UpdateUserProfileDto): RepositoryResponse<UserDto> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun record(answerRecordDto: AnswerRecordDto): RepositoryResponse<Unit> {

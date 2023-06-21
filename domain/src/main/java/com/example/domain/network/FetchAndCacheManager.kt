@@ -17,12 +17,13 @@ class FetchAndCacheManager(
     private val networkInspector: INetworkInspector,
     private val logger: ILogger
 ) : IFetchAndCacheManager {
-    override suspend fun <Entity, Dto> invoke(
+    override suspend fun <Domain, Entity, Dto> invoke(
         shouldFetch: (Entity) -> Boolean,
         query: () -> Flow<Entity>,
         fetch: suspend () -> RepositoryResponse<Dto>,
-        cache: suspend (Dto) -> Unit
-    ): State<Unit> {
+        cache: suspend (Dto) -> Unit,
+        mapToDomainModel: (Entity) -> Domain
+    ): State<Domain> {
         return withContext(coroutineContext) {
             try {
                 val data = query().first() // localRepo.
@@ -37,11 +38,11 @@ class FetchAndCacheManager(
                         is RepositoryResponse.Success -> {
                             logger.info("Great: ${fetchResult::class.java}")
                             cache(fetchResult.data)
-                            State.Success(Unit)
+                            State.Success(mapToDomainModel(query().first()))
                         }
                     }
                 } else {
-                    State.Success(Unit)
+                    State.Success(mapToDomainModel(data))
                 }
             } catch (e: ConnectException) {
                 logger.error(e)

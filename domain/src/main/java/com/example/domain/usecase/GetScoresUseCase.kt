@@ -11,7 +11,7 @@ import com.example.domain.network.IFetchAndCacheManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-interface IGetScoresUseCase : IFetchAndCacheUseCase {
+interface IGetScoresUseCase : IFetchAndCacheUseCase<Unit, List<ScoreModel>> {
     operator fun invoke(): Flow<List<ScoreModel>>
 }
 
@@ -20,14 +20,14 @@ class GetScoresUseCase(
     private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
     private val mapper: ScoreDtoMapper,
-    private val uiMapper: ScoresEntityMapper
+    private val domainMapper: ScoresEntityMapper
 ) : IGetScoresUseCase {
 
     override operator fun invoke(): Flow<List<ScoreModel>> = localRepository.readScores().map {
-        uiMapper.map(it)
+        domainMapper.map(it)
     }
 
-    override suspend fun fetchAndCache(isForceRefresh: Boolean): State<Unit> {
+    override suspend fun fetchAndCache(isForceRefresh: Boolean, input: Unit?): State<List<ScoreModel>> {
         return fetchAndCacheManager(
             shouldFetch = { it.isEmpty() || isForceRefresh },
             query = { localRepository.readScores() },
@@ -35,7 +35,8 @@ class GetScoresUseCase(
             cache = {
                 val list = mapper.map(getScoreDtosWithRankings(it))
                 localRepository.insertScores(list)
-            }
+            },
+            mapToDomainModel = { domainMapper.map(it) }
         )
     }
 

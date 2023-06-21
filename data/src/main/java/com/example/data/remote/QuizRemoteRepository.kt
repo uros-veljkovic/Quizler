@@ -11,6 +11,7 @@ import com.example.data.remote.dto.ReportQuestionDto
 import com.example.data.remote.dto.ReportTypeDto
 import com.example.data.remote.dto.ResultRecordDto
 import com.example.data.remote.dto.ScoreDto
+import com.example.data.remote.dto.UpdateUserProfileDto
 import com.example.data.remote.dto.user.UserDto
 import com.example.data.remote.dto.user.UserIdDto
 import com.example.data.remote.service.quizmode.QuizService
@@ -22,6 +23,10 @@ class QuizRemoteRepository(
 ) : IQuizRemoteRepository {
     override suspend fun signIn(): RepositoryResponse<UserDto> = networkActionHandler {
         service.signIn()
+    }
+
+    override suspend fun getCurrentUser(): RepositoryResponse<UserDto> = networkActionHandler {
+        service.getCurrentUser()
     }
 
     override suspend fun getUser(id: String): RepositoryResponse<UserDto> = networkActionHandler {
@@ -50,6 +55,10 @@ class QuizRemoteRepository(
 
     override suspend fun getScores(): RepositoryResponse<List<ScoreDto>> = networkActionHandler {
         service.getScores()
+    }
+
+    override suspend fun updateCurrentUser(dto: UpdateUserProfileDto): RepositoryResponse<UserDto> = networkActionHandler {
+        service.updateCurrentUser(dto)
     }
 
     override suspend fun record(answerRecordDto: AnswerRecordDto) = networkActionHandler {

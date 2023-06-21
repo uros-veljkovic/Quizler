@@ -27,6 +27,8 @@ import com.example.domain.mapper.ResultRecordDtoMapper
 import com.example.domain.mapper.ResultRecordEntityMapper
 import com.example.domain.mapper.ResultRecordMapper
 import com.example.domain.mapper.ScoreDtoMapper
+import com.example.domain.mapper.UserProfileDomainMapper
+import com.example.domain.mapper.UserProfileDtoMapper
 import com.example.domain.network.FetchAndCacheManager
 import com.example.domain.network.IFetchAndCacheManager
 import com.example.domain.provider.AbstractResourceProvider
@@ -44,6 +46,7 @@ import com.example.domain.usecase.GetModesLengthUseCase
 import com.example.domain.usecase.GetQuestionsUseCase
 import com.example.domain.usecase.GetReportTypesUseCase
 import com.example.domain.usecase.GetScoresUseCase
+import com.example.domain.usecase.GetUserProfileUseCase
 import com.example.domain.usecase.GetUsernameUseCase
 import com.example.domain.usecase.HandleStartupDataUseCase
 import com.example.domain.usecase.ICacheTokenUseCase
@@ -56,6 +59,7 @@ import com.example.domain.usecase.IGetModesLengthUseCase
 import com.example.domain.usecase.IGetQuestionsUseCase
 import com.example.domain.usecase.IGetReportTypesUseCase
 import com.example.domain.usecase.IGetScoresUseCase
+import com.example.domain.usecase.IGetUserProfileUseCase
 import com.example.domain.usecase.IGetUsernameUseCase
 import com.example.domain.usecase.IHandleStartupDataUseCase
 import com.example.domain.usecase.ISaveAnswerRecordUseCase
@@ -65,6 +69,7 @@ import com.example.domain.usecase.ISendInvalidQuestionReportUseCase
 import com.example.domain.usecase.ISendStoredDataToServerUseCase
 import com.example.domain.usecase.ISetHasInternetConnectionUseCase
 import com.example.domain.usecase.ISignInUseCase
+import com.example.domain.usecase.IUpdateUserProfileUseCase
 import com.example.domain.usecase.SaveAnswerRecordUseCase
 import com.example.domain.usecase.SaveResultRecordUseCase
 import com.example.domain.usecase.SaveUsernameUseCase
@@ -72,6 +77,7 @@ import com.example.domain.usecase.SendInvalidQuestionReportUseCase
 import com.example.domain.usecase.SendStoredDataToServerUseCase
 import com.example.domain.usecase.SetHasInternetConnectionUseCase
 import com.example.domain.usecase.SignInUseCase
+import com.example.domain.usecase.UpdateProfileInfoUseCase
 import com.example.domain.wrapper.ContextWrapper
 import com.example.util.di.Named
 import kotlinx.coroutines.Dispatchers
@@ -121,6 +127,8 @@ val domainModule = module {
     single { ResultRecordEntityMapper() }
     single { ResultRecordMapper() }
     single { ScoreDtoMapper() }
+    single { UserProfileDomainMapper() }
+    single { UserProfileDtoMapper() }
     single { ReportTypeDtoMapper(get(named(Named.REPORT_TYPE_TITLE_PROVIDER.value))) }
 
     // Preferences
@@ -135,6 +143,8 @@ val domainModule = module {
     single<IDetermainNextDestinationScreenUseCase> { DetermainNextDestinationScreenUseCase(get(), get()) }
     single<ICacheTokenUseCase> { CacheTokenUseCase(get()) }
     single<ICreateNewQuestionUseCase> { CreateNewQuestionUseCase(get(), get()) }
+    single<IGetUserProfileUseCase> { GetUserProfileUseCase(get(), get(), get(), get(), get()) }
+    single<IUpdateUserProfileUseCase> { UpdateProfileInfoUseCase(get()) }
     single<IGetModesCategoryUseCase> { GetModesCategoryUseCase(get(), get(), get(), get(), get()) }
     single<IGetModesDifficultyUseCase> { GetModesDifficultyUseCase(get(), get(), get(), get(), get()) }
     single<IGetModesLengthUseCase> { GetModesLengthUseCase(get(), get(), get(), get(), get()) }

@@ -11,14 +11,15 @@ import com.example.data.local.entity.QuestionWithAnswersEntity
 import com.example.data.local.entity.ReportTypeEntity
 import com.example.data.local.entity.ResultRecordEntity
 import com.example.data.local.entity.ScoreEntity
+import com.example.data.local.entity.UserProfileEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class QuizLocalRepository(
     private val db: QuizlerDatabase,
 ) : IQuizLocalRepository {
-    override fun readUser(): Flow<UserEntity?> {
-        return db.daoUser().readAll().map { it.firstOrNull() }
+    override fun readUser(): Flow<UserProfileEntity> {
+        return db.daoUser().readAll().map { it.firstOrNull() ?: UserProfileEntity(userId = "", null, null, null) }
     }
 
     override fun readCategoriesModes(): Flow<List<CategoryModeEntity>> {
@@ -57,7 +58,7 @@ class QuizLocalRepository(
         return db.daoReportTypes().readAll()
     }
 
-    override suspend fun insertUser(data: UserEntity) {
+    override suspend fun insertUser(data: UserProfileEntity) {
         return db.daoUser().insert(data)
     }
 

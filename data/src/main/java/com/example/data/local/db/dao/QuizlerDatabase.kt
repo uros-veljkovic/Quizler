@@ -2,7 +2,6 @@ package com.example.data.local.db.dao
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.data.local.UserEntity
 import com.example.data.local.entity.AnswerEntity
 import com.example.data.local.entity.AnswerRecordEntity
 import com.example.data.local.entity.CategoryModeEntity
@@ -13,10 +12,11 @@ import com.example.data.local.entity.QuestionEntity
 import com.example.data.local.entity.ReportTypeEntity
 import com.example.data.local.entity.ResultRecordEntity
 import com.example.data.local.entity.ScoreEntity
+import com.example.data.local.entity.UserProfileEntity
 
 @Database(
     entities = [
-        UserEntity::class,
+        UserProfileEntity::class,
         CategoryModeEntity::class,
         LengthModeEntity::class,
         DifficultyModeEntity::class,

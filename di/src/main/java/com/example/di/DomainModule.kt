@@ -141,7 +141,7 @@ val domainModule = module {
     single<IDataSyncCoordinator> { get<IAppPreferences>() }
 
     // Use Cases
-    single<ISignInUseCase> { SignInUseCase(get(), get(), get()) }
+    single<ISignInUseCase> { SignInUseCase(get(), get(), get(), get()) }
     single<IDetermainNextDestinationScreenUseCase> { DetermainNextDestinationScreenUseCase(get(), get()) }
     single<ICacheTokenUseCase> { CacheTokenUseCase(get()) }
     single<ICreateNewQuestionUseCase> { CreateNewQuestionUseCase(get(), get()) }

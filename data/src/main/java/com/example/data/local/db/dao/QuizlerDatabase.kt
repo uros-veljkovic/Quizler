@@ -28,7 +28,7 @@ import com.example.data.local.entity.UserProfileEntity
         InvalidQuestionReportEntity::class,
         ReportTypeEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class QuizlerDatabase : RoomDatabase() {

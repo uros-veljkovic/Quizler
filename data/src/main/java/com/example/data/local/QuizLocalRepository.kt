@@ -19,7 +19,9 @@ class QuizLocalRepository(
     private val db: QuizlerDatabase,
 ) : IQuizLocalRepository {
     override fun readUser(): Flow<UserProfileEntity> {
-        return db.daoUser().readAll().map { it.firstOrNull() ?: UserProfileEntity(userId = "", null, null, null) }
+        return db.daoUser().readAll().map {
+            it.firstOrNull() ?: UserProfileEntity(userId = "", id = "j32ljlkjdfslj", null, null, null, null)
+        }
     }
 
     override fun readCategoriesModes(): Flow<List<CategoryModeEntity>> {

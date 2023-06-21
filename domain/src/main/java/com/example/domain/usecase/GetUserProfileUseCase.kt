@@ -25,7 +25,11 @@ class GetUserProfileUseCase(
     override suspend operator fun invoke(userId: String): State<UserProfile> {
         return when (val result = remoteRepository.getUser(userId)) {
             is RepositoryResponse.Failure -> State.Error(result.throwable)
-            is RepositoryResponse.Success -> State.Success(UserProfile("", ""))
+            is RepositoryResponse.Success -> {
+                val entity = dtoMapper.map(result.data)
+                localRepository.insertUser(entity)
+                State.Success(domainMapper.map(entity))
+            }
         }
     }
 }

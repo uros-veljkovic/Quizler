@@ -54,7 +54,7 @@ val dataModule = module {
     }
     single {
         // TODO: Revert before commit
-        Retrofit.Builder().baseUrl("http://192.168.1.113:2000")
+        Retrofit.Builder().baseUrl("http://192.168.15.70:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .client(get())
             .build()

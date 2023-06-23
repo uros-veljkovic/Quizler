@@ -25,6 +25,25 @@ interface IDataSyncCoordinator {
      *
      * @return auth token, null if token does not exist
      */
+    fun getTokenProvider(): Flow<String?>
+
+    /**
+     * Caches a auth token provider
+     *
+     * @param tokenProvider token claimed from sign in client
+     */
+    suspend fun setTokenProvider(tokenProvider: String)
+
+    /**
+     * Removes token provider
+     */
+    suspend fun clearTokenProvider()
+
+    /**
+     * Retruns a auth token provider
+     *
+     * @return auth token provider, null if token provider does not exist
+     */
     fun getToken(): Flow<String?>
 
     /**

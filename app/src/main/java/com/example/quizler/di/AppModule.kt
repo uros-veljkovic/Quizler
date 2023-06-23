@@ -7,8 +7,6 @@ import com.example.quizler.ui.screen.home.ModesViewModel
 import com.example.quizler.ui.screen.newquestion.ChoosableCategoryItemsProvider
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
 import com.example.quizler.ui.screen.onboarding.CreateProfileViewModel
-import com.example.quizler.ui.screen.onboarding.IOnboardingManager
-import com.example.quizler.ui.screen.onboarding.OnboardingManager
 import com.example.quizler.ui.screen.onboarding.empty.EmptyViewModel
 import com.example.quizler.ui.screen.onboarding.signin.SignInViewModel
 import com.example.quizler.ui.screen.onboarding.splash.SplashViewModel
@@ -18,11 +16,16 @@ import com.example.quizler.ui.screen.score.ScoreViewModel
 import com.example.quizler.ui.screen.score.ScoresUiMapper
 import com.example.quizler.util.SendDataToServerWorker
 import com.example.quizler.utils.signin.manager.GoogleSignInManager
-import com.example.quizler.utils.signin.manager.token.RefreshTokenWorker
-import org.koin.android.ext.koin.androidApplication
+import com.example.quizler.utils.signin.manager.token.refresh.FacebookRefreshTokenStrategy
+import com.example.quizler.utils.signin.manager.token.refresh.GoogleRefreshTokenStrategy
+import com.example.quizler.utils.signin.manager.token.refresh.IRefreshTokenFacade
+import com.example.quizler.utils.signin.manager.token.refresh.IRefreshTokenStrategy
+import com.example.quizler.utils.signin.manager.token.refresh.RefreshTokenFacade
+import com.example.quizler.utils.signin.manager.token.refresh.RefreshTokenWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
@@ -39,7 +42,6 @@ val appModule = module {
 
     // Sign in
     single { GoogleSignInManager() }
-    single<IOnboardingManager> { OnboardingManager(androidApplication(), get()) }
 
     viewModel { AppViewModel() }
     viewModel { EmptyViewModel(get()) }
@@ -51,9 +53,27 @@ val appModule = module {
     viewModel { QuizViewModel(get(), get(), get(), get()) }
     viewModel { ScoreViewModel(get(), get(), get()) }
 
+    // Token refresh
+    single<IRefreshTokenStrategy>(named(GoogleRefreshTokenStrategy.NAME)) {
+        GoogleRefreshTokenStrategy(
+            androidContext(),
+            get()
+        )
+    }
+    single<IRefreshTokenStrategy>(named(FacebookRefreshTokenStrategy.NAME)) {
+        FacebookRefreshTokenStrategy()
+    }
+    single<IRefreshTokenFacade> {
+        RefreshTokenFacade(
+            get(named(GoogleRefreshTokenStrategy.NAME)),
+            get(named(GoogleRefreshTokenStrategy.NAME)),
+            get()
+        )
+    }
+
     // Workers
     worker {
-        RefreshTokenWorker(androidContext(), get())
+        RefreshTokenWorker(androidContext(), get(), get())
     }
     worker {
         SendDataToServerWorker(androidContext(), get(), get())

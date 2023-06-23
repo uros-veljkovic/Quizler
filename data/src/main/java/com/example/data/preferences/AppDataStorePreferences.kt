@@ -16,8 +16,20 @@ class AppDataStorePreferences(
         putStringPreference(KEY_TOKEN, token)
     }
 
+    override suspend fun setTokenProvider(tokenProvider: String) {
+        putStringPreference(KEY_TOKEN_PROVIDER, tokenProvider)
+    }
+
     override suspend fun clearToken() {
         putStringPreference(KEY_TOKEN, NO_VALUE)
+    }
+
+    override suspend fun clearTokenProvider() {
+        putStringPreference(KEY_TOKEN_PROVIDER, NO_VALUE)
+    }
+
+    override fun getTokenProvider(): Flow<String?> {
+        return getStringPreference(KEY_TOKEN_PROVIDER)
     }
 
     override fun getToken(): Flow<String?> {
@@ -45,6 +57,7 @@ class AppDataStorePreferences(
     companion object {
         val KEY_LAST_SYNC = longPreferencesKey("last_sync")
         val KEY_TOKEN = stringPreferencesKey("key_token")
+        val KEY_TOKEN_PROVIDER = stringPreferencesKey("key_token_provider")
 
         const val NO_VALUE = ""
     }

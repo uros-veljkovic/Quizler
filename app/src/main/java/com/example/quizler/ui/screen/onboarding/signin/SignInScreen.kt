@@ -55,7 +55,7 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koin
     val launcher = rememberLauncherForActivityResult(contract = GoogleSignInManager()) { task ->
         try {
             task?.getResult(ApiException::class.java)?.idToken?.let { token ->
-                viewModel.onSignInSuccessful(token)
+                viewModel.onGoogleSignInSuccessful(token)
             } ?: viewModel.onSignInFailed("No message received")
         } catch (e: ApiException) {
             viewModel.onSignInFailed(e.message.toString())

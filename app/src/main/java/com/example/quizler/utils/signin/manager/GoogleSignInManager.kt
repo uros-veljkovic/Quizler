@@ -13,7 +13,7 @@ import com.google.android.gms.tasks.Task
 class GoogleSignInManager : ActivityResultContract<Int, Task<GoogleSignInAccount>?>() {
 
     override fun createIntent(context: Context, input: Int): Intent {
-        val intent = GoogleSignIn.getClient(context, getSignInOptins())
+        val intent = GoogleSignIn.getClient(context, GoogleSignInOptionsProvider.getOptions())
         return intent.signInIntent
     }
 
@@ -28,12 +28,14 @@ class GoogleSignInManager : ActivityResultContract<Int, Task<GoogleSignInAccount
     }
 
     companion object {
-        fun getSignInOptins() = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestId()
-            .requestIdToken(BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID)
-            .requestEmail()
-            .build()
-
         const val RequestCode = 12345
     }
+}
+
+object GoogleSignInOptionsProvider {
+    fun getOptions() = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestId()
+        .requestIdToken(BuildConfig.GOOGLE_SIGN_IN_CLIENT_ID)
+        .requestEmail()
+        .build()
 }

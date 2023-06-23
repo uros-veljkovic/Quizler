@@ -19,7 +19,8 @@ class DetermainNextDestinationScreenUseCase(
 ) : IDetermainNextDestinationScreenUseCase {
     override suspend fun invoke(): FirstDestination {
         return when {
-            appPreferences.getToken().firstOrNull().isNullOrEmpty() -> FirstDestination.SignIn
+            appPreferences.getToken().firstOrNull().isNullOrEmpty() ||
+                appPreferences.getTokenProvider().firstOrNull().isNullOrEmpty() -> FirstDestination.SignIn
             isUserFullyCreated().not() -> FirstDestination.CreateProfile
             else -> FirstDestination.Splash
         }

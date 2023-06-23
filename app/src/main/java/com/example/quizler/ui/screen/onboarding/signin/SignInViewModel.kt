@@ -8,6 +8,7 @@ import com.example.domain.usecase.IDetermainNextDestinationScreenUseCase
 import com.example.domain.usecase.ISignInUseCase
 import com.example.quizler.MainScreen
 import com.example.quizler.model.InfoBannerData
+import com.example.quizler.utils.signin.manager.token.refresh.AuthenticationProviders
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -23,9 +24,9 @@ class SignInViewModel(
     private val _state = MutableStateFlow(SignInState())
     val state = _state.asSharedFlow()
 
-    fun onSignInSuccessful(token: String) {
+    fun onGoogleSignInSuccessful(token: String) {
         viewModelScope.launch {
-            val signInState = signIn(token)
+            val signInState = signIn(token, AuthenticationProviders.GOOGLE)
             if (signInState is State.Success) {
                 val nextDestination = when (determainNextDestinationScreen()) {
                     FirstDestination.SignIn -> throw Exception("User preferences not stored properly")

@@ -1,4 +1,4 @@
-package com.example.quizler.domain.usecase
+package usecase
 
 import com.example.data.local.IQuizLocalRepository
 import com.example.data.preferences.IDataSyncCoordinator

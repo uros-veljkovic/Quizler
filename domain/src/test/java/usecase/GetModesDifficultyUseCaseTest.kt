@@ -1,4 +1,4 @@
-package com.example.quizler.domain.usecase
+package usecase
 
 import com.example.data.local.IQuizLocalRepository
 import com.example.data.local.entity.DifficultyModeEntity
@@ -7,6 +7,7 @@ import com.example.data.remote.dto.DifficultyModeDto
 import com.example.data.remote.dto.DifficultyModesDto
 import com.example.domain.State
 import com.example.domain.mapper.DifficultyModeDtoMapper
+import com.example.domain.mapper.DifficultyModeMapper
 import com.example.domain.network.FetchAndCacheManager
 import com.example.domain.network.IFetchAndCacheManager
 import com.example.domain.network.inspector.NetworkInspector
@@ -33,10 +34,11 @@ class GetModesDifficultyUseCaseTest {
 
     private val networkInspector: NetworkInspector = mockk()
     private val fetchAndCacheManager: IFetchAndCacheManager =
-        FetchAndCacheManager(UnconfinedTestDispatcher(), networkInspector)
+        FetchAndCacheManager(UnconfinedTestDispatcher(), networkInspector, mockk())
     private val remoteRepository: IQuizRemoteRepository = mockk()
     private val localRepository: IQuizLocalRepository = mockk()
     private val mapper: DifficultyModeDtoMapper = DifficultyModeDtoMapper()
+    private val domainMapper: DifficultyModeMapper = DifficultyModeMapper()
     private lateinit var getModesDifficultyUseCase: GetModesDifficultyUseCase
 
     @Before
@@ -45,7 +47,8 @@ class GetModesDifficultyUseCaseTest {
             fetchAndCacheManager,
             remoteRepository,
             localRepository,
-            mapper
+            mapper,
+            domainMapper
         )
     }
 

@@ -5,11 +5,15 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.ui.screen.App
-import com.example.quizler.utils.signin.manager.token.RefreshTokenWorker
+import com.example.quizler.util.SendDataToServerWorker
+import com.example.quizler.utils.signin.manager.token.refresh.RefreshTokenWorker
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
@@ -31,15 +35,30 @@ class MainActivity : ComponentActivity() {
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         requestUpdateIfExists()
         enqueueRefreshTokenWork()
-//        WorkManager.getInstance(this).enqueue(sendDataToServer)
+        enqueueSendDataToServerWork()
+    }
+
+    private fun enqueueSendDataToServerWork() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val work = OneTimeWorkRequestBuilder<SendDataToServerWorker>()
+            .setConstraints(constraints = constraints)
+            .build()
+
+        WorkManager.getInstance(this).enqueue(work)
     }
 
     private fun enqueueRefreshTokenWork() {
-        val refreshTokenWorkRequest = PeriodicWorkRequestBuilder<RefreshTokenWorker>(45, TimeUnit.MINUTES)
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val work = PeriodicWorkRequestBuilder<RefreshTokenWorker>(45, TimeUnit.MINUTES)
             .setInitialDelay(30, TimeUnit.MINUTES) // Delay the start to align with your token expiration
+            .setConstraints(constraints = constraints)
             .build()
 
-        WorkManager.getInstance(this).enqueue(refreshTokenWorkRequest)
+        WorkManager.getInstance(this).enqueue(work)
     }
 
     override fun onResume() {

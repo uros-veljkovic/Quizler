@@ -31,6 +31,9 @@ android {
         Properties properties = loadLocalProperties()
 
         buildConfigField "String", "GOOGLE_SIGN_IN_CLIENT_ID", properties.getProperty('GOOGLE_SIGN_IN_CLIENT_ID', '"192.168.1.113:2000"')
+        manifestPlaceholders += [facebookAppId: "${properties.getProperty('FB_APP_ID', '')}"]
+        manifestPlaceholders += [facebookLoginProtocolScheme: "${properties.getProperty('FB_APP_LOGIN_PROTOCOL_SCHEME', '')}"]
+        manifestPlaceholders += [facebookClientToken: "${properties.getProperty('FB_CLIENT_TOKEN', '')}"]
     }
     testOptions {
         packagingOptions {
@@ -102,7 +105,12 @@ dependencies {
     implementation "androidx.appcompat:appcompat-resources:$version_appcompat"
 
     // Gogole Sign-in
+    implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    implementation 'com.google.firebase:firebase-auth-ktx'
     implementation "com.google.android.gms:play-services-auth:$version_google_sign_in"
+    implementation 'com.facebook.android:facebook-login:12.0.0'
+
+    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4')
 
     // Play In-App Update
     implementation "com.google.android.play:app-update:$version_in_app_update"
@@ -142,8 +150,8 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$version_navigation"
 
     // Koin
-    implementation "io.insert-koin:koin-android:3.4.0"
-    implementation "io.insert-koin:koin-androidx-workmanager:3.4.0"
+    implementation "io.insert-koin:koin-android:3.4.1"
+    implementation "io.insert-koin:koin-androidx-workmanager:3.4.1"
     implementation 'io.insert-koin:koin-androidx-compose:3.4.4'
 
     // WorkManager

@@ -2,6 +2,7 @@ package com.example.quizler.ui.screen.onboarding.signin
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,17 +43,26 @@ import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceS
 import com.example.quizler.theme.spaceXL
 import com.example.quizler.utils.signin.manager.GoogleSignInManager
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.common.api.ApiException
 import org.koin.androidx.compose.koinViewModel
+import timber.log.Timber
 
 @Composable
 fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle(initialValue = SignInState())
+    val context = LocalContext.current
+
     LaunchedEffect(key1 = state.nextScreen) {
         state.nextScreen?.let { screen ->
             if (screen.isNotEmpty()) navController.navigateAndForget(screen)
         }
     }
+
     val launcher = rememberLauncherForActivityResult(contract = GoogleSignInManager()) { task ->
         try {
             task?.getResult(ApiException::class.java)?.idToken?.let { token ->
@@ -61,28 +72,46 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koin
             viewModel.onSignInFailed(e.message.toString())
         }
     }
-    Scaffold(
-        snackbarHost = {
-            InfoBanner(data = state.infoBannerData, isActionButtonVisible = false)
-        },
-        content = { padding ->
-            SignInScreenContent(
-                modifier = Modifier.padding(padding),
-                onGoogleSignInButtonClick = {
-                    launcher.launch(GoogleSignInManager.RequestCode)
-                },
-                onContinueAsGuestButtonClick = {
-                    navController.navigateAndForget(MainScreen.Splash.route)
+
+    Scaffold(snackbarHost = {
+        InfoBanner(data = state.infoBannerData, isActionButtonVisible = false)
+    }, content = { padding ->
+        SignInScreenContent(modifier = Modifier.padding(padding), onGoogleSignInButtonClick = {
+            launcher.launch(GoogleSignInManager.RequestCode)
+        }, onFacebookSignInButtonClick = {
+            val callbackManager = CallbackManager.Factory.create()
+            val loginManager = LoginManager.getInstance()
+            loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onCancel() {
+                    Timber.d("Sign in CANCELED")
                 }
+
+                override fun onError(error: FacebookException) {
+                    Timber.d("Sign in ERROR: ${error.message}")
+                    viewModel.onSignInFailed(error.message.toString())
+                }
+
+                override fun onSuccess(result: LoginResult) {
+                    Timber.d("Sign in SUCCESS")
+//            result?.accessToken?.token?.let {
+//                viewModel.onFacebookSignInSuccessful(it)
+//            } ?: viewModel.onSignInFailed("No token from Facebook provided")
+                }
+            })
+            loginManager.logInWithReadPermissions(
+                context as ActivityResultRegistryOwner, callbackManager, listOf("email")
             )
-        }
-    )
+        }, onContinueAsGuestButtonClick = {
+            navController.navigateAndForget(MainScreen.Splash.route)
+        })
+    })
 }
 
 @Composable
 private fun SignInScreenContent(
     modifier: Modifier = Modifier,
     onGoogleSignInButtonClick: () -> Unit = {},
+    onFacebookSignInButtonClick: () -> Unit = {},
     onContinueAsGuestButtonClick: () -> Unit = {}
 ) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.CenterStart) {
@@ -111,20 +140,16 @@ private fun SignInScreenContent(
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
+                    modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xffDB4437), contentColor = Color.White
-                    ),
-                    onClick = onGoogleSignInButtonClick
+                    ), onClick = onGoogleSignInButtonClick
                 ) {
                     Text(text = stringResource(R.string.button_google))
                 }
                 Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
+                    modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xff4267B2), contentColor = Color.White
-                    ),
-                    enabled = false, onClick = { /*TODO*/ }
+                    ), onClick = onFacebookSignInButtonClick
                 ) {
                     Text(text = stringResource(R.string.button_facebook))
                 }

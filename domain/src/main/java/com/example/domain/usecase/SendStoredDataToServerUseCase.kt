@@ -1,14 +1,11 @@
 package com.example.domain.usecase
 
 import com.example.data.local.IQuizLocalRepository
-import com.example.data.local.entity.AnswerRecordEntity
-import com.example.data.local.entity.ResultRecordEntity
+import com.example.data.local.entity.mapper.AnswerRecordEntityMapper
+import com.example.data.local.entity.mapper.ResultRecordEntityMapper
 import com.example.data.remote.IQuizRemoteRepository
-import com.example.data.remote.dto.AnswerRecordDto
-import com.example.data.remote.dto.ResultRecordDto
 import com.example.domain.State
 import com.example.util.data.RepositoryResponse
-import com.example.util.mapper.DataMapper
 import kotlinx.coroutines.flow.first
 
 interface ISendStoredDataToServerUseCase {
@@ -18,8 +15,8 @@ interface ISendStoredDataToServerUseCase {
 class SendStoredDataToServerUseCase(
     private val remoteRepository: IQuizRemoteRepository,
     private val localRepository: IQuizLocalRepository,
-    private val answerMapper: DataMapper<AnswerRecordEntity, AnswerRecordDto>,
-    private val resultMapper: DataMapper<ResultRecordEntity, ResultRecordDto>,
+    private val answerMapper: AnswerRecordEntityMapper,
+    private val resultMapper: ResultRecordEntityMapper,
 ) : ISendStoredDataToServerUseCase {
 
     override suspend operator fun invoke(): Boolean {

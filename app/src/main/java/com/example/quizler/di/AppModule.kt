@@ -72,10 +72,10 @@ val appModule = module {
     }
 
     // Workers
-    worker {
+    worker(named("RefreshTokenWorker")) {
         RefreshTokenWorker(androidContext(), get(), get())
     }
-    worker {
-        SendDataToServerWorker(androidContext(), get(), get())
+    worker(named("SendDataToServerWorker")) {
+        SendDataToServerWorker(androidContext(), get())
     }
 }

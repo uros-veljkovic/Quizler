@@ -25,8 +25,23 @@ class SignInViewModel(
     val state = _state.asSharedFlow()
 
     fun onGoogleSignInSuccessful(token: String) {
+        onSignInSuccessful(token, AuthenticationProviders.GOOGLE)
+    }
+
+    fun onFacebookSignInSuccessful(token: String) {
+        onSignInSuccessful(token, AuthenticationProviders.FACEBOOK)
+    }
+
+    fun onSignInFailed(reason: String) {
         viewModelScope.launch {
-            val signInState = signIn(token, AuthenticationProviders.GOOGLE)
+            Timber.d("Log in failed. Reason: $reason")
+            showErrorMessage()
+        }
+    }
+
+    private fun onSignInSuccessful(token: String, tokenProvider: String) {
+        viewModelScope.launch {
+            val signInState = signIn(token, tokenProvider)
             if (signInState is State.Success) {
                 val nextDestination = when (determainNextDestinationScreen()) {
                     FirstDestination.SignIn -> throw Exception("User preferences not stored properly")
@@ -42,13 +57,6 @@ class SignInViewModel(
 
     private fun goToRoute(route: String) {
         _state.update { it.copy(nextScreen = route) }
-    }
-
-    fun onSignInFailed(reason: String) {
-        viewModelScope.launch {
-            Timber.d("Log in failed. Reason: $reason")
-            showErrorMessage()
-        }
     }
 
     private suspend fun showErrorMessage() {

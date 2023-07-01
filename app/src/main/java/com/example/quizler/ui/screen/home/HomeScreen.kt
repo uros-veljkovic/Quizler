@@ -34,12 +34,15 @@ import com.example.quizler.ui.screen.newquestion.CreateNewQuestionScreen
 import com.example.quizler.ui.screen.newquestion.CreateNewQuestionViewModel
 import com.example.quizler.ui.screen.score.ScoreScreen
 import com.example.quizler.ui.screen.score.ScoreViewModel
+import com.example.quizler.ui.screen.settings.SettingsScreen
+import com.example.quizler.ui.screen.settings.SettingsViewModel
 
 @Composable
 fun HomeScreen(
     modesViewModel: ModesViewModel,
     createNewQuestionViewModel: CreateNewQuestionViewModel,
     scoreViewModel: ScoreViewModel,
+    settingsViewModel: SettingsViewModel,
     parentNavController: NavHostController
 ) {
     val navHostController = rememberNavController()
@@ -68,6 +71,9 @@ fun HomeScreen(
                         modifier = Modifier.padding(paddingValues = padding),
                         viewModel = scoreViewModel
                     )
+                }
+                composable(HomeScreen.Settings.route) {
+                    SettingsScreen(modifier = Modifier.padding(padding + spaceM))
                 }
             }
         }

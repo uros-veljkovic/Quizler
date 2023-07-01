@@ -13,4 +13,5 @@ sealed class HomeScreen(val route: String) {
     object Modes : MainScreen("modes")
     object NewQuestion : MainScreen("new_question")
     object Scoreboard : MainScreen("scoreboard")
+    object Settings : MainScreen("settings")
 }

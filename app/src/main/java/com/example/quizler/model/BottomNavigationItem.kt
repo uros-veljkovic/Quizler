@@ -18,5 +18,10 @@ enum class BottomNavigationItem(val route: String, val icon: Int, val titleResId
         route = HomeScreen.Scoreboard.route,
         icon = R.drawable.ic_scoreboard,
         titleResId = R.string.scoreboard
+    ),
+    Settings(
+        route = HomeScreen.Settings.route,
+        icon = R.drawable.ic_settings,
+        titleResId = R.string.settings
     )
 }

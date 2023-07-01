@@ -14,6 +14,7 @@ import com.example.quizler.ui.screen.quiz.QuizViewModel
 import com.example.quizler.ui.screen.score.ChoosableModeItemsProvider
 import com.example.quizler.ui.screen.score.ScoreViewModel
 import com.example.quizler.ui.screen.score.ScoresUiMapper
+import com.example.quizler.ui.screen.settings.SettingsViewModel
 import com.example.quizler.util.SendDataToServerWorker
 import com.example.quizler.utils.signin.manager.GoogleSignInManager
 import com.example.quizler.utils.signin.manager.token.refresh.FacebookRefreshTokenStrategy
@@ -52,6 +53,7 @@ val appModule = module {
     viewModel { CreateNewQuestionViewModel(get(), get(), get()) }
     viewModel { QuizViewModel(get(), get(), get(), get()) }
     viewModel { ScoreViewModel(get(), get(), get()) }
+    viewModel { SettingsViewModel() }
 
     // Token refresh
     single<IRefreshTokenStrategy>(named(GoogleRefreshTokenStrategy.NAME)) {

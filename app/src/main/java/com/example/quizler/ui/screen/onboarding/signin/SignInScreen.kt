@@ -81,23 +81,26 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = koin
         }, onFacebookSignInButtonClick = {
             val callbackManager = CallbackManager.Factory.create()
             val loginManager = LoginManager.getInstance()
-            loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-                override fun onCancel() {
-                    Timber.d("Sign in CANCELED")
-                }
+            loginManager.registerCallback(
+                callbackManager,
+                object : FacebookCallback<LoginResult> {
+                    override fun onCancel() {
+                        Timber.d("Sign in CANCELED")
+                    }
 
-                override fun onError(error: FacebookException) {
-                    Timber.d("Sign in ERROR: ${error.message}")
-                    viewModel.onSignInFailed(error.message.toString())
-                }
+                    override fun onError(error: FacebookException) {
+                        Timber.d("Sign in ERROR: ${error.message}")
+                        viewModel.onSignInFailed(error.message.toString())
+                    }
 
-                override fun onSuccess(result: LoginResult) {
-                    Timber.d("Sign in SUCCESS")
+                    override fun onSuccess(result: LoginResult) {
+                        Timber.d("Sign in SUCCESS")
 //            result?.accessToken?.token?.let {
 //                viewModel.onFacebookSignInSuccessful(it)
 //            } ?: viewModel.onSignInFailed("No token from Facebook provided")
+                    }
                 }
-            })
+            )
             loginManager.logInWithReadPermissions(
                 context as ActivityResultRegistryOwner, callbackManager, listOf("email")
             )
@@ -140,16 +143,20 @@ private fun SignInScreenContent(
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Button(
-                    modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xffDB4437), contentColor = Color.White
-                    ), onClick = onGoogleSignInButtonClick
+                    ),
+                    onClick = onGoogleSignInButtonClick
                 ) {
                     Text(text = stringResource(R.string.button_google))
                 }
                 Button(
-                    modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xff4267B2), contentColor = Color.White
-                    ), onClick = onFacebookSignInButtonClick
+                    ),
+                    onClick = onFacebookSignInButtonClick
                 ) {
                     Text(text = stringResource(R.string.button_facebook))
                 }

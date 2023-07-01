@@ -167,6 +167,17 @@
     <string name="banner_error_create_profile_description">Ups, izgleda da postoji problem. Pre nego što pritisneš dugme za kreaciju profila, proveri da li si uneo/la korisničko ime i odabrao/la avatara</string>
     <string name="title_enter_username">Unesi korisnicko ime</string>
     <string name="button_confirm_create_profile">Potvrdi</string>
+    <string name="settings">Podesavanja</string>
+    <string name="logout">Izloguj se</string>
+    <string name="settings_title_personalize">Personalizuj</string>
+    <string name="setttings_item_personalize">Izmeni temu</string>
+    <string name="settings_title_support_kvizler">Podrzi Kvizler</string>
+    <string name="setttings_item_share">Podeli</string>
+    <string name="settings_item_rate_app">Oceni aplikaciju</string>
+    <string name="settings_title_other">Ostalo</string>
+    <string name="settings_item_send_email_to_uros">urosveljkovic@yahoo.com</string>
+    <string name="settings_item_send_email_to_petar">applesakota@gmail.com</string>
+    <string name="settings_item_privacy_policy">Politika privatnosti</string>
 
 
 </resources>

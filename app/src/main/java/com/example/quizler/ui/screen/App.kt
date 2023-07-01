@@ -34,6 +34,7 @@ import com.example.quizler.ui.screen.onboarding.splash.SplashScreen
 import com.example.quizler.ui.screen.onboarding.splash.SplashViewModel
 import com.example.quizler.ui.screen.quiz.QuizScreen
 import com.example.quizler.ui.screen.score.ScoreViewModel
+import com.example.quizler.ui.screen.settings.SettingsViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -42,6 +43,7 @@ fun App(
     modesViewModel: ModesViewModel = koinViewModel(),
     createNewQuestionViewModel: CreateNewQuestionViewModel = koinViewModel(),
     scoreViewModel: ScoreViewModel = koinViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel(),
     signInViewModel: SignInViewModel = koinViewModel(),
     splashViewModel: SplashViewModel = koinViewModel(),
     viewModel: AppViewModel = koinViewModel(),
@@ -81,7 +83,7 @@ fun App(
                 SplashScreen(navController = navController, viewModel = splashViewModel)
             }
             composable(MainScreen.Home.route) {
-                HomeScreen(modesViewModel, createNewQuestionViewModel, scoreViewModel, navController)
+                HomeScreen(modesViewModel, createNewQuestionViewModel, scoreViewModel, settingsViewModel, navController)
             }
             composable(MainScreen.Quiz().route) {
                 it.arguments?.getString("modeId")?.let { modeId ->

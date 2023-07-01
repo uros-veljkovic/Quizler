@@ -23,16 +23,16 @@ import androidx.compose.ui.unit.dp
 import com.example.quizler.R
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceM
-import com.example.quizler.ui.screen.settings.SettingsRow
+import com.example.quizler.ui.screen.settings.SettingsItem
 
 @Composable
-fun SettingsItem(
-    item: SettingsRow.Item
+fun SettingsButton(
+    button: SettingsItem.Button
 ) {
     Card(
         modifier = Modifier
             .clickable {
-                item.onClick()
+                button.onClick()
             }
     ) {
         Row(
@@ -43,21 +43,21 @@ fun SettingsItem(
         ) {
             Icon(
                 modifier = Modifier.weight(.15f),
-                painter = painterResource(id = item.frontIconRes),
+                painter = painterResource(id = button.frontIconRes),
                 contentDescription = null
             )
-            Text(modifier = Modifier.weight(.85f), text = stringResource(id = item.titleStringRes))
+            Text(modifier = Modifier.weight(.85f), text = stringResource(id = button.titleStringRes))
         }
     }
 }
 
 @Composable
-fun SettingsItemGroup(
-    group: SettingsRow.ItemGroup
+fun SettingsButtonGroup(
+    group: SettingsItem.ButtonGroup
 ) {
     Card {
         LazyColumn(modifier = Modifier) {
-            itemsIndexed(items = group.items) { index, item ->
+            itemsIndexed(items = group.buttons) { index, item ->
                 Row(
                     modifier = Modifier
                         .height(50.dp)
@@ -73,7 +73,7 @@ fun SettingsItemGroup(
                     )
                     Text(modifier = Modifier.weight(.85f), text = stringResource(id = item.titleStringRes))
                 }
-                if (group.items.lastIndex != index) {
+                if (group.buttons.lastIndex != index) {
                     Divider(Modifier.padding(start = spaceM, end = spaceM), color = MaterialTheme.colorScheme.onSurface.copy(alpha = .3f))
                 }
             }
@@ -86,7 +86,7 @@ fun SettingsItemGroup(
 fun PreviewSettingsItem() {
     QuizlerTheme {
         Surface {
-            SettingsItem(SettingsRow.Item(R.string.settings_item_rate_app, R.drawable.ic_star, {}))
+            SettingsButton(SettingsItem.Button(R.string.settings_item_rate_app, R.drawable.ic_star, {}))
         }
     }
 }
@@ -96,12 +96,12 @@ fun PreviewSettingsItem() {
 fun PreviewSettingsItemGroup() {
     QuizlerTheme {
         Surface {
-            SettingsItemGroup(
-                group = SettingsRow.ItemGroup(
+            SettingsButtonGroup(
+                group = SettingsItem.ButtonGroup(
                     listOf(
-                        SettingsRow.Item(R.string.settings_item_rate_app, R.drawable.ic_star, {}),
-                        SettingsRow.Item(R.string.settings_item_rate_app, R.drawable.ic_star, {}),
-                        SettingsRow.Item(R.string.settings_item_rate_app, R.drawable.ic_star, {}),
+                        SettingsItem.Button(R.string.settings_item_rate_app, R.drawable.ic_star, {}),
+                        SettingsItem.Button(R.string.settings_item_rate_app, R.drawable.ic_star, {}),
+                        SettingsItem.Button(R.string.settings_item_rate_app, R.drawable.ic_star, {}),
                     )
                 )
             )

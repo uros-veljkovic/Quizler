@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.quizler.R
 import com.example.quizler.components.InfoBanner
-import com.example.quizler.components.SettingsItem
-import com.example.quizler.components.SettingsItemGroup
+import com.example.quizler.components.SettingsButton
+import com.example.quizler.components.SettingsButtonGroup
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceL
 import com.example.quizler.theme.spaceM
@@ -44,7 +44,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewModel()) {
-    val settingsItems by viewModel.settingsRow.collectAsStateWithLifecycle()
+    val settingsItems by viewModel.settingsItems.collectAsStateWithLifecycle()
     Scaffold(
         snackbarHost = {
             InfoBanner(
@@ -77,9 +77,9 @@ fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewMo
                 ) {
                     settingsItems.forEach {
                         when (it) {
-                            is SettingsRow.Item -> SettingsItem(item = it)
-                            is SettingsRow.ItemGroup -> SettingsItemGroup(group = it)
-                            is SettingsRow.Title -> Text(
+                            is SettingsItem.Button -> SettingsButton(button = it)
+                            is SettingsItem.ButtonGroup -> SettingsButtonGroup(group = it)
+                            is SettingsItem.Header -> Text(
                                 modifier = Modifier.fillMaxWidth(),
                                 text = stringResource(id = it.titleStringRes),
                                 style = MaterialTheme.typography.titleMedium,

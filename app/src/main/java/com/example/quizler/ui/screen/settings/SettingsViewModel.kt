@@ -9,46 +9,32 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-sealed class SettingsRow {
-    data class Title(val titleStringRes: Int) : SettingsRow()
-    data class Item(val titleStringRes: Int, val frontIconRes: Int, val onClick: () -> Unit) : SettingsRow()
-    data class ItemGroup(val items: List<Item>) : SettingsRow()
-}
-
-sealed class SettingsItemEvent {
-    object Personalize : SettingsItemEvent()
-    object Share : SettingsItemEvent()
-    object RateApp : SettingsItemEvent()
-    object PrivacePolicy : SettingsItemEvent()
-    data class WriteEmail(val toEmail: String) : SettingsItemEvent()
-}
-
 class SettingsViewModel : ViewModel() {
 
     private val _onSettingsItemClickEvent = MutableSharedFlow<SettingsItemEvent>()
     val onSettingsItemClickEvent = _onSettingsItemClickEvent.asSharedFlow()
 
-    private val _settingsRow: MutableStateFlow<List<SettingsRow>> = MutableStateFlow(
+    private val _settingsItems: MutableStateFlow<List<SettingsItem>> = MutableStateFlow(
         listOf(
-            SettingsRow.Title(titleStringRes = R.string.settings_title_personalize),
-            SettingsRow.Item(
+            SettingsItem.Header(titleStringRes = R.string.settings_title_personalize),
+            SettingsItem.Button(
                 titleStringRes = R.string.setttings_item_personalize,
                 frontIconRes = R.drawable.ic_pallete,
                 onClick = {
                     emitEvent(SettingsItemEvent.Personalize)
                 }
             ),
-            SettingsRow.Title(titleStringRes = R.string.settings_title_support_kvizler),
-            SettingsRow.ItemGroup(
+            SettingsItem.Header(titleStringRes = R.string.settings_title_support_kvizler),
+            SettingsItem.ButtonGroup(
                 listOf(
-                    SettingsRow.Item(
+                    SettingsItem.Button(
                         titleStringRes = R.string.setttings_item_share,
                         frontIconRes = R.drawable.ic_share,
                         onClick = {
                             emitEvent(SettingsItemEvent.Share)
                         }
                     ),
-                    SettingsRow.Item(
+                    SettingsItem.Button(
                         titleStringRes = R.string.settings_item_rate_app,
                         frontIconRes = R.drawable.ic_star,
                         onClick = {
@@ -57,35 +43,35 @@ class SettingsViewModel : ViewModel() {
                     )
                 )
             ),
-            SettingsRow.Title(titleStringRes = R.string.settings_title_other),
-            SettingsRow.ItemGroup(
+            SettingsItem.Header(titleStringRes = R.string.settings_title_other),
+            SettingsItem.ButtonGroup(
                 listOf(
-                    SettingsRow.Item(
+                    SettingsItem.Button(
                         titleStringRes = R.string.settings_item_send_email_to_uros,
                         frontIconRes = R.drawable.ic_outgoing_mail,
                         onClick = {
                             emitEvent(SettingsItemEvent.WriteEmail("urosveljkovic@yahoo.com"))
                         }
                     ),
-                    SettingsRow.Item(
+                    SettingsItem.Button(
                         titleStringRes = R.string.settings_item_send_email_to_petar,
                         frontIconRes = R.drawable.ic_outgoing_mail,
                         onClick = {
                             emitEvent(SettingsItemEvent.WriteEmail("applesakota@gmail.com"))
                         }
                     ),
-                    SettingsRow.Item(
+                    SettingsItem.Button(
                         titleStringRes = R.string.settings_item_privacy_policy,
                         frontIconRes = R.drawable.ic_policy,
                         onClick = {
-                            emitEvent(SettingsItemEvent.Personalize)
+                            emitEvent(SettingsItemEvent.PrivacePolicy)
                         }
                     )
                 )
             )
         )
     )
-    val settingsRow = _settingsRow.asStateFlow()
+    val settingsItems = _settingsItems.asStateFlow()
 
     private fun emitEvent(event: SettingsItemEvent) {
         viewModelScope.launch {

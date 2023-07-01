@@ -21,11 +21,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +47,20 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewModel()) {
     val settingsItems by viewModel.settingsItems.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    LaunchedEffect(key1 = Unit) {
+        viewModel.onSettingsItemClickEvent.collect {
+            when (it) {
+                SettingsItemEvent.Personalize -> {}
+                SettingsItemEvent.PrivacePolicy -> {}
+                SettingsItemEvent.RateApp -> {}
+                SettingsItemEvent.Share -> {
+                    viewModel.onShareQuizler(context)
+                }
+                is SettingsItemEvent.WriteEmail -> {}
+            }
+        }
+    }
     Scaffold(
         snackbarHost = {
             InfoBanner(
@@ -53,54 +69,54 @@ fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewMo
                 onActionButtonClick = { }
             )
         }, content = { padding ->
-        Box(
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize()
-        ) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = R.drawable.default_background_pattern),
-                contentScale = ContentScale.FillBounds,
-                alpha = 0.2f,
-                contentDescription = null
-            )
-            Column(
-                modifier = modifier,
-                horizontalAlignment = Alignment.CenterHorizontally
+            Box(
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize()
             ) {
-                Spacer(modifier = Modifier.size(spaceL))
-                AppInfo()
-                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    modifier = Modifier.fillMaxSize(),
+                    painter = painterResource(id = R.drawable.default_background_pattern),
+                    contentScale = ContentScale.FillBounds,
+                    alpha = 0.2f,
+                    contentDescription = null
+                )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(spaceM)
+                    modifier = modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    settingsItems.forEach {
-                        when (it) {
-                            is SettingsItem.Button -> SettingsButton(button = it)
-                            is SettingsItem.ButtonGroup -> SettingsButtonGroup(group = it)
-                            is SettingsItem.Header -> Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = stringResource(id = it.titleStringRes),
-                                style = MaterialTheme.typography.titleMedium,
-                                textAlign = TextAlign.Start
-                            )
+                    Spacer(modifier = Modifier.size(spaceL))
+                    AppInfo()
+                    Spacer(modifier = Modifier.weight(1f))
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(spaceM)
+                    ) {
+                        settingsItems.forEach {
+                            when (it) {
+                                is SettingsItem.Button -> SettingsButton(button = it)
+                                is SettingsItem.ButtonGroup -> SettingsButtonGroup(group = it)
+                                is SettingsItem.Header -> Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = stringResource(id = it.titleStringRes),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    textAlign = TextAlign.Start
+                                )
+                            }
                         }
                     }
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    onClick = { /*TODO*/ }
-                ) {
-                    Icon(painter = painterResource(id = R.drawable.ic_logout), contentDescription = null)
-                    Text(text = stringResource(R.string.logout))
+                    Spacer(modifier = Modifier.weight(1f))
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        onClick = { /*TODO*/ }
+                    ) {
+                        Icon(painter = painterResource(id = R.drawable.ic_logout), contentDescription = null)
+                        Text(text = stringResource(R.string.logout))
+                    }
                 }
             }
         }
-    }
     )
 }
 

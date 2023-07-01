@@ -1,5 +1,6 @@
 package com.example.quizler.ui.screen.settings
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quizler.R
@@ -9,7 +10,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(
+    private val shareQuizLink: IShareQuizlerLinkManager
+) : ViewModel() {
+
 
     private val _onSettingsItemClickEvent = MutableSharedFlow<SettingsItemEvent>()
     val onSettingsItemClickEvent = _onSettingsItemClickEvent.asSharedFlow()
@@ -72,6 +76,10 @@ class SettingsViewModel : ViewModel() {
         )
     )
     val settingsItems = _settingsItems.asStateFlow()
+
+    fun onShareQuizler(context: Context) {
+        shareQuizLink.shareLink(context)
+    }
 
     private fun emitEvent(event: SettingsItemEvent) {
         viewModelScope.launch {

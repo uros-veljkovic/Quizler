@@ -63,6 +63,7 @@ fun SettingsButtonGroup(
                         .height(50.dp)
                         .fillMaxWidth()
                         .clickable {
+                            item.onClick()
                         },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -74,7 +75,10 @@ fun SettingsButtonGroup(
                     Text(modifier = Modifier.weight(.85f), text = stringResource(id = item.titleStringRes))
                 }
                 if (group.buttons.lastIndex != index) {
-                    Divider(Modifier.padding(start = spaceM, end = spaceM), color = MaterialTheme.colorScheme.onSurface.copy(alpha = .3f))
+                    Divider(
+                        Modifier.padding(start = spaceM, end = spaceM),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = .3f)
+                    )
                 }
             }
         }

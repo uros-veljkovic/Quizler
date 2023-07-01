@@ -14,7 +14,9 @@ import com.example.quizler.ui.screen.quiz.QuizViewModel
 import com.example.quizler.ui.screen.score.ChoosableModeItemsProvider
 import com.example.quizler.ui.screen.score.ScoreViewModel
 import com.example.quizler.ui.screen.score.ScoresUiMapper
+import com.example.quizler.ui.screen.settings.IShareQuizlerLinkManager
 import com.example.quizler.ui.screen.settings.SettingsViewModel
+import com.example.quizler.ui.screen.settings.ShareQuizlerLinkManager
 import com.example.quizler.util.SendDataToServerWorker
 import com.example.quizler.utils.signin.manager.GoogleSignInManager
 import com.example.quizler.utils.signin.manager.token.refresh.FacebookRefreshTokenStrategy
@@ -31,19 +33,22 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    // Data mapper
+    // region Data mapper
     single { InfoBannerDataMapper() }
     single { ScoresUiMapper() }
+    // endregion
 
-    // Connectivity
+    // region Connectivity
     single { NetworkConnectivityWatcher(get()) }
-
     single { ChoosableModeItemsProvider(get(), get(), get(), get()) }
     single { ChoosableCategoryItemsProvider(get(), get()) }
+    // endregion
 
-    // Sign in
+    // region Sign in
     single { GoogleSignInManager() }
+    // endregion
 
+    // region ViewModel
     viewModel { AppViewModel() }
     viewModel { EmptyViewModel(get()) }
     viewModel { SplashViewModel(get(), get(), get()) }
@@ -53,9 +58,10 @@ val appModule = module {
     viewModel { CreateNewQuestionViewModel(get(), get(), get()) }
     viewModel { QuizViewModel(get(), get(), get(), get()) }
     viewModel { ScoreViewModel(get(), get(), get()) }
-    viewModel { SettingsViewModel() }
+    viewModel { SettingsViewModel(get()) }
+    // endregion
 
-    // Token refresh
+    // region TokenRefresh
     single<IRefreshTokenStrategy>(named(GoogleRefreshTokenStrategy.NAME)) {
         GoogleRefreshTokenStrategy(
             androidContext(),
@@ -72,12 +78,18 @@ val appModule = module {
             get()
         )
     }
+    // endregion
 
-    // Workers
+    // region Settings
+    single<IShareQuizlerLinkManager> { ShareQuizlerLinkManager() }
+    // endregion
+
+    // region Workers
     worker(named("RefreshTokenWorker")) {
         RefreshTokenWorker(androidContext(), get(), get())
     }
     worker(named("SendDataToServerWorker")) {
         SendDataToServerWorker(androidContext(), get())
     }
+    //endregion
 }

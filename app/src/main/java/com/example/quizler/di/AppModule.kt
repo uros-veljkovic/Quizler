@@ -64,7 +64,7 @@ val appModule = module {
     viewModel { CreateNewQuestionViewModel(get(), get(), get()) }
     viewModel { QuizViewModel(get(), get(), get(), get()) }
     viewModel { ScoreViewModel(get(), get(), get()) }
-    viewModel { SettingsViewModel(get(), get(), get(), get()) }
+    viewModel { SettingsViewModel(get(), get(), get(), get(), get()) }
     // endregion
 
     // region TokenRefresh

@@ -26,6 +26,22 @@ class UserDataStorePreferences(
         putStringPreference(KEY_USER_PROFILE_IMAGE_URL, value ?: NO_VALUE)
     }
 
+    override suspend fun clearUserId() {
+        setUserId(NO_VALUE)
+    }
+
+    override suspend fun clearUsername() {
+        setUsername(NO_VALUE)
+    }
+
+    override suspend fun clearAvatar() {
+        setAvatar(NO_VALUE)
+    }
+
+    override suspend fun clearProfileImage() {
+        setProfileImageUrl(NO_VALUE)
+    }
+
     override fun getUserId(): Flow<String> {
         return getStringPreference(KEY_USER_ID)
     }

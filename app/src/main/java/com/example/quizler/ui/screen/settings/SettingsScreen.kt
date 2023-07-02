@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,10 +35,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.example.quizler.MainScreen
 import com.example.quizler.R
 import com.example.quizler.components.InfoBanner
 import com.example.quizler.components.SettingsButton
 import com.example.quizler.components.SettingsButtonGroup
+import com.example.quizler.extensions.navigateAndForget
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceL
 import com.example.quizler.theme.spaceM
@@ -46,8 +50,17 @@ import com.example.quizler.theme.spaceXXL
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewModel()) {
+fun SettingsScreen(
+    modifier: Modifier,
+    viewModel: SettingsViewModel = koinViewModel(),
+    parentNavController: NavController
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = Unit) {
+        viewModel.signOut.collect {
+            parentNavController.navigateAndForget(MainScreen.Empty.route)
+        }
+    }
     val context = LocalContext.current
 
     Scaffold(
@@ -107,7 +120,7 @@ fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewMo
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = MaterialTheme.shapes.medium,
-                    onClick = { /*TODO*/ }
+                    onClick = viewModel::onSignOut
                 ) {
                     Icon(painter = painterResource(id = R.drawable.ic_logout), contentDescription = null)
                     Text(text = stringResource(R.string.logout))
@@ -141,7 +154,7 @@ private fun AppInfo() {
 fun PreviewSettingsScreen() {
     QuizlerTheme {
         Surface {
-            SettingsScreen(modifier = Modifier.padding(spaceM))
+//            SettingsScreen(modifier = Modifier.padding(spaceM))
         }
     }
 }

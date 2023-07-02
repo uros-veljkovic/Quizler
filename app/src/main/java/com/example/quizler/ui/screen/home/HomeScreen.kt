@@ -73,7 +73,11 @@ fun HomeScreen(
                     )
                 }
                 composable(HomeScreen.Settings.route) {
-                    SettingsScreen(modifier = Modifier.padding(padding + spaceM))
+                    SettingsScreen(
+                        modifier = Modifier.padding(padding + spaceM),
+                        settingsViewModel,
+                        parentNavController
+                    )
                 }
             }
         }

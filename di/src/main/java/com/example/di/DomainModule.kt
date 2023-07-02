@@ -70,6 +70,7 @@ import com.example.domain.usecase.ISendInvalidQuestionReportUseCase
 import com.example.domain.usecase.ISendStoredDataToServerUseCase
 import com.example.domain.usecase.ISetHasInternetConnectionUseCase
 import com.example.domain.usecase.ISignInUseCase
+import com.example.domain.usecase.ISignOutUseCase
 import com.example.domain.usecase.IUpdateCurrentUserProfileUseCase
 import com.example.domain.usecase.SaveAnswerRecordUseCase
 import com.example.domain.usecase.SaveResultRecordUseCase
@@ -78,6 +79,7 @@ import com.example.domain.usecase.SendInvalidQuestionReportUseCase
 import com.example.domain.usecase.SendStoredDataToServerUseCase
 import com.example.domain.usecase.SetHasInternetConnectionUseCase
 import com.example.domain.usecase.SignInUseCase
+import com.example.domain.usecase.SignOutUseCase
 import com.example.domain.usecase.UpdateCurrentUserProfileUseCase
 import com.example.domain.wrapper.ContextWrapper
 import com.example.util.di.Named
@@ -142,6 +144,7 @@ val domainModule = module {
 
     // Use Cases
     single<ISignInUseCase> { SignInUseCase(get(), get(), get(), get()) }
+    single<ISignOutUseCase> { SignOutUseCase(get(), get()) }
     single<IDetermainNextDestinationScreenUseCase> { DetermainNextDestinationScreenUseCase(get(), get()) }
     single<ICacheTokenUseCase> { CacheTokenUseCase(get()) }
     single<ICreateNewQuestionUseCase> { CreateNewQuestionUseCase(get(), get()) }

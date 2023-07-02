@@ -1,12 +1,11 @@
 package com.example.quizler.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -24,15 +23,17 @@ import com.example.quizler.R
 import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceM
 import com.example.quizler.ui.screen.settings.SettingsItem
+import com.example.quizler.ui.screen.settings.SettingsItemEvent
 
 @Composable
 fun SettingsButton(
-    button: SettingsItem.Button
+    button: SettingsItem.Button,
+    onItemClick: (SettingsItemEvent) -> Unit
 ) {
     Card(
         modifier = Modifier
             .clickable {
-                button.onClick()
+                onItemClick(button.event)
             }
     ) {
         Row(
@@ -53,17 +54,18 @@ fun SettingsButton(
 
 @Composable
 fun SettingsButtonGroup(
-    group: SettingsItem.ButtonGroup
+    group: SettingsItem.ButtonGroup,
+    onItemClick: (SettingsItemEvent) -> Unit
 ) {
     Card {
-        LazyColumn(modifier = Modifier) {
-            itemsIndexed(items = group.buttons) { index, item ->
+        Column(modifier = Modifier) {
+            group.buttons.forEachIndexed { index, item ->
                 Row(
                     modifier = Modifier
                         .height(50.dp)
                         .fillMaxWidth()
                         .clickable {
-                            item.onClick()
+                            onItemClick(item.event)
                         },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -90,7 +92,14 @@ fun SettingsButtonGroup(
 fun PreviewSettingsItem() {
     QuizlerTheme {
         Surface {
-            SettingsButton(SettingsItem.Button(R.string.settings_item_rate_app, R.drawable.ic_star, {}))
+            SettingsButton(
+                button = SettingsItem.Button(
+                    R.string.settings_item_rate_app,
+                    R.drawable.ic_star,
+                    SettingsItemEvent.RateApp
+                ),
+                onItemClick = {}
+            )
         }
     }
 }
@@ -103,11 +112,24 @@ fun PreviewSettingsItemGroup() {
             SettingsButtonGroup(
                 group = SettingsItem.ButtonGroup(
                     listOf(
-                        SettingsItem.Button(R.string.settings_item_rate_app, R.drawable.ic_star, {}),
-                        SettingsItem.Button(R.string.settings_item_rate_app, R.drawable.ic_star, {}),
-                        SettingsItem.Button(R.string.settings_item_rate_app, R.drawable.ic_star, {}),
+                        SettingsItem.Button(
+                            R.string.settings_item_rate_app,
+                            R.drawable.ic_star,
+                            SettingsItemEvent.RateApp
+                        ),
+                        SettingsItem.Button(
+                            R.string.settings_item_rate_app,
+                            R.drawable.ic_star,
+                            SettingsItemEvent.RateApp
+                        ),
+                        SettingsItem.Button(
+                            R.string.settings_item_rate_app,
+                            R.drawable.ic_star,
+                            SettingsItemEvent.RateApp
+                        ),
                     )
-                )
+                ),
+                onItemClick = {}
             )
         }
     }

@@ -14,9 +14,15 @@ import com.example.quizler.ui.screen.quiz.QuizViewModel
 import com.example.quizler.ui.screen.score.ChoosableModeItemsProvider
 import com.example.quizler.ui.screen.score.ScoreViewModel
 import com.example.quizler.ui.screen.score.ScoresUiMapper
+import com.example.quizler.ui.screen.settings.AppReviewHandler
+import com.example.quizler.ui.screen.settings.EmailManager
+import com.example.quizler.ui.screen.settings.IAppReviewHandler
+import com.example.quizler.ui.screen.settings.IEmailManager
 import com.example.quizler.ui.screen.settings.IShareQuizlerLinkManager
+import com.example.quizler.ui.screen.settings.IWebPageOpener
 import com.example.quizler.ui.screen.settings.SettingsViewModel
 import com.example.quizler.ui.screen.settings.ShareQuizlerLinkManager
+import com.example.quizler.ui.screen.settings.WebPageOpener
 import com.example.quizler.util.SendDataToServerWorker
 import com.example.quizler.utils.signin.manager.GoogleSignInManager
 import com.example.quizler.utils.signin.manager.token.refresh.FacebookRefreshTokenStrategy
@@ -58,7 +64,7 @@ val appModule = module {
     viewModel { CreateNewQuestionViewModel(get(), get(), get()) }
     viewModel { QuizViewModel(get(), get(), get(), get()) }
     viewModel { ScoreViewModel(get(), get(), get()) }
-    viewModel { SettingsViewModel(get()) }
+    viewModel { SettingsViewModel(get(), get(), get(), get()) }
     // endregion
 
     // region TokenRefresh
@@ -82,6 +88,9 @@ val appModule = module {
 
     // region Settings
     single<IShareQuizlerLinkManager> { ShareQuizlerLinkManager() }
+    single<IAppReviewHandler> { AppReviewHandler() }
+    single<IEmailManager> { EmailManager() }
+    single<IWebPageOpener> { WebPageOpener() }
     // endregion
 
     // region Workers

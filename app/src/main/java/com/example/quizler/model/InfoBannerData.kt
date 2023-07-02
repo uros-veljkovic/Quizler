@@ -74,4 +74,11 @@ open class InfoBannerData(
         description = R.string.wohoo_description,
         color = Color(0xffaee4da)
     )
+
+    object AppRated : InfoBannerData(
+        icon = R.drawable.ic_in_love,
+        title = R.string.you_da_king,
+        description = R.string.thank_you_for_helping_kvizler_grow,
+        color = Color(0xffaee4da)
+    )
 }

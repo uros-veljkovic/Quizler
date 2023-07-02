@@ -17,8 +17,8 @@ android {
         applicationId "com.wombatech.quizler"
         minSdk 24
         targetSdk 33
-        versionCode 25
-        versionName "1.1.21"
+        versionCode 27
+        versionName "1.1.22"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

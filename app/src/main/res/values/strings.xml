@@ -178,6 +178,9 @@
     <string name="settings_item_send_email_to_uros">urosveljkovic@yahoo.com</string>
     <string name="settings_item_send_email_to_petar">applesakota@gmail.com</string>
     <string name="settings_item_privacy_policy">Politika privatnosti</string>
+    <string name="thank_you_for_helping_kvizler_grow"><![CDATA[Hvala sto pomazes Kvizleru da poraste ! <3]]></string>
+    <string name="you_da_king">Car si!</string>
+    <string name="settings_item_write_suggestion">Posalji predlog</string>
 
 
 </resources>

@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +23,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,82 +43,76 @@ import com.example.quizler.theme.QuizlerTheme
 import com.example.quizler.theme.spaceL
 import com.example.quizler.theme.spaceM
 import com.example.quizler.theme.spaceS
+import com.example.quizler.theme.spaceXXL
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewModel()) {
-    val settingsItems by viewModel.settingsItems.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    LaunchedEffect(key1 = Unit) {
-        viewModel.onSettingsItemClickEvent.collect {
-            when (it) {
-                SettingsItemEvent.Personalize -> {}
-                SettingsItemEvent.PrivacePolicy -> {}
-                SettingsItemEvent.RateApp -> {}
-                SettingsItemEvent.Share -> {
-                    viewModel.onShareQuizler(context)
-                }
-                is SettingsItemEvent.WriteEmail -> {}
-            }
-        }
-    }
+
     Scaffold(
         snackbarHost = {
             InfoBanner(
-                isActionButtonEnabled = false, // TODO: CHANGE
-                data = null,
+                isActionButtonEnabled = false,
+                isActionButtonVisible = false,
+                data = state.infoBannerData,
                 onActionButtonClick = { }
             )
-        }, content = { padding ->
-            Box(
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxSize()
+        }
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+        ) {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(id = R.drawable.default_background_pattern),
+                contentScale = ContentScale.FillBounds,
+                alpha = 0.2f,
+                contentDescription = null
+            )
+            Column(
+                modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Image(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(id = R.drawable.default_background_pattern),
-                    contentScale = ContentScale.FillBounds,
-                    alpha = 0.2f,
-                    contentDescription = null
-                )
-                Column(
-                    modifier = modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Spacer(modifier = Modifier.size(spaceL))
-                    AppInfo()
-                    Spacer(modifier = Modifier.weight(1f))
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(spaceM)
-                    ) {
-                        settingsItems.forEach {
-                            when (it) {
-                                is SettingsItem.Button -> SettingsButton(button = it)
-                                is SettingsItem.ButtonGroup -> SettingsButtonGroup(group = it)
-                                is SettingsItem.Header -> Text(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    text = stringResource(id = it.titleStringRes),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    textAlign = TextAlign.Start
-                                )
+                Spacer(modifier = Modifier.size(spaceL))
+                AppInfo()
+                Spacer(modifier = Modifier.size(spaceL))
+                Column(verticalArrangement = Arrangement.spacedBy(spaceM)) {
+                    state.settingsItems.forEach { settingsItem ->
+                        when (settingsItem) {
+                            is SettingsItem.Button -> SettingsButton(button = settingsItem) {
+                                viewModel.onSettingsItemClicked(it, context)
                             }
+
+                            is SettingsItem.ButtonGroup -> SettingsButtonGroup(group = settingsItem) {
+                                viewModel.onSettingsItemClicked(it, context)
+                            }
+
+                            is SettingsItem.Header -> Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = stringResource(id = settingsItem.titleStringRes),
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Start
+                            )
                         }
                     }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp),
-                        onClick = { /*TODO*/ }
-                    ) {
-                        Icon(painter = painterResource(id = R.drawable.ic_logout), contentDescription = null)
-                        Text(text = stringResource(R.string.logout))
-                    }
+                }
+                Spacer(modifier = Modifier.size(spaceXXL))
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(painter = painterResource(id = R.drawable.ic_logout), contentDescription = null)
+                    Text(text = stringResource(R.string.logout))
                 }
             }
         }
-    )
+    }
 }
 
 @Composable

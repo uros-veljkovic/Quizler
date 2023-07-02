@@ -13,6 +13,6 @@ class ShareQuizlerLinkManager() : IShareQuizlerLinkManager {
             .setType("text/plain")
             .setChooserTitle("Odaberi aplikaciju")
             .setText("Odigraj sa mnom partiju Kvizlera\n\nhttp://play.google.com/store/apps/details?id=com.wombatech.quizler${context.packageName}")
-            .startChooser();
+            .startChooser()
     }
 }

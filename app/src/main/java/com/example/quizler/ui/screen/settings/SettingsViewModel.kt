@@ -1,89 +1,54 @@
 package com.example.quizler.ui.screen.settings
 
+import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quizler.R
-import kotlinx.coroutines.flow.MutableSharedFlow
+import com.example.quizler.model.InfoBannerData
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val shareQuizLink: IShareQuizlerLinkManager
+    private val shareQuizLink: IShareQuizlerLinkManager,
+    private val appReviewHandler: IAppReviewHandler,
+    private val emailManager: IEmailManager,
+    private val webPageOpener: IWebPageOpener
 ) : ViewModel() {
 
+    private val _state = MutableStateFlow(SettingsScreenState())
+    val state = _state.asStateFlow()
 
-    private val _onSettingsItemClickEvent = MutableSharedFlow<SettingsItemEvent>()
-    val onSettingsItemClickEvent = _onSettingsItemClickEvent.asSharedFlow()
+    fun onSettingsItemClicked(event: SettingsItemEvent, context: Context) {
+        when (event) {
+            SettingsItemEvent.Personalize -> {}
+            SettingsItemEvent.PrivacePolicy -> webPageOpener.openWebPage(context, KVIZLER_PRIVACY_POLICY_URL)
+            SettingsItemEvent.RateApp -> onRateApp(context as Activity)
+            SettingsItemEvent.Share -> onShareQuizler(context)
+            is SettingsItemEvent.WriteEmail -> emailManager.writeEmailTo("urosveljkovic@yahoo.com", context)
+        }
+    }
 
-    private val _settingsItems: MutableStateFlow<List<SettingsItem>> = MutableStateFlow(
-        listOf(
-            SettingsItem.Header(titleStringRes = R.string.settings_title_personalize),
-            SettingsItem.Button(
-                titleStringRes = R.string.setttings_item_personalize,
-                frontIconRes = R.drawable.ic_pallete,
-                onClick = {
-                    emitEvent(SettingsItemEvent.Personalize)
-                }
-            ),
-            SettingsItem.Header(titleStringRes = R.string.settings_title_support_kvizler),
-            SettingsItem.ButtonGroup(
-                listOf(
-                    SettingsItem.Button(
-                        titleStringRes = R.string.setttings_item_share,
-                        frontIconRes = R.drawable.ic_share,
-                        onClick = {
-                            emitEvent(SettingsItemEvent.Share)
-                        }
-                    ),
-                    SettingsItem.Button(
-                        titleStringRes = R.string.settings_item_rate_app,
-                        frontIconRes = R.drawable.ic_star,
-                        onClick = {
-                            emitEvent(SettingsItemEvent.RateApp)
-                        }
-                    )
-                )
-            ),
-            SettingsItem.Header(titleStringRes = R.string.settings_title_other),
-            SettingsItem.ButtonGroup(
-                listOf(
-                    SettingsItem.Button(
-                        titleStringRes = R.string.settings_item_send_email_to_uros,
-                        frontIconRes = R.drawable.ic_outgoing_mail,
-                        onClick = {
-                            emitEvent(SettingsItemEvent.WriteEmail("urosveljkovic@yahoo.com"))
-                        }
-                    ),
-                    SettingsItem.Button(
-                        titleStringRes = R.string.settings_item_send_email_to_petar,
-                        frontIconRes = R.drawable.ic_outgoing_mail,
-                        onClick = {
-                            emitEvent(SettingsItemEvent.WriteEmail("applesakota@gmail.com"))
-                        }
-                    ),
-                    SettingsItem.Button(
-                        titleStringRes = R.string.settings_item_privacy_policy,
-                        frontIconRes = R.drawable.ic_policy,
-                        onClick = {
-                            emitEvent(SettingsItemEvent.PrivacePolicy)
-                        }
-                    )
-                )
-            )
-        )
-    )
-    val settingsItems = _settingsItems.asStateFlow()
+    private fun onAppRated() {
+        viewModelScope.launch {
+            _state.update { it.copy(InfoBannerData.SuccessfullyCreatedNewQuestion) }
+            delay(5000)
+            _state.update { it.copy(infoBannerData = null) }
+        }
+    }
 
-    fun onShareQuizler(context: Context) {
+    private fun onShareQuizler(context: Context) {
         shareQuizLink.shareLink(context)
     }
 
-    private fun emitEvent(event: SettingsItemEvent) {
-        viewModelScope.launch {
-            _onSettingsItemClickEvent.emit(event)
-        }
+    private fun onRateApp(activity: Activity) {
+        appReviewHandler.launchReviewFlow(activity, viewModelScope)
+    }
+
+    companion object {
+        const val KVIZLER_PRIVACY_POLICY_URL =
+            "https://github.com/urkeev14/Quizler/wiki/Privacy-Policy-for-Kvizler-on-Google-Play-Store"
     }
 }

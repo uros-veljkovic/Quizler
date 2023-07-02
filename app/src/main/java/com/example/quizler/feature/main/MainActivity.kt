@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == MY_REQUEST_CODE) {
             if (resultCode != RESULT_OK) {
-                requestUpdateIfExists()
+                // Do nothing
             }
         }
     }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -74,7 +73,9 @@ fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewMo
                 contentDescription = null
             )
             Column(
-                modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+                modifier = modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Spacer(modifier = Modifier.size(spaceL))
@@ -105,6 +106,7 @@ fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewMo
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
+                    shape = MaterialTheme.shapes.medium,
                     onClick = { /*TODO*/ }
                 ) {
                     Icon(painter = painterResource(id = R.drawable.ic_logout), contentDescription = null)
@@ -117,23 +119,20 @@ fun SettingsScreen(modifier: Modifier, viewModel: SettingsViewModel = koinViewMo
 
 @Composable
 private fun AppInfo() {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spaceS)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(spaceS),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             modifier = Modifier
                 .size(128.dp)
-                .clip(CircleShape)
+                .clip(MaterialTheme.shapes.large)
                 .background(MaterialTheme.colorScheme.primary)
                 .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape),
             painter = painterResource(id = R.drawable.ic_launcher_foreground),
             contentDescription = null
         )
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Kvizler", style = MaterialTheme.typography.headlineMedium)
-            Text(text = "Verzija 1.1.1", style = MaterialTheme.typography.titleSmall)
-        }
+        Text(text = "Kvizler v1.1.1", style = MaterialTheme.typography.headlineMedium)
     }
 }
 

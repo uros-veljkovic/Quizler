@@ -122,7 +122,7 @@ class DataModule {
     @Singleton
     @Provides
     fun provideRetrofit(client: OkHttpClient): Retrofit {
-        val baseUrl = if (BuildConfig.DEBUG) "http://192.168.1.113:2000" else BuildConfig.SERVER_URL
+        val baseUrl = BuildConfig.SERVER_URL
 
         return Retrofit.Builder().baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create()).client(client).build()

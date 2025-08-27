@@ -12,7 +12,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -26,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
@@ -44,7 +42,6 @@ import com.example.quizler.ui.theme.SuccessGreen
 import com.example.quizler.ui.theme.colorAcomodatedToLightOrDarkMode
 import com.example.quizler.ui.theme.spaceS
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnswerTextField(
     modifier: Modifier = Modifier,
@@ -101,12 +98,10 @@ fun AnswerTextField(
                         text = stringResource(id = R.string.answer, arrayListOf(type.char))
                     )
                 },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    placeholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f),
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f),
                 ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(

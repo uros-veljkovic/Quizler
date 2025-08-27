@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.compose'
     id "io.gitlab.arturbosch.detekt" version "$version_detekt_tool"
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
@@ -10,79 +11,82 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    namespace 'com.example.quizler'
+
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.wombatech.quizler"
         minSdk 24
-        targetSdk 33
-        versionCode 22
-        versionName "1.1.1"
+        targetSdk 35
+        versionCode 35
+        versionName "1.1.2"
 
         Properties properties = new Properties()
         if (project.rootProject.file('local.properties').canRead()) {
             properties.load(project.rootProject.file("local.properties").newDataInputStream())
         }
-
         buildConfigField "String", "SERVER_URL", properties.getProperty('QUIZLER_SERVER_URL', '"192.168.1.113:2000"')
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
+        vectorDrawables { useSupportLibrary true }
+
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments += ["room.schemaLocation":
-                                      "$projectDir/schemas".toString()]
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
         multiDexEnabled true
         signingConfig signingConfigs.debug
     }
+
     testOptions {
         packagingOptions {
-            jniLibs {
-                useLegacyPackaging true
-            }
+            jniLibs { useLegacyPackaging true }
+        }
+        unitTests.all {
+            useJUnitPlatform()
         }
     }
+
     sourceSets {
         main { java.srcDirs = ['src/main/java'] }
         test { java.srcDirs = ['src/test/java'] }
         androidTest { java.srcDirs = ['src/androidTest/java'] }
     }
-    configurations {
-        ktlint
-    }
+
+    configurations { ktlint }
+
     detekt {
         toolVersion = "$version_detekt_tool"
         config = files("config/detekt/detekt.yml")
         buildUponDefaultConfig = true
     }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-
-        }
+        debug { }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
+
     buildFeatures {
         compose true
         viewBinding true
+        buildConfig true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion "$version_compose_compiler"
-    }
+
     packagingOptions {
         resources {
             excludes += '/META-INF/*'
@@ -91,122 +95,108 @@ android {
     }
     androidComponents {
         onVariants(selector().withBuildType("release")) {
-            // Exclude AndroidX version files
             it.packaging.resources.excludes.add("META-INF/*.version")
         }
     }
-    namespace 'com.example.quizler'
 }
 
 dependencies {
+    implementation platform("androidx.compose:compose-bom:$version_compose_bom")
 
-    // AppCompat
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+    implementation "androidx.compose.material3:material3"
+    implementation "androidx.compose.animation:animation"
+    implementation "androidx.compose.runtime:runtime"
+    debugImplementation "androidx.compose.ui:ui-tooling"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
+    debugImplementation "androidx.compose.ui:ui-test-manifest"
+
+    // Activity/Compose (not in Compose BOM)
+    implementation "androidx.activity:activity-compose:1.10.1"
+
+    // ConstraintLayout (Compose)
+    implementation "androidx.constraintlayout:constraintlayout-compose:$version_compose_constraint_layout"
+
+    // AppCompat / Core / Material
     implementation "androidx.appcompat:appcompat:$version_appcompat"
-    implementation "androidx.appcompat:appcompat-resources:$version_appcompat"
+    implementation "androidx.core:core-ktx:$version_core_ctx"
+    implementation "com.google.android.material:material:1.12.0"
 
-    // Retrofit
+    // Retrofit & Gson
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$version_retrofit"
+    implementation "com.google.code.gson:gson:$version_gson"
 
-    // Room
+    // Room, TODO: (refactor to kapt)
     implementation "androidx.room:room-runtime:$version_room"
-    implementation 'androidx.core:core-ktx:1.7.10'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation "androidx.room:room-ktx:$version_room"
     annotationProcessor "androidx.room:room-compiler:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
-    implementation "androidx.room:room-ktx:$version_room"
 
     // Timber
     implementation "com.jakewharton.timber:timber:$version_timber"
 
-    // Lifecycle services
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$version_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-service:$version_lifecycle_service"
-    ktlint "com.pinterest:ktlint:$version_ktlint"
 
-    // Core CTX
-    implementation "androidx.core:core-ktx:$version_core_ctx"
+    // Navigation (Fragments/UI KTX) + Navigation Compose
+    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-compose:$version_navigation"
 
-    // Jetpack Compose
-    implementation "androidx.compose.ui:ui:1.3.2"
-    implementation "androidx.constraintlayout:constraintlayout-compose:$version_compose_constraint_layout"
-    implementation "androidx.compose.material3:material3:$version_compose_material_3"
-    implementation "androidx.compose.animation:animation:$version_compose_animation"
-    implementation "androidx.compose.ui:ui-tooling-preview:$version_compose"
-    implementation "androidx.compose.runtime:runtime:$version_compose"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$version_compose_lifecycle"
-    implementation "androidx.activity:activity-compose:$version_compose_compiler"
-    implementation "androidx.compose.compiler:compiler:1.3.2"
-
-    // Pager and Indicators - Accompanist
-    implementation "com.google.accompanist:accompanist-pager:$version_accompanist_pager"
-    implementation "com.google.accompanist:accompanist-pager-indicators:$version_accompanist_pager"
-
+    // DataStore Preferences
+    implementation "androidx.datastore:datastore-preferences:$version_datastore"
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutines"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutines"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutines"
 
-    // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$version_lifecycle"
-
-    // Navigation
-    implementation "androidx.navigation:navigation-compose:$version_navigation"
-
-    // DataStore Preferences
-    implementation "androidx.datastore:datastore-preferences:$version_datastore"
+    // WorkManager + Hilt-Work
+    implementation "androidx.work:work-runtime-ktx:$version_work_manager"
+    implementation 'androidx.hilt:hilt-work:1.2.0'
+    kapt 'androidx.hilt:hilt-compiler:1.2.0'
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$version_hilt"
     kapt "com.google.dagger:hilt-compiler:$version_hilt_compiler"
-    implementation "androidx.hilt:hilt-navigation-compose:$version_hilt_compose"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$version_hilt_android_testing"
+    implementation "androidx.hilt:hilt-navigation-compose:1.2.0"
     kaptAndroidTest "com.google.dagger:hilt-compiler:$version_hilt_android_test_compiler"
     testImplementation "com.google.dagger:hilt-android-testing:$version_hilt_testing"
     kaptTest "com.google.dagger:hilt-android-compiler:$version_hilt_compiler"
 
-    // Gson
-    implementation "com.google.code.gson:gson:$version_gson"
+    // Accompanist Pager
+    implementation "com.google.accompanist:accompanist-pager:$version_accompanist_pager"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$version_accompanist_pager"
 
-    // WorkManager
-    implementation "androidx.work:work-runtime-ktx:$version_work_manager"
-    implementation 'androidx.hilt:hilt-work:1.0.0'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
-
-    // Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.1.1')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.2'
+    // Firebase (BoM)
+    implementation platform('com.google.firebase:firebase-bom:34.1.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     // Test
-    testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation "junit:junit:$version_junit"
     testImplementation "io.mockk:mockk:$version_mockk"
     testImplementation "org.hamcrest:hamcrest-library:$version_hamcrest"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutines"
-    testImplementation 'io.kotlintest:kotlintest-runner-junit5:3.1.9'
 
     // Android test
-    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
-    androidTestImplementation "io.mockk:mockk-android:$version_mockk"
     androidTestImplementation "androidx.test.ext:junit:$version_junit_extensions"
     androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso_core"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$version_compose"
-    debugImplementation "androidx.compose.ui:ui-tooling:$version_compose"
-
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$version_compose")
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
 }
+
 kapt {
     correctErrorTypes true
 }
 
-task ktlint(type: JavaExec, group: "verification") {
+configurations { ktlint }
+dependencies { ktlint "com.pinterest.ktlint:ktlint-cli:$version_ktlint" }
+
+tasks.register('ktlint', JavaExec) {
     description = "Check Kotlin code style."
     classpath = configurations.ktlint
     mainClass.set("com.pinterest.ktlint.Main")
@@ -214,7 +204,7 @@ task ktlint(type: JavaExec, group: "verification") {
 }
 check.dependsOn ktlint
 
-task ktlintFormat(type: JavaExec, group: "formatting") {
+tasks.register('ktlintFormat', JavaExec) {
     description = "Fix Kotlin code style deviations."
     classpath = configurations.ktlint
     mainClass.set("com.pinterest.ktlint.Main")

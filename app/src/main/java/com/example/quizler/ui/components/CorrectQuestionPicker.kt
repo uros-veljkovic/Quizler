@@ -49,7 +49,9 @@ fun CorrectAnswerPicker(
                     modifier = Modifier.weight(1f), onClick = { onCorrectAnswerChosen(answer) },
                     label = {
                         Text(
-                            modifier = Modifier.fillMaxWidth().padding(end = 8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 8.dp),
                             text = answer.char.toString(),
                             textAlign = TextAlign.Center
                         )
@@ -60,7 +62,9 @@ fun CorrectAnswerPicker(
                     ),
                     border = FilterChipDefaults.filterChipBorder(
                         selectedBorderColor = MaterialTheme.colorScheme.primary,
-                        selectedBorderWidth = 2.dp
+                        selectedBorderWidth = 2.dp,
+                        enabled = true,
+                        selected = correctAnswerType == answer
                     )
                 )
             }

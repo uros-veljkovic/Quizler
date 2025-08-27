@@ -85,11 +85,12 @@ fun HorizontalChipPicker(
         AnimatedVisibility(visible = isDropdownExpanded) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(spaceS), state = scrollState) {
                 items(items = items, key = { it.itemId }) {
+                    val isSelected = chosenItem?.itemId == it.itemId
                     FilterChip(
                         onClick = {
                             onItemClick(it)
                         },
-                        selected = chosenItem?.itemId == it.itemId,
+                        selected = isSelected,
                         label = {
                             Text(text = it.text)
                         },
@@ -102,7 +103,9 @@ fun HorizontalChipPicker(
                         },
                         border = FilterChipDefaults.filterChipBorder(
                             selectedBorderColor = MaterialTheme.colorScheme.primary,
-                            selectedBorderWidth = 2.dp
+                            selectedBorderWidth = 2.dp,
+                            enabled = true,
+                            selected = isSelected
                         )
                     )
                 }

@@ -35,9 +35,10 @@ class QuizlerApp : Application(), Configuration.Provider {
         }
     }
 
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder()
+    // ⬇️ Novi WorkManager API – property
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
             .setMinimumLoggingLevel(android.util.Log.DEBUG)
-            .setWorkerFactory(workerFactory).build()
-    }
+            .setWorkerFactory(workerFactory)
+            .build()
 }

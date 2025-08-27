@@ -14,7 +14,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
@@ -48,7 +47,6 @@ import com.example.quizler.ui.theme.QuizlerTheme
 import com.example.quizler.ui.theme.spaceM
 import com.example.quizler.ui.theme.spaceS
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateNewQuestionScreen(
     viewModel: CreateNewQuestionViewModel = hiltViewModel(),
@@ -94,10 +92,10 @@ fun CreateNewQuestionScreen(
                             textAlign = TextAlign.Center
                         )
                     },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        placeholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f)
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(.5f),
                     ),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
                 )
